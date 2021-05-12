@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import LoginForm from "../components/login-form";
+import LoginForm2 from "../components/login-form2";
 
 export default function Home() {
   return (
@@ -21,7 +21,8 @@ export default function Home() {
           />
         </div>
         <div className="lg:w-1/2 h-full">
-          <LoginForm />
+          {/* <LoginForm />*/}
+          <LoginForm2 />
         </div>
       </main>
     </div>
