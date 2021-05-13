@@ -8,10 +8,10 @@ export default function Layout(props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (state.username == null) {
+    if (state.user.username == null) {
       router.push("/");
     }
-  }, [state.username]);
+  }, [state.user.username]);
 
   return (
     <div className="flex flex-col w-full ">

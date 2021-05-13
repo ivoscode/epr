@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 
 //initial state
 const initialState = {
-  username: null,
+  user: { username: null },
 };
 //create context
 const Context = createContext();
@@ -12,12 +12,12 @@ const Context = createContext();
 const rootReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      return { ...state, username: action.payload };
+      return { ...state, user: action.payload };
 
     case "LOGOUT":
       console.log("context-logging out");
       window.localStorage.removeItem("EprUser");
-      return { ...state, username: null };
+      return { ...state, user: { username: null } };
     default:
       return state;
   }
@@ -31,7 +31,7 @@ const Provider = ({ children }) => {
   //preserves state on refresh
   useEffect(() => {
     dispatch({
-      type: "LOGIN",
+      type: "STORE-USER",
       payload: JSON.parse(window.localStorage.getItem("EprUser")),
     });
   }, []);

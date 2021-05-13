@@ -2,7 +2,6 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { Context } from "../context/index";
-import useToken from "./hooks/useToken";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -12,10 +11,7 @@ export default function LoginForm() {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
 
-  const { token, setToken } = useToken();
-
   const handleSubmit = async (e, credentials) => {
-    console.log(credentials);
     e.preventDefault();
     try {
       setLoading(true);
@@ -23,16 +19,43 @@ export default function LoginForm() {
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
         { ...credentials }
       );
-      console.log(response.data);
+
+      getRoutes(response.data.token, response.data.name);
       setLoading(false);
-      setToken(response.data);
-      dispatch({ type: "LOGIN", payload: response.data });
-      //putting user data in local storage to preserve state in app for browser refresh
-      window.localStorage.setItem("EprUser", JSON.stringify(response.data));
-      router.push("user/client-search");
     } catch (e) {
-      console.log(e.response.data.Message);
+      console.log(e);
       setLoading(false);
+    }
+  };
+
+  const getRoutes = async (token, username) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        "https://web2.ajbsoftware.co.uk:5000/api/user/menus",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+
+      const user = { ...response, token, username };
+      console.log(user);
+      sessionStorage.setItem("EprUser", JSON.stringify(user));
+      dispatch({ type: "LOGIN", payload: user });
+
+      // const homeRoute = response.data.map((route) => {
+      //   console.log(route);
+      // });
+      const homeRoute = response.data.find((o) => o.isHomePage === true);
+
+      router.push(homeRoute.url);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log(e.response);
     }
   };
 
