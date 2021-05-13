@@ -20,7 +20,7 @@ export default function ClientSearchResults({ clientSearchResults }) {
             >
               <li>{result.name.first}</li>
               <li>{result.nhs}</li>
-              {/* <li>{result.gender.description}</li>*/}
+              <li>{result.gender.description}</li>
               <li>{result.dob}</li>
             </div>
           );

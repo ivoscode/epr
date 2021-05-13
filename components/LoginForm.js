@@ -1,28 +1,40 @@
 import axios from "axios";
-import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
+import { Context } from "../context/index";
 import useToken from "./hooks/useToken";
 
-export default function LoginForm2() {
+export default function LoginForm() {
+  const [loading, setLoading] = useState(false);
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const credentials = { username, password };
+  const { state, dispatch } = useContext(Context);
+  const router = useRouter();
+
   const { token, setToken } = useToken();
 
-  async function handleSubmit(e, credentials) {
+  const handleSubmit = async (e, credentials) => {
     console.log(credentials);
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
         { ...credentials }
       );
       console.log(response.data);
+      setLoading(false);
       setToken(response.data);
+      dispatch({ type: "LOGIN", payload: response.data });
+      //putting user data in local storage to preserve state in app for browser refresh
+      window.localStorage.setItem("EprUser", JSON.stringify(response.data));
+      router.push("user/client-search");
     } catch (e) {
       console.log(e.response.data.Message);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col justify-center h-full">
@@ -61,19 +73,11 @@ export default function LoginForm2() {
 
         <button
           type="submit"
+          disabled={!username || !password || loading}
           className=" mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
         >
-          Login
+          {loading ? "Loading" : "Login"}
         </button>
-
-        <Link href="first">
-          <button
-            type="text"
-            className=" mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
-          >
-            Go to next page
-          </button>
-        </Link>
       </form>
     </div>
   );

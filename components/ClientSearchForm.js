@@ -1,19 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import NoServer from "../components/no-server";
-import ClientSearchResults from "./client-search-results";
+import ClientSearchResults from "./ClientSearchResults";
+import NoServer from "./no-server";
 
 export default function ClientSearchForm() {
   const [token, setToken] = useState();
   const [clientSearchResults, setClientSearchResults] = useState([]);
 
   useEffect(() => {
-    const tokenString = sessionStorage.getItem("token");
+    const tokenString = sessionStorage.getItem("EprToken");
     const userToken = JSON.parse(tokenString);
     setToken(userToken);
   }, []);
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.get(
@@ -26,11 +26,17 @@ export default function ClientSearchForm() {
         }
       );
       console.log(response);
-      setClientSearchResults(response.data);
+
+      if (response.status == 200) {
+        setClientSearchResults(response.data);
+        console.log("search results received");
+      } else {
+        console.log("from catch block", response.data); //not reaching this code
+      }
     } catch (e) {
-      console.log(e.response.data);
+      console.log(e.response);
     }
-  }
+  };
 
   return (
     <div className="">
