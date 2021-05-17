@@ -1,40 +1,43 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ClientSearchResults from "./ClientSearchResults";
-import NoServer from "./no-server";
 
 export default function ClientSearchForm() {
   const [token, setToken] = useState();
+  const [clientId, setClientId] = useState("");
+  const [nhsNumber, setNhsNumber] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [clientSearchResults, setClientSearchResults] = useState([]);
-
-  useEffect(() => {
-    const tokenString = sessionStorage.getItem("EprToken");
-    const userToken = JSON.parse(tokenString);
-    setToken(userToken);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const user = localStorage.getItem("EprUser");
+    const { token } = JSON.parse(user);
+    setToken(token);
+
     try {
       const response = await axios.get(
-        "https://web2.ajbsoftware.co.uk:5000/api/clients/search/?lastname=something",
+        "https://web2.ajbsoftware.co.uk:5000/api/clients/search/",
         {
+          params: {
+            lastname: lastName,
+            firstname: firstName,
+            nhsnumber: nhsNumber,
+            clientid: clientId,
+          },
           headers: {
             "Content-Type": "application/json",
             Authorization: token,
           },
         }
       );
-      console.log(response);
-
-      if (response.status == 200) {
-        setClientSearchResults(response.data);
-        console.log("search results received");
-      } else {
-        console.log("from catch block", response.data); //not reaching this code
-      }
+      //console.log("clients search results", response.data);
+      setClientSearchResults(response.data);
     } catch (e) {
       console.log(e.response);
+      console.log(e);
+      console.log(e.status);
     }
   };
 
@@ -47,7 +50,12 @@ export default function ClientSearchForm() {
         <div>
           <p className="text-2xl pb-4">Client Search</p>
         </div>
-        <form onSubmit={handleSubmit} className="flex flex-col items-end  ">
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+          className="flex flex-col items-end  "
+        >
           <div className="flex items-center mt-5 ">
             <div className=" mr-5 ">
               <label className=" text-gray-500 font-bold" htmlFor="Email">
@@ -57,7 +65,8 @@ export default function ClientSearchForm() {
             <div className="">
               <input
                 type="text"
-                onChange={(e) => setUserName(e.target.value)}
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
                 className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
               />
             </div>
@@ -71,8 +80,9 @@ export default function ClientSearchForm() {
             </div>
             <div className="">
               <input
+                value={nhsNumber}
                 type="text"
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => setNhsNumber(e.target.value)}
                 className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
               />
             </div>
@@ -85,8 +95,9 @@ export default function ClientSearchForm() {
             </div>
             <div className="">
               <input
+                value={firstName}
                 type="text"
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
                 className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
               />
             </div>
@@ -99,8 +110,9 @@ export default function ClientSearchForm() {
             </div>
             <div className="">
               <input
+                value={lastName}
                 type="text"
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => setLastName(e.target.value)}
                 className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
               />
             </div>
@@ -116,9 +128,8 @@ export default function ClientSearchForm() {
           </div>
         </form>
       </div>
-      <NoServer>
-        <ClientSearchResults clientSearchResults={clientSearchResults} />
-      </NoServer>
+
+      <ClientSearchResults clientSearchResults={clientSearchResults} />
     </div>
   );
 }

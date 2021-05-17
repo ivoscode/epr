@@ -1,16 +1,21 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/index";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState("ivo");
+  const [password, setPassword] = useState("pass");
   const credentials = { username, password };
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
 
+  useEffect(() => {
+    if (state.user.token) {
+      router.push("/client/dashboard/");
+    }
+  }, []);
   const handleSubmit = async (e, credentials) => {
     e.preventDefault();
     try {
@@ -19,7 +24,6 @@ export default function LoginForm() {
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
         { ...credentials }
       );
-
       getRoutes(response.data.token, response.data.name);
       setLoading(false);
     } catch (e) {
@@ -31,7 +35,7 @@ export default function LoginForm() {
   const getRoutes = async (token, username) => {
     try {
       setLoading(true);
-      const response = await axios.get(
+      const routes = await axios.get(
         "https://web2.ajbsoftware.co.uk:5000/api/user/menus",
         {
           headers: {
@@ -41,17 +45,16 @@ export default function LoginForm() {
         }
       );
 
-      const user = { ...response, token, username };
-      console.log(user);
-      sessionStorage.setItem("EprUser", JSON.stringify(user));
+      const user = { ...routes, token, username };
+      localStorage.setItem("EprUser", JSON.stringify(user));
+
       dispatch({ type: "LOGIN", payload: user });
 
-      // const homeRoute = response.data.map((route) => {
-      //   console.log(route);
-      // });
-      const homeRoute = response.data.find((o) => o.isHomePage === true);
+      console.log("ROUTES", routes.data);
+      const homeRoute = routes.data.find((o) => o.isHomePage === true);
 
       router.push(homeRoute.url);
+
       setLoading(false);
     } catch (e) {
       setLoading(false);
@@ -73,6 +76,7 @@ export default function LoginForm() {
           <div className=" mt-2  ">
             <input
               type="text"
+              placeholder="ivo"
               onChange={(e) => setUserName(e.target.value)}
               className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
             />
@@ -88,6 +92,7 @@ export default function LoginForm() {
           <div className=" mt-2 ">
             <input
               type="password"
+              placeholder="xxxxxx"
               onChange={(e) => setPassword(e.target.value)}
               className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
             />
