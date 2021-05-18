@@ -13,7 +13,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (state.user.token) {
-      router.push("/client/dashboard/");
+      //router.push("/client/dashboard/");
     }
   }, []);
   const handleSubmit = async (e, credentials) => {

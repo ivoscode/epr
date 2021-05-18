@@ -11,7 +11,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className="flex items-center justify-evenly">
+    <div className="flex items-center justify-evenly mb-10">
       <button
         onClick={() => {
           dispatch({ type: "LOGOUT" });
@@ -35,15 +35,15 @@ export default function Navbar() {
           );
         })}
       </ul>
-      <div>
+      <div className="flex">
         <Link href="/client/search">
           <button className=" bg-green-700 px-3 py-2 rounded-md text-white font-semibold tracking-widest">
             Search
           </button>
         </Link>
-        <Link href="/client/test">
+        <Link href="/client/dashboard-test">
           <button className=" bg-green-700 px-3 py-2 rounded-md text-white font-semibold tracking-widest">
-            test
+            Grid dashboard
           </button>
         </Link>
       </div>

@@ -5,3 +5,6 @@
 .card {
   @apply rounded border-gray-200 shadow-md overflow-hidden;
 }
+.item {
+  @apply text-xl p-3 overflow-y-auto rounded-lg;
+}

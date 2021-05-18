@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Select from "./UI/icons/Select";
 export default function ClientSearchResults({ clientSearchResults }) {
   const router = useRouter();
   if (clientSearchResults.length === 0) {
@@ -28,12 +29,12 @@ export default function ClientSearchResults({ clientSearchResults }) {
               <li>
                 <button
                   onClick={() => {
-                    console.log(router.path);
-                    router.push(`/client/dashboard/?clientid=${result.id}`);
+                    const back = localStorage.getItem(`search-back`);
+                    router.push(back + `?clientid=${result.id}`);
                   }}
-                  className="bg-blue-300"
+                  className=""
                 >
-                  go to dashboard
+                  <Select />
                 </button>
               </li>
             </ul>
