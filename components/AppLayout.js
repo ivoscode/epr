@@ -8,6 +8,7 @@ export default function Layout(props) {
   const router = useRouter();
   useEffect(() => {
     if (!state.user.token) {
+      console.log("pushing to home");
       router.push("/");
     }
   }, []);
