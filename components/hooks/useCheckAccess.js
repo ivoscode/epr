@@ -27,6 +27,7 @@ const useCheckAccess = () => {
         console.log("useCheckAccess response", response);
 
         if (response.status === 200) {
+          setAuthorized(true);
           switch (response.data.missing) {
             case "client":
               localStorage.setItem(`search-back`, router.pathname);
@@ -34,7 +35,7 @@ const useCheckAccess = () => {
             // case "another":
             //   return router.push("/client/client-search");
             default:
-              setAuthorized(true);
+            //setAuthorized(true);
           }
         }
       } catch (e) {

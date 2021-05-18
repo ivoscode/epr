@@ -65,52 +65,50 @@ export default function LoginForm() {
   };
 
   return (
-    !state.user.token && (
-      <div className="flex flex-col justify-center h-full">
-        <form
-          onSubmit={(e) => handleSubmit(e, credentials)}
-          className="flex flex-col items-center   "
-        >
-          <div className="w-2/3  mx-auto max-w-xs mb-8">
-            <label className=" text-gray-500 font-bold" htmlFor="Email">
-              Username
+    <div className="flex flex-col justify-center h-full">
+      <form
+        onSubmit={(e) => handleSubmit(e, credentials)}
+        className="flex flex-col items-center   "
+      >
+        <div className="w-2/3  mx-auto max-w-xs mb-8">
+          <label className=" text-gray-500 font-bold" htmlFor="Email">
+            Username
+          </label>
+
+          <div className=" mt-2  ">
+            <input
+              type="text"
+              placeholder="ivo"
+              onChange={(e) => setUserName(e.target.value)}
+              className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
+            />
+          </div>
+        </div>
+        <div className="w-2/3  mx-auto max-w-xs ">
+          <div className="flex justify-between">
+            <label className="  text-gray-500 font-bold" htmlFor="Password">
+              Password
             </label>
-
-            <div className=" mt-2  ">
-              <input
-                type="text"
-                placeholder="ivo"
-                onChange={(e) => setUserName(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
+            <span className="text-sm">Forgot Password?</span>
           </div>
-          <div className="w-2/3  mx-auto max-w-xs ">
-            <div className="flex justify-between">
-              <label className="  text-gray-500 font-bold" htmlFor="Password">
-                Password
-              </label>
-              <span className="text-sm">Forgot Password?</span>
-            </div>
-            <div className=" mt-2 ">
-              <input
-                type="password"
-                placeholder="xxxxxx"
-                onChange={(e) => setPassword(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
+          <div className=" mt-2 ">
+            <input
+              type="password"
+              placeholder="xxxxxx"
+              onChange={(e) => setPassword(e.target.value)}
+              className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
+            />
           </div>
+        </div>
 
-          <button
-            type="submit"
-            disabled={!username || !password || loading}
-            className=" mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
-          >
-            {loading ? "Loading" : "Login"}
-          </button>
-        </form>
-      </div>
-    )
+        <button
+          type="submit"
+          disabled={!username || !password || loading}
+          className=" mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
+        >
+          {loading ? "Loading" : "Login"}
+        </button>
+      </form>
+    </div>
   );
 }
