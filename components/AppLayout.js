@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { Context } from "../context/index";
-import Nav from "./UI/Nav/Navbar";
+import Nav from "./UI/nav/Navbar";
 
 export default function Layout(props) {
   const { state, dispatch } = useContext(Context);

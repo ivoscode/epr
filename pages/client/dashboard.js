@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "../../components/AppLayout";
 import useCheckAccess from "../../components/hooks/useCheckAccess";
+import DashboardContent from "../../components/UI/dashboard/DashboardContent";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -24,9 +25,10 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="text-6xl m-40 bg-gray-200 text-blue-600 p-40">
+      <div className="">
         <div>{`client ID ${router.query.clientid}`}</div>
         <div>{`rendering ${data}`}</div>
+        <DashboardContent />
       </div>
     </Layout>
   );

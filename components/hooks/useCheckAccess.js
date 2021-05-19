@@ -24,7 +24,7 @@ const useCheckAccess = () => {
             },
           }
         );
-        console.log("useCheckAccess response", response);
+        //console.log("useCheckAccess response", response);
 
         if (response.status === 200) {
           setAuthorized(true);
