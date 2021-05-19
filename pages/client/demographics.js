@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Layout from "../../components/AppLayout";
 import useCheckAccess from "../../components/hooks/useCheckAccess";
+import Layout from "../../components/Layout";
 
 export default function Demographics() {
   const router = useRouter();

@@ -1,5 +1,5 @@
 import AdminLayout from "../../components/AdminLayout";
-import Layout from "../../components/AppLayout";
+import Layout from "../../components/Layout";
 
 export default function Referrals() {
   return (
