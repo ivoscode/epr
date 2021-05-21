@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { Context } from "../context/index";
-import Nav from "./UI/nav/Navbar";
+import Navbar from "./UI/navigation/navbar";
 
 export default function Layout(props) {
   const { state, dispatch } = useContext(Context);
@@ -14,9 +14,9 @@ export default function Layout(props) {
   }, []);
 
   return (
-    <div className="flex flex-col w-full ">
-      <Nav />
-      <main className="  mx-auto max-w-screen-2xl w-full  ">
+    <div className="flex flex-col w-full h-full">
+      <Navbar />
+      <main className="  mx-auto max-w-screen-2xl w-full mt-16   ">
         {state.user.token && props.children}
       </main>
     </div>

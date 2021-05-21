@@ -1,9 +1,9 @@
 import ClientSearchForm from "../../components/ClientSearchForm";
-import useCheckAccess from "../../components/hooks/useCheckAccess";
+//import useCheckAccess from "../../components/hooks/useCheckAccess";
 import Layout from "../../components/Layout";
 
 export default function Search() {
-  const { authorized } = useCheckAccess();
+  //const { authorized } = useCheckAccess();
   // if (authorized) {
   //   console.log("all authorized, fetching some data");
   // } else {

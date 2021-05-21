@@ -1,29 +1,74 @@
+import useAxios from "../../hooks/useAxios";
 export default function TableComp(props) {
-  // const data = [
-  //           { rowtitle: "Name", rowcontent: "Sarah Davies" },
-  //           { rowtitle: "DOB", rowcontent: "17/02/1966" },
-  //           { rowtitle: "Address", rowcontent: "9 West Park Avenue" },
-  //           { rowtitle: "Contact No:", rowcontent: "0744-524-7009" },
-  //           { rowtitle: "Status", rowcontent: "Addmitted" },
-  //         ];
+  const title = props.data.title;
+  const url = props.data.api;
+  const id = props.clientId.clientid;
 
-  return (
-    <div className="bg-blue-400 h-full ">
-      <div>{props.data.title}</div>
+  const { response, error } = useAxios(`${url}?clientid=${id}`);
 
-      {props.data.tablecontent &&
-        props.data.tablecontent.map((result) => {
-          return (
-            <ul
-              className="card  mx-2  flex justify-between my-6 px-4 bg-blue-500 "
-              key={result.rowtitle}
-            >
-              <li>{result.rowtitle}</li>
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-              <li>{result.rowcontent}</li>
-            </ul>
-          );
-        })}
-    </div>
-  );
+  if (response == null) {
+    return null;
+  }
+
+  if (response.data.orientation == `vertical`) {
+    return (
+      <div>
+        <h1>{title}</h1>
+        <table className="w-full mt-5 ">
+          <tbody>
+            {response &&
+              response.data.headers.map((value, i) => {
+                return (
+                  <tr key={i} className="flex justify-between">
+                    <th>{value}</th>
+                    {response.data.values.map((values, o) => {
+                      return (
+                        <td className=" p-4" key={o}>
+                          {values[i]}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <table className="table-auto">
+          <thead>
+            <tr>
+              {response &&
+                response.data.headers.map((value, i) => {
+                  return <th key={i}>{value}</th>;
+                })}
+            </tr>
+          </thead>
+          <tbody>
+            {response &&
+              response.data.values.map((value, i) => {
+                return (
+                  <tr key={i}>
+                    {value.map((value, o) => {
+                      return (
+                        <td className="pt-5" key={o}>
+                          {value}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 }
