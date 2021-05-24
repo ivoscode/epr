@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import ClientSearchResults from "./ClientSearchResults";
-
 export default function ClientSearchForm() {
   const [token, setToken] = useState();
   const [clientId, setClientId] = useState("");
@@ -9,9 +8,17 @@ export default function ClientSearchForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [clientSearchResults, setClientSearchResults] = useState([]);
-
+  const params = {
+    lastname: lastName,
+    firstname: firstName,
+    nhsnumber: nhsNumber,
+    clientid: clientId,
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // const { response } = useAxios(`/api/clients/search/`, params);
+    // setClientSearchResults(response.data);
     const user = localStorage.getItem("EprUser");
     const { token } = JSON.parse(user);
     setToken(token);
@@ -21,10 +28,7 @@ export default function ClientSearchForm() {
         "https://web2.ajbsoftware.co.uk:5000/api/clients/search/",
         {
           params: {
-            lastname: lastName,
-            firstname: firstName,
-            nhsnumber: nhsNumber,
-            clientid: clientId,
+            ...params,
           },
           headers: {
             "Content-Type": "application/json",

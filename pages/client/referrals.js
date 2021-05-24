@@ -1,16 +1,15 @@
-import AdminLayout from "../../components/AdminLayout";
+import useCheckAccess from "../../components/hooks/useCheckAccess";
 import Layout from "../../components/Layout";
 
 export default function Referrals() {
+  const { authorized } = useCheckAccess();
+
+  if (!authorized) return null;
   return (
     <Layout>
-      <AdminLayout>
-        <div>
-          <main className=" text-6xl m-40 bg-gray-200 text-blue-600 p-40">
-            Referrals
-          </main>
-        </div>
-      </AdminLayout>
+      <div>
+        <div>Referrals</div>
+      </div>
     </Layout>
   );
 }

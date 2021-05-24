@@ -3,6 +3,13 @@ import Image from "next/image";
 import LoginForm from "../components/LoginForm";
 
 export default function Home() {
+  // const [status, setStatus] = useState("0");
+  // useEffect(() => {
+  //   const user = JSON.parse(window.localStorage.getItem("EprUser"));
+
+  //   user && setStatus(user.status);
+  // }, []);
+
   return (
     <div>
       <Head>

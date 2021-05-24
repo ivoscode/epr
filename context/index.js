@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 
 //initial state
 const initialState = {
-  user: { token: null },
+  user: { token: null, status: "0" },
 };
 //create context
 const Context = createContext();
@@ -21,7 +21,8 @@ const rootReducer = (state, action) => {
     case "LOGOUT":
       console.log("context-logging out");
       window.localStorage.removeItem("EprUser");
-      return { ...state, user: { token: null } };
+
+      return { ...state, user: { token: null, status: "0" } };
     default:
       return state;
   }

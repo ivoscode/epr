@@ -23,11 +23,11 @@ export default function TableComp(props) {
             {response &&
               response.data.headers.map((value, i) => {
                 return (
-                  <tr key={i} className="flex justify-between">
-                    <th>{value}</th>
+                  <tr key={i} className="flex justify-between py-4">
+                    <th className="">{value}</th>
                     {response.data.values.map((values, o) => {
                       return (
-                        <td className=" p-4" key={o}>
+                        <td className=" " key={o}>
                           {values[i]}
                         </td>
                       );

@@ -8,7 +8,6 @@ import TableComp from "./TableComp";
 export default function DashboardContent() {
   const router = useRouter();
   const ResponsiveGridLayout = WidthProvider(Responsive);
-
   const clientId = router.query;
 
   if (!clientId) {
@@ -18,10 +17,9 @@ export default function DashboardContent() {
   const { response } = useAxios(`/api/clientdashboard/tiles/`);
 
   if (!response) {
-    return <div className="text-green-800 text-3xl m-20">Loading data</div>;
+    return null;
   }
 
-  console.log(response.data.layouts);
   return (
     <div className=" min-h-screen text-xl bg-gray-100 p-6 ">
       <ResponsiveGridLayout
