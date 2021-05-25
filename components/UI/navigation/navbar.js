@@ -68,6 +68,11 @@ export default function Navbar() {
                         {item.title}
                       </a>
                     ))}
+                    <div>
+                      <button className="text-white">
+                        <a href={"/forms/"}>Forms</a>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

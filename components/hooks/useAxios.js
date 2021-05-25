@@ -7,7 +7,7 @@ const useAxios = (url, params) => {
   const [error, setError] = useState();
   const router = useRouter();
   const route = router.asPath;
-  console.log(params);
+
   useEffect(() => {
     const user = localStorage.getItem("EprUser");
     const userToken = JSON.parse(user);
@@ -16,9 +16,9 @@ const useAxios = (url, params) => {
         const response = await axios.get(
           `https://web2.ajbsoftware.co.uk:5000${url}`,
           {
-            // params: {
-            //   ...params,
-            // },
+            params: {
+              ...params,
+            },
             headers: {
               "Content-Type": "application/json",
               Authorization: userToken.token,
