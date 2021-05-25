@@ -4,7 +4,9 @@ import Layout from "../../components/Layout";
 export default function Referrals() {
   const { authorized } = useCheckAccess();
 
-  if (!authorized) return null;
+  if (!authorized) {
+    return null;
+  }
   return (
     <Layout>
       <div>

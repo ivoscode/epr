@@ -3,11 +3,10 @@ import ClientSearchForm from "../../components/ClientSearchForm";
 import Layout from "../../components/Layout";
 
 export default function Search() {
-  //const { authorized } = useCheckAccess();
-  // if (authorized) {
-  //   console.log("all authorized, fetching some data");
-  // } else {
-  //   return <div>Access denied</div>;
+  // const { authorized } = useCheckAccess();
+
+  // if (!authorized) {
+  //   return null;
   // }
   return (
     <Layout>

@@ -6,7 +6,7 @@ export default function Layout(props) {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
   useEffect(() => {
-    if (!state.user.token) {
+    if (!state) {
       console.log("pushing to home from layout");
       router.push("/");
     }
@@ -15,7 +15,7 @@ export default function Layout(props) {
   return (
     <div className="flex flex-col w-full h-full">
       <main className="  mx-auto max-w-screen-2xl w-full mt-16   ">
-        {state.user.token && props.children}
+        {state && props.children}
       </main>
     </div>
   );

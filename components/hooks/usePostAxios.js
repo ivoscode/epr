@@ -2,10 +2,10 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-const useAxios = (url, params) => {
+const useAxios = (url) => {
   const [response, setResponse] = useState();
   const [error, setError] = useState();
-
+  const [postData, setPostData] = useState();
   const router = useRouter();
   // const route = router.asPath;
 
@@ -16,14 +16,12 @@ const useAxios = (url, params) => {
     const user = localStorage.getItem("EprUser");
     const userToken = JSON.parse(user);
     const fetchData = async () => {
+      console.log(userToken);
       try {
-        const response = await axios.get(
+        const response = await axios.post(
           `https://web2.ajbsoftware.co.uk:5000${url}`,
+          { ...postData },
           {
-            params: {
-              ...params,
-            },
-
             headers: {
               "Content-Type": "application/json",
               Authorization: userToken.token,
@@ -39,8 +37,8 @@ const useAxios = (url, params) => {
     };
 
     fetchData();
-  }, [url]);
+  }, [postData]);
 
-  return { response, error };
+  return [{ response, error }, setPostData];
 };
 export default useAxios;

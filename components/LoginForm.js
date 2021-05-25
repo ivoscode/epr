@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../context/index";
 
 export default function LoginForm() {
@@ -11,13 +11,6 @@ export default function LoginForm() {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
 
-  useEffect(() => {
-    //const back = localStorage.getItem(`search-back`);
-    //const loggedUser=localStorage.getItem("EprUser", JSON.stringify(user));
-    // if (state.user.token) {
-    //   router.push(back);
-    // }
-  }, []);
   const handleSubmit = async (e, credentials) => {
     e.preventDefault();
     try {
@@ -46,15 +39,14 @@ export default function LoginForm() {
           },
         }
       );
-
-      const user = { ...routes, token, username };
-      localStorage.setItem("EprUser", JSON.stringify(user));
-
-      dispatch({ type: "LOGIN", payload: user });
-
       console.log("ROUTES", routes.data);
+
       const homeRoute = routes.data.find((o) => o.isHomePage === true);
 
+      const user = { ...routes, token, username, homeRoute };
+
+      localStorage.setItem("EprUser", JSON.stringify(user));
+      dispatch({ type: "LOGIN", payload: user });
       router.push(homeRoute.url);
 
       setLoading(false);

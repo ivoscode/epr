@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 
 //initial state
 const initialState = {
-  user: { token: null, status: "0" },
+  user: null,
 };
 //create context
 const Context = createContext();

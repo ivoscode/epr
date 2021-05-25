@@ -1,7 +1,7 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/index";
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -17,7 +17,13 @@ function classNames(...classes) {
 export default function Navbar() {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
-  if (state.user.token == null) {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    setUser(state.user && state.user.data);
+  }, [state]);
+
+  if (!user) {
     return null;
   }
 
@@ -53,21 +59,22 @@ export default function Navbar() {
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
-                    {state.user.data.map((item) => (
-                      <a
-                        key={item.id}
-                        href={item.url}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-600 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.title}
-                      </a>
-                    ))}
+                    {user &&
+                      user.map((item) => (
+                        <a
+                          key={item.id}
+                          href={item.url}
+                          className={classNames(
+                            item.current
+                              ? "bg-gray-900 text-white"
+                              : "text-gray-300 hover:bg-gray-600 hover:text-white",
+                            "px-3 py-2 rounded-md text-sm font-medium"
+                          )}
+                          aria-current={item.current ? "page" : undefined}
+                        >
+                          {item.title}
+                        </a>
+                      ))}
                     <div>
                       <button className="text-white">
                         <a href={"/forms/"}>Forms</a>
@@ -151,21 +158,22 @@ export default function Navbar() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {state.user.data.map((item) => (
-                <a
-                  key={item.id}
-                  href={item.url}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.title}
-                </a>
-              ))}
+              {user &&
+                user.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.url}
+                    className={classNames(
+                      item.current
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      "block px-3 py-2 rounded-md text-base font-medium"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                  >
+                    {item.title}
+                  </a>
+                ))}
             </div>
           </Disclosure.Panel>
         </>
