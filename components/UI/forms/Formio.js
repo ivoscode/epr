@@ -62,7 +62,7 @@ export default function Formio() {
         onSubmit={(data) => {
           handleFormSubmit(data);
         }}
-        submission={formData && formData.data.values}
+        //submission={formData && formData.data.values}
         //options={options}
       />
     </div>

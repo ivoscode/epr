@@ -1,6 +1,6 @@
 import useCheckAccess from "../../components/hooks/useCheckAccess";
 import Layout from "../../components/Layout";
-import DashboardContent from "../../components/UI/dashboard/DashboardContent";
+import DashboardContent from "../../components/UI/client/dashboard/DashboardContent";
 export default function Referrals() {
   const { authorized } = useCheckAccess();
 

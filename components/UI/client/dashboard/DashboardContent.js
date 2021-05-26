@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "../../../hooks/useAxios";
 import ImageComp from "./ImageComp";
 import LinksComp from "./LinksComp";
 import TableComp from "./TableComp";

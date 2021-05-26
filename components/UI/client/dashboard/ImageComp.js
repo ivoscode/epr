@@ -1,4 +1,4 @@
-import useAxios from "../../hooks/useAxios";
+import useAxios from "../../../hooks/useAxios";
 export default function ImageComp(props) {
   const title = props.data.title;
   const url = props.data.api;

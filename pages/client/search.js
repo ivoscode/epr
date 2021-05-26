@@ -1,6 +1,6 @@
-import ClientSearchForm from "../../components/ClientSearchForm";
 //import useCheckAccess from "../../components/hooks/useCheckAccess";
 import Layout from "../../components/Layout";
+import ClientSearchForm from "../../components/UI/client/search/ClientSearchForm";
 
 export default function Search() {
   // const { authorized } = useCheckAccess();

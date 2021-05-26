@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { Context } from "../context/index";
+import { Context } from "../../../context/index";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -39,12 +39,9 @@ export default function LoginForm() {
           },
         }
       );
-      console.log("ROUTES", routes.data);
 
       const homeRoute = routes.data.find((o) => o.isHomePage === true);
-
       const user = { ...routes, token, username, homeRoute };
-
       localStorage.setItem("EprUser", JSON.stringify(user));
       dispatch({ type: "LOGIN", payload: user });
       router.push(homeRoute.url);

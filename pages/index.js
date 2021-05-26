@@ -2,23 +2,21 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/UI/client/LoginForm";
 import { Context } from "../context/index";
 
 export default function Home() {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
   const [user, setUser] = useState();
+
   useEffect(() => {
-    console.log("executing home screen");
+    //If user is logged in, pushes it to home route
     const user = JSON.parse(window.localStorage.getItem("EprUser"));
     if (user) {
       setUser(user);
       dispatch({ type: "LOGIN", payload: user });
-      console.log(user.homeRoute.url);
-      router.push("/client/dashboard/");
-    } else {
-      window.localStorage.removeItem("EprUser");
+      router.push(user.homeRoute.url);
     }
   }, [state]);
 

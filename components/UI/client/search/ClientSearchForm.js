@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import ClientSearchResults from "./ClientSearchResults";
+import ClientSearchResults from "../../client/search/ClientSearchResults";
 export default function ClientSearchForm() {
   const [token, setToken] = useState();
   const [clientId, setClientId] = useState("");

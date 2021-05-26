@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Select from "./UI/icons/Select";
+import Select from "../../../UI/icons/Select";
 export default function ClientSearchResults({ clientSearchResults }) {
   const router = useRouter();
   if (clientSearchResults === 0) {
