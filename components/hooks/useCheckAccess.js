@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 const useCheckAccess = () => {
   const [authorized, setAuthorized] = useState(false);
   const router = useRouter();
-  const route = router.asPath;
-
+  // const route = router.asPath; //url encode
+  const route = encodeURIComponent(router.asPath);
   useEffect(() => {
     const user = localStorage.getItem("EprUser");
     const userToken = JSON.parse(user);
@@ -16,7 +16,7 @@ const useCheckAccess = () => {
       try {
         console.log("checkAccesss checking route", route);
         const response = await axios.get(
-          `https://web2.ajbsoftware.co.uk:5000/api/session/check?url=${route}/`,
+          `https://web2.ajbsoftware.co.uk:5000/api/session/check?url=${route}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -24,22 +24,25 @@ const useCheckAccess = () => {
             },
           }
         );
-        //console.log("useCheckAccess response", response);
+        console.log("useCheckAccess navigation directions", response.data);
 
         if (response.status === 200) {
           setAuthorized(true);
           switch (response.data.missing) {
             case "client":
-              localStorage.setItem(`search-back`, router.pathname);
+              localStorage.setItem(`search-back`, router.asPath);
               router.push("/client/search/");
-            // case "another":
-            //   return router.push("/client/client-search");
+
             default:
-            //setAuthorized(true);
           }
         }
       } catch (e) {
         console.log("useCheckAccess error", e.response);
+        if (e.response.status === 401) {
+          setAuthorized(false);
+          window.localStorage.removeItem("EprUser");
+          router.push("/");
+        }
       }
     };
     checkAccess();

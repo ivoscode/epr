@@ -2,7 +2,7 @@ import useAxios from "../../../hooks/useAxios";
 export default function TableComp(props) {
   const title = props.data.title;
   const url = props.data.api;
-  const id = props.clientId.clientid;
+  const id = props.clientId;
 
   const { response, error } = useAxios(`${url}?clientid=${id}`);
 

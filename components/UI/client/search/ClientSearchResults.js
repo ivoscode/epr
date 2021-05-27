@@ -30,7 +30,12 @@ export default function ClientSearchResults({ clientSearchResults }) {
                 <button
                   onClick={() => {
                     const back = localStorage.getItem(`search-back`);
-                    router.push(back + `?clientid=${result.id}`);
+                    //might need refactoring
+                    if (back.indexOf(`?`) > 0) {
+                      router.push(back + `&clientid=${result.id}`);
+                    } else {
+                      router.push(back + `?clientid=${result.id}`);
+                    }
                   }}
                   className=""
                 >

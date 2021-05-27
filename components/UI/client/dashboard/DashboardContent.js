@@ -8,7 +8,7 @@ import TableComp from "./TableComp";
 export default function DashboardContent() {
   const router = useRouter();
   const ResponsiveGridLayout = WidthProvider(Responsive);
-  const clientId = router.query;
+  const clientId = router.query.clientid;
 
   if (!clientId) {
     return null;

@@ -77,7 +77,7 @@ export default function Navbar() {
                       ))}
                     <div>
                       <button className="text-white">
-                        <a href={"/forms/"}>Forms</a>
+                        <a href={"/client/forms/entry/"}>Forms</a>
                       </button>
                     </div>
                   </div>

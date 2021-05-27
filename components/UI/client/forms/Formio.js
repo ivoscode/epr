@@ -1,11 +1,13 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Form } from "react-formio";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "../../../hooks/useAxios";
 
 export default function Formio() {
   const [formResponse, setFormResponse] = useState();
   const [postData, setPostData] = useState();
+  const router = useRouter();
 
   useEffect(() => {
     if (!postData) {
@@ -38,10 +40,11 @@ export default function Formio() {
   }, [postData]);
 
   const { response: structure } = useAxios(
-    `/api/forms/structure/?id=referral_v1`
+    `/api/forms/structure/?id=${router.query.formid}`
   );
+
   const { response: formData } = useAxios(
-    `/api/forms/entry/?id=C66B277D-E6E5-443D-B619-4C483F9B020C`
+    `/api/forms/entry/?id=${router.query.id}`
   );
 
   const handleFormSubmit = (data) => {
@@ -55,6 +58,13 @@ export default function Formio() {
     setPostData({ ...formHeader, values: { data: data.data } });
   };
 
+  const handleCustomEvent = (e) => {
+    if (e.type == `close`) {
+      // do back stuff
+      router.back();
+    }
+  };
+
   return (
     <div>
       <Form
@@ -62,7 +72,8 @@ export default function Formio() {
         onSubmit={(data) => {
           handleFormSubmit(data);
         }}
-        //submission={formData && formData.data.values}
+        onCustomEvent={handleCustomEvent}
+        submission={formData && formData.data.values}
         //options={options}
       />
     </div>

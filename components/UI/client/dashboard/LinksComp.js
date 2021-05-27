@@ -2,7 +2,7 @@ import useAxios from "../../../hooks/useAxios";
 export default function LinksComp(props) {
   const title = props.data.title;
   const url = props.data.api;
-  const id = props.clientId.clientid;
+  const id = props.clientId;
   const { response, error } = useAxios(`${url}?clientid=${id}`);
 
   if (error) {
@@ -12,7 +12,7 @@ export default function LinksComp(props) {
   if (response == null) {
     return null;
   }
-  console.log(response);
+
   return (
     <div className=" flex-col flex justify-center items-center ">
       <h1>{title}</h1>

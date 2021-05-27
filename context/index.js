@@ -22,7 +22,7 @@ const rootReducer = (state, action) => {
       console.log("context-logging out");
       window.localStorage.removeItem("EprUser");
 
-      return { ...state, user: { token: null, status: "0" } };
+      return { ...state, user: null };
     default:
       return state;
   }
