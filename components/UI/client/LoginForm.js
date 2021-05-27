@@ -5,8 +5,8 @@ import { Context } from "../../../context/index";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
-  const [username, setUserName] = useState("ivo");
-  const [password, setPassword] = useState("pass");
+  const [username, setUserName] = useState();
+  const [password, setPassword] = useState();
   const credentials = { username, password };
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
@@ -67,7 +67,6 @@ export default function LoginForm() {
           <div className=" mt-2  ">
             <input
               type="text"
-              placeholder="ivo"
               onChange={(e) => setUserName(e.target.value)}
               className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
             />
@@ -83,7 +82,6 @@ export default function LoginForm() {
           <div className=" mt-2 ">
             <input
               type="password"
-              placeholder="xxxxxx"
               onChange={(e) => setPassword(e.target.value)}
               className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
             />
