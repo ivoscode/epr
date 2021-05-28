@@ -7,9 +7,7 @@ export default function Demographics() {
   if (!authorized) return null;
   return (
     <Layout>
-      <div>
-        <div>demographics</div>
-      </div>
+      <div>demographics</div>
     </Layout>
   );
 }

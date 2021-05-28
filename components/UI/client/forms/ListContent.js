@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { formatTime } from "../../../helpers/helperFunctions";
 import useAxios from "../../../hooks/useAxios";
 
+//displays available list of forms for a client
+
 export default function ClientFormsList() {
   const router = useRouter();
   if (!router.query.formid || !router.query.clientid) {

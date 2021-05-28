@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { Form } from "react-formio";
 import useAxios from "../../../hooks/useAxios";
 
-export default function Formio() {
+//displays form
+
+export default function EntryContent() {
   const [formResponse, setFormResponse] = useState();
   const [postData, setPostData] = useState();
   const router = useRouter();

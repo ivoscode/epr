@@ -1,6 +1,6 @@
 import useCheckAccess from "../../components/hooks/useCheckAccess";
 import Layout from "../../components/Layout";
-import ClientSearchForm from "../../components/UI/client/search/ClientSearchForm";
+import SearchContent from "../../components/UI/client/search/SearchContent";
 export default function Search() {
   const { authorized } = useCheckAccess();
 
@@ -9,11 +9,7 @@ export default function Search() {
   }
   return (
     <Layout>
-      <div>
-        <main className="bg-gray-100 p-10">
-          <ClientSearchForm />
-        </main>
-      </div>
+      <SearchContent />
     </Layout>
   );
 }

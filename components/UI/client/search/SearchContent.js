@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import ClientSearchResults from "../../client/search/ClientSearchResults";
+import ClientSearchResults from "./ClientSearchResults";
 export default function ClientSearchForm() {
   const [token, setToken] = useState();
   const [clientId, setClientId] = useState("");
@@ -17,8 +17,6 @@ export default function ClientSearchForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const { response } = useAxios(`/api/clients/search/`, params);
-    // setClientSearchResults(response.data);
     const user = localStorage.getItem("EprUser");
     const { token } = JSON.parse(user);
     setToken(token);
@@ -36,7 +34,7 @@ export default function ClientSearchForm() {
           },
         }
       );
-      //console.log("clients search results", response.data);
+
       setClientSearchResults(response.data);
     } catch (e) {
       console.log(e.response);
@@ -46,7 +44,7 @@ export default function ClientSearchForm() {
   };
 
   return (
-    <div className="">
+    <div className="bg-gray-100 p-10">
       <div
         className="  bg-white border-gray-500 shadow-md overflow-hidden flex 
        flex-col justify-center items-center max-w-lg mx-auto border-2 rounded-md p-6  "

@@ -1,22 +1,20 @@
-//import useCheckAccess from "../../components/hooks/useCheckAccess";
-//import Layout from "../../components/Layout";
 import dynamic from "next/dynamic";
-const Formio = dynamic(
-  () => import("../../../components/UI/client/forms/Formio"),
+import useCheckAccess from "../../../components/hooks/useCheckAccess";
+import Layout from "../../../components/Layout";
+const EntryContent = dynamic(
+  () => import("../../../components/UI/client/forms/EntryContent"),
   {
     ssr: false,
   }
 );
 
 export default function Entry() {
-  //const { authorized } = useCheckAccess();
+  const { authorized } = useCheckAccess();
 
-  //if (!authorized) return null;
+  if (!authorized) return null;
   return (
-    <div className="m-20">
-      <div>
-        <Formio />
-      </div>
-    </div>
+    <Layout>
+      <EntryContent />
+    </Layout>
   );
 }

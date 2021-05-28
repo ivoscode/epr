@@ -7,9 +7,7 @@ export default function Referrals() {
   if (!authorized) return null;
   return (
     <Layout>
-      <div>
-        <DashboardContent />
-      </div>
+      <DashboardContent />
     </Layout>
   );
 }

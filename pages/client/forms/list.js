@@ -1,6 +1,6 @@
 import useCheckAccess from "../../../components/hooks/useCheckAccess";
 import Layout from "../../../components/Layout";
-import ClientFormsList from "../../../components/UI/client/comp/ClientFormsList";
+import ListContent from "../../../components/UI/client/forms/ListContent";
 
 export default function List() {
   const { authorized } = useCheckAccess();
@@ -10,9 +10,7 @@ export default function List() {
   }
   return (
     <Layout>
-      <div>
-        <ClientFormsList />
-      </div>
+      <ListContent />
     </Layout>
   );
 }
