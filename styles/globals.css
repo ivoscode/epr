@@ -8,3 +8,57 @@
 .dashboard-tile {
   @apply text-xl  overflow-y-auto rounded-lg bg-white p-6 shadow-lg;
 }
+
+/*  quill for notes */
+.container .ql-editor {
+  width: 8.25in;
+  min-height: 11.75in;
+  max-height: 11.75in;
+  padding: 2cm;
+  margin: 2cm;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  background-color: white;
+}
+
+.container .ql-snow {
+  border: none;
+  display: flex;
+  justify-content: center;
+}
+
+.container .ql-toolbar.ql-snow {
+  display: flex;
+
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #f3f3f3;
+  border: none;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+@page {
+  size: A4;
+}
+
+@media print {
+  .container {
+    background: none;
+  }
+
+  .container .ql-editor {
+    /* width: 6.25in;
+    height: 9.75in; */
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    align-self: flex-start;
+  }
+
+  .container .ql-toolbar.ql-snow,
+  .navbar,
+  .clientinfo {
+    display: none;
+  }
+}

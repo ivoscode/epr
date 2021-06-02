@@ -23,7 +23,7 @@ export default function ClientInfo({ id }) {
   } = response.data;
 
   return (
-    <div className="w-full  mb-10 mx-auto  rounded-sm border-gray-700 border-2">
+    <div className=" clientinfo w-full  mb-10 mx-auto  rounded-sm border-gray-700 border-2">
       <Disclosure>
         {({ open }) => (
           <>

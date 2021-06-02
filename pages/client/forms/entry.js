@@ -1,20 +1,20 @@
 import dynamic from "next/dynamic";
 import useCheckAccess from "../../../components/hooks/useCheckAccess";
 import Layout from "../../../components/Layout";
-const EntryContent = dynamic(
-  () => import("../../../components/UI/client/forms/EntryContent"),
+const FormsEntryContent = dynamic(
+  () => import("../../../components/UI/client/forms/FormsEntryContent"),
   {
     ssr: false,
   }
 );
 
-export default function Entry() {
+export default function FormsEntry() {
   const { authorized } = useCheckAccess();
 
   if (!authorized) return null;
   return (
     <Layout>
-      <EntryContent />
+      <FormsEntryContent />
     </Layout>
   );
 }

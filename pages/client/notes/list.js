@@ -1,8 +1,8 @@
 import useCheckAccess from "../../../components/hooks/useCheckAccess";
 import Layout from "../../../components/Layout";
-import FormsListContent from "../../../components/UI/client/forms/FormsListContent";
+import NotesListContent from "../../../components/UI/client/notes/NotesListContent";
 
-export default function FormsList() {
+export default function NotesList() {
   const { authorized } = useCheckAccess();
 
   if (!authorized) {
@@ -10,7 +10,7 @@ export default function FormsList() {
   }
   return (
     <Layout>
-      <FormsListContent />
+      <NotesListContent />
     </Layout>
   );
 }

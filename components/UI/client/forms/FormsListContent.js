@@ -5,7 +5,7 @@ import useAxios from "../../../hooks/useAxios";
 
 //displays available list of forms for a client
 
-export default function ClientFormsList() {
+export default function FormsListContent() {
   const router = useRouter();
   if (!router.query.formid || !router.query.clientid) {
     return null;

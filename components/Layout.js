@@ -3,12 +3,12 @@ import { useContext, useEffect } from "react";
 import ClientInfo from "../components/UI/client/comp/ClientInfo";
 import { Context } from "../context/index";
 export default function Layout(props) {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
   const router = useRouter();
   useEffect(() => {
     if (!state) {
-      console.log("pushing to home from layout");
-      router.push("/");
+      console.log("logging out from layout, missing state");
+      dispatch({ type: "LOGOUT" });
     }
   }, []);
 

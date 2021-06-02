@@ -1,12 +1,14 @@
 import axios from "axios";
+//import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Form } from "react-formio";
 import useAxios from "../../../hooks/useAxios";
+//const { Form } = dynamic(() => import("react-formio"), { ssr: false });
 
 //displays form
 
-export default function EntryContent() {
+export default function FormsEntryContent() {
   const [formResponse, setFormResponse] = useState();
   const [postData, setPostData] = useState();
   const router = useRouter();

@@ -1,20 +1,26 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Context } from "../../context/index";
 
 //is doing 2 jobs, checking access and redirecting if needed
 
 const useCheckAccess = () => {
   const [authorized, setAuthorized] = useState(false);
+  const { state, dispatch } = useContext(Context);
   const router = useRouter();
-  // const route = router.asPath; //url encode
+
   const route = encodeURIComponent(router.asPath);
   useEffect(() => {
     const user = localStorage.getItem("EprUser");
     const userToken = JSON.parse(user);
     const checkAccess = async () => {
       try {
-        console.log("checkAccesss checking route", route);
+        console.log(
+          "%c checkAccesss checking route",
+          "background: #222; color: #bada55",
+          route
+        );
         const response = await axios.get(
           `https://web2.ajbsoftware.co.uk:5000/api/session/check?url=${route}`,
           {
@@ -24,7 +30,7 @@ const useCheckAccess = () => {
             },
           }
         );
-        console.log("useCheckAccess navigation directions", response.data);
+        //console.log("useCheckAccess navigation directions", response.data);
 
         if (response.status === 200) {
           setAuthorized(true);
@@ -40,8 +46,7 @@ const useCheckAccess = () => {
         console.log("useCheckAccess error", e.response);
         if (e.response.status === 401) {
           setAuthorized(false);
-          window.localStorage.removeItem("EprUser");
-          router.push("/");
+          dispatch({ type: "LOGOUT" });
         }
       }
     };

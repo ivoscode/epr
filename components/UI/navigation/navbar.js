@@ -1,5 +1,6 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/index";
@@ -28,7 +29,10 @@ export default function Navbar() {
   }
 
   return (
-    <Disclosure as="nav" className="bg-gray-800 fixed w-full z-20 top-0 ">
+    <Disclosure
+      as="nav"
+      className=" navbar bg-gray-800 fixed w-full z-20 top-0 "
+    >
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -75,11 +79,16 @@ export default function Navbar() {
                           {item.title}
                         </a>
                       ))}
-                    <div>
-                      <button className="text-white">
-                        <a href={"/client/forms/entry/"}>Forms</a>
+                    <Link href={"/client/dashboard"}>
+                      <button
+                        className="text-white"
+                        onClick={() => {
+                          console.log("nav button pressed");
+                        }}
+                      >
+                        Test
                       </button>
-                    </div>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -135,7 +144,6 @@ export default function Navbar() {
                               <a
                                 onClick={() => {
                                   dispatch({ type: "LOGOUT" });
-                                  router.push("/");
                                 }}
                                 href="#"
                                 className={classNames(
