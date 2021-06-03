@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/index";
+
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
   { name: "Team", href: "#", current: false },
@@ -79,14 +80,14 @@ export default function Navbar() {
                           {item.title}
                         </a>
                       ))}
-                    <Link href={"/client/dashboard"}>
+                    <Link href={"/hcp/appointments/diary"}>
                       <button
                         className="text-white"
                         onClick={() => {
                           console.log("nav button pressed");
                         }}
                       >
-                        Test
+                        test
                       </button>
                     </Link>
                   </div>

@@ -13,8 +13,8 @@ export default function Layout(props) {
   }, []);
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <main className="  mx-auto max-w-screen-2xl w-full mt-16   ">
+    <div className="flex flex-col w-full mt-20 h-full">
+      <main className="  mx-auto max-w-screen-2xl w-full    ">
         {router.query.clientid ? (
           <ClientInfo id={router.query.clientid} />
         ) : null}

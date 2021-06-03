@@ -22,6 +22,14 @@ const rootReducer = (state, action) => {
       window.localStorage.removeItem("EprUser");
       window.location.replace("/");
       return { ...state, user: null };
+
+    case "SET-APPOINTMENT-DETAILS":
+      return {
+        ...state,
+
+        hcp: action.payload,
+      };
+
     default:
       return state;
   }
