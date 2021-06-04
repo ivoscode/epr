@@ -1,5 +1,3 @@
-import axios from "axios";
-
 /////returns date only
 export const formatDate = (data) => {
   const date = new Intl.DateTimeFormat("en-GB", {
@@ -49,28 +47,4 @@ export const formatNhs = (n) => {
 export const formatName = (data) => {
   const result = `${data.last.toUpperCase()}, ${data.first} (${data.title})`;
   return result;
-};
-
-///////
-export const axiosPost = async (data) => {
-  const user = localStorage.getItem("EprUser");
-  const { token } = JSON.parse(user);
-
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: token,
-  };
-  try {
-    const response = await axios.post(
-      "https://web2.ajbsoftware.co.uk:5000/api/appointments/save",
-      data,
-      { headers }
-    );
-
-    return response;
-  } catch (e) {
-    console.log(e.response);
-    console.log(e);
-    console.log(e.status);
-  }
 };

@@ -50,7 +50,6 @@ export default function CalendarContent() {
         endAccessor="end"
         style={{ height: 600 }}
         onSelectEvent={(event) => {
-          console.log(event);
           router.push(
             ///ternary operator to account for cases when there is no client id
             `/hcp/appointments/appointment-details?id=${event.id}${
