@@ -15,9 +15,10 @@ export const useAxiosPost = (url, data) => {
     };
     try {
       console.log("Axios post running");
+      console.log(data);
       const response = await axios.post(
         `https://web2.ajbsoftware.co.uk:5000${url}`,
-        data,
+        { ...data },
         { headers }
       );
 

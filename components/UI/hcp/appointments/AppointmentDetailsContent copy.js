@@ -11,10 +11,6 @@ import DropList from "./DropList";
 
 export default function AppointmentDetailsContent() {
   const router = useRouter();
-  ////////////////State////////////////
-
-  const [resDetails, setResDetails] = useState({});
-  console.log(resDetails);
 
   ////////////Axios calls/////////////////
 
@@ -27,13 +23,38 @@ export default function AppointmentDetailsContent() {
   );
   const { response, error, postData } = useAxiosPost(
     `/api/appointment/save`,
-    resDetails
+    dataToPost
   );
 
+  ////////////////State////////////////
+  const [selectedCategory, setSelectedCategory] = useState({
+    id: "",
+    description: `Please Select`,
+  });
+  const [selectedLocation, setSelectedLocation] = useState({
+    id: "",
+    description: `Please Select`,
+  });
+  const [selectedMedium, setSelectedMedium] = useState({
+    id: "",
+    description: `Please Select`,
+  });
+  const [selectedType, setSelectedType] = useState({
+    id: "",
+    description: `Please Select`,
+  });
+  const [comment, setComment] = useState("");
+  const [dateTime, setDateTime] = useState("");
+
+  const [dataToPost, setDataToPost] = useState({ id: 1, title: "doctor" });
   ////////////////
   useEffect(() => {
-    setResDetails(details?.data);
-
+    setSelectedCategory(details?.data.category);
+    setSelectedLocation(details?.data.location);
+    setSelectedMedium(details?.data.medium);
+    setSelectedType(details?.data.type);
+    setComment(details?.data.comment);
+    setDateTime(details?.data.datetime);
     console.log(details);
   }, [details]);
 
@@ -52,13 +73,8 @@ export default function AppointmentDetailsContent() {
         <div>
           <DropList
             options={categories?.data}
-            selected={
-              resDetails?.category || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
-            setSelected={(e) => setResDetails({ ...resDetails, category: e })}
+            selected={selectedCategory}
+            setSelected={setSelectedCategory}
           />
         </div>
       </div>
@@ -67,13 +83,8 @@ export default function AppointmentDetailsContent() {
         <div>
           <DropList
             options={categories?.data}
-            selected={
-              resDetails?.location || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
-            setSelected={(e) => setResDetails({ ...resDetails, location: e })}
+            selected={selectedLocation}
+            setSelected={setSelectedLocation}
           />
         </div>
       </div>
@@ -82,13 +93,8 @@ export default function AppointmentDetailsContent() {
         <div>
           <DropList
             options={categories?.data}
-            selected={
-              resDetails?.medium || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
-            setSelected={(e) => setResDetails({ ...resDetails, medium: e })}
+            selected={selectedMedium}
+            setSelected={setSelectedMedium}
           />
         </div>
       </div>
@@ -97,13 +103,8 @@ export default function AppointmentDetailsContent() {
         <div>
           <DropList
             options={categories?.data}
-            selected={
-              resDetails?.Type || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
-            setSelected={(e) => setResDetails({ ...resDetails, type: e })}
+            selected={selectedType}
+            setSelected={setSelectedType}
           />
         </div>
       </div>
@@ -184,10 +185,10 @@ export default function AppointmentDetailsContent() {
             className="shadow-sm  border-2 rounded-md"
             id="comments"
             name="comments"
-            value={resDetails?.comment}
-            onChange={(e) =>
-              setResDetails({ ...resDetails, comment: e.target.value })
-            }
+            value={comment}
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
             rows="4"
             cols="40"
           ></textarea>
@@ -199,10 +200,10 @@ export default function AppointmentDetailsContent() {
         <div>
           <input
             type="DATETIME-LOCAL"
-            value={resDetails?.datetime || ""}
-            onChange={(e) =>
-              setResDetails({ ...resDetails, datetime: e.target.value })
-            }
+            value={dateTime || ""}
+            onChange={(e) => {
+              setDateTime(e.target.value);
+            }}
           />
         </div>
       </div>
