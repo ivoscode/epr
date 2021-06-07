@@ -22,12 +22,15 @@ const localizer = dateFnsLocalizer({
 export default function CalendarContent() {
   const router = useRouter();
   const { response } = useAxios(
-    `/api/appointments/range?hcp=&start=2021-06-01&end=2021-06-07`
+    `/api/appointments/range?hcp=&start=2021-06-01&end=2021-06-30`
   );
 
   if (!response) {
     return null;
   }
+
+  console.log(response);
+
   const myEventsList = response.data.map((x) => {
     return {
       id: x.id,
