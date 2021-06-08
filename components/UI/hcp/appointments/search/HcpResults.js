@@ -1,32 +1,32 @@
 import { useRouter } from "next/router";
-import Select from "../../../../UI/icons/Select";
-export default function Results({
-  clientSearchResults,
-  setClient,
+import Select from "../../../icons/Select";
+export default function ClientResults({
+  hcpSearchResults,
+  handleAddHcp,
   closeModal,
 }) {
   const router = useRouter();
-  if (clientSearchResults === 0) {
+  if (hcpSearchResults === 0) {
     return <div>Loading</div>;
   }
   return (
     <div>
-      <ul className=" font-bold h-10 card my-6 px-4 bg-white grid grid-cols-6">
+      <ul className=" font-bold h-10 card my-6 px-4 bg-white grid grid-cols-5">
         <li>Name</li>
-        <li>NHS Number</li>
+
         <li>Gender</li>
         <li>Date of Birth</li>
         <li>Address</li>
       </ul>
       <div className="mt-10">
-        {clientSearchResults.map((result) => {
+        {hcpSearchResults.map((result) => {
           return (
             <ul
-              className="card my-6 px-4 bg-white grid grid-cols-6"
+              className="card my-6 px-4 bg-white grid grid-cols-5"
               key={result.id}
             >
               <li className="">{`${result.name.title} ${result.name.first} ${result.name.last}`}</li>
-              <li className="">{result.nhs}</li>
+
               <li>{result.gender.description}</li>
               <li>{result.dob}</li>
               <li>{result.address.line1}</li>
@@ -34,7 +34,7 @@ export default function Results({
                 <button
                   onClick={() => {
                     closeModal();
-                    setClient(result);
+                    handleAddHcp(result);
                   }}
                   className=""
                 >

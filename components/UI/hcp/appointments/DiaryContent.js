@@ -25,6 +25,8 @@ export default function CalendarContent() {
     `/api/appointments/range?hcp=&start=2021-06-01&end=2021-06-30`
   );
 
+  const user = JSON.parse(localStorage.getItem("EprUser"));
+
   if (!response) {
     return null;
   }
@@ -61,7 +63,11 @@ export default function CalendarContent() {
           );
         }}
         onSelectSlot={(e) => {
-          console.log(e);
+          router.push(
+            `/hcp/appointments/appointment-details?hcp=${
+              user.hcpId
+            }&datetime=${format(e.start, "yyyy-MM-dd'T'HH:mm")}`
+          );
         }}
       />
     </div>

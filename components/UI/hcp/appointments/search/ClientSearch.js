@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-import ClientSearchResults from "./Results";
+import ClientResults from "./ClientResults";
 
-export default function Search({ setClient, closeModal }) {
+export default function ClientSearch({ handleAddClient, closeModal }) {
   const [token, setToken] = useState();
   const [clientId, setClientId] = useState("");
   const [nhsNumber, setNhsNumber] = useState("");
@@ -132,9 +132,9 @@ export default function Search({ setClient, closeModal }) {
         </form>
       </div>
 
-      <ClientSearchResults
+      <ClientResults
         clientSearchResults={clientSearchResults}
-        setClient={setClient}
+        handleAddClient={handleAddClient}
         closeModal={closeModal}
       />
     </div>

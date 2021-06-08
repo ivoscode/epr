@@ -19,7 +19,7 @@ export default function LoginForm() {
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
         { ...credentials }
       );
-      getRoutes(response.data.token, response.data.name);
+      getRoutes(response.data.token, response.data.name, 2);
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -27,7 +27,7 @@ export default function LoginForm() {
     }
   };
 
-  const getRoutes = async (token, username) => {
+  const getRoutes = async (token, name, hcpId) => {
     try {
       setLoading(true);
       const routes = await axios.get(
@@ -41,7 +41,7 @@ export default function LoginForm() {
       );
 
       const homeRoute = routes.data.find((o) => o.isHomePage === true);
-      const user = { ...routes, token, username, homeRoute };
+      const user = { ...routes, token, username, name, homeRoute, hcpId };
       localStorage.setItem("EprUser", JSON.stringify(user));
       dispatch({ type: "LOGIN", payload: user });
       router.push(homeRoute.url);

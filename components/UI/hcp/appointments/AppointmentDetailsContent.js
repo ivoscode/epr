@@ -6,16 +6,28 @@ import Modal from "../../../Modal";
 import ClientInfo from "./ClientInfo";
 import DropList from "./DropList";
 import HcpInfo from "./HcpInfo";
-import Search from "./search/Search";
+import ClientSearch from "./search/ClientSearch";
+import HcpSearch from "./search/HcpSearch";
 
 export default function AppointmentDetailsContent() {
   const router = useRouter();
+  const user = JSON.parse(localStorage.getItem("EprUser"));
   ////////////////State////////////////
-  const [resDetails, setResDetails] = useState({});
-  const [client, setClient] = useState("");
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [resDetails, setResDetails] = useState({
+    clients: [],
+    hcps: [
+      {
+        hcp: { id: user.hcpId, description: user.name },
+      },
+    ],
+    duration: 30,
+    datetime: router.query.datetime,
+    id: null,
+  });
+  const [isClientModalOpened, setIsClientModalOpened] = useState(false);
+  const [isHcpModalOpened, setIsHcpModalOpened] = useState(false);
   console.log("response and save object", resDetails);
-  console.log(client);
+
   ////////////Axios calls/////////////////
 
   const { response: categories } = useAxios(
@@ -29,52 +41,105 @@ export default function AppointmentDetailsContent() {
   );
 
   const { response: details } = useAxios(
-    `/api/appointment/details?id=${router.query.id}`
+    router.query.id && `/api/appointment/details?id=${router.query.id}`
   );
-  const { response, error, postData } = useAxiosPost(
-    `/api/appointment/save`,
-    resDetails
-  );
+  const {
+    response: postDataResponse,
+    error,
+    postData,
+  } = useAxiosPost(`/api/appointment/save`, resDetails);
 
-  ////////////////
+  /////////////////////////
   useEffect(() => {
-    setResDetails(details?.data);
-
-    console.log(details);
+    if (details) {
+      setResDetails(details.data);
+    }
+    if (router.query.start) {
+      setResDetails({ ...resDetails, datetime: router.query.start });
+    }
   }, [details]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     postData();
+    console.log(postDataResponse);
     router.back();
   };
-  const handleRemoveClient = (id) => {
-    const clients = resDetails.clients.filter((item) => item.id !== id);
+
+  ///////////Adding and removing clients and hcp////
+  const showClientSearchModal = () => {
+    setIsClientModalOpened(true);
+  };
+  const showHcpSearchModal = () => {
+    setIsHcpModalOpened(true);
+  };
+
+  const handleAddClient = (client) => {
+    if (resDetails.clients.find((item) => item.client.id == client.id)) {
+      return;
+    }
+
+    const clients = resDetails.clients.concat({
+      client: {
+        id: client.id,
+        description:
+          client.name.title + ` ` + client.name.first + ` ` + client.name.last,
+      },
+    });
+    console.log(clients);
     setResDetails({ ...resDetails, clients });
   };
-  const handleRemoveHcp = (id) => {
-    const hcps = resDetails.clients.filter((item) => item.id !== id);
+
+  const handleRemoveClient = (id) => {
+    const clients = resDetails.clients.filter((item) => item.client.id !== id);
+    setResDetails({ ...resDetails, clients });
+  };
+  const handleAddHcp = (hcp) => {
+    if (resDetails.hcps.find((item) => item.hcp.id == hcp.id)) {
+      return;
+    }
+
+    const hcps = resDetails.hcps.concat({
+      hcp: {
+        id: 2,
+        description:
+          hcp.name.title + ` ` + hcp.name.first + ` ` + hcp.name.last,
+      },
+    });
+    console.log(hcps);
     setResDetails({ ...resDetails, hcps });
   };
-  const handleAddClient = () => {
-    setIsModalOpened(true);
-    const clients = resDetails.clients.concat({
-      id: null,
-      client: { id: client.id, description: client?.name?.first },
-    });
 
-    setResDetails({ ...resDetails, clients });
-    console.log(clients);
+  const handleRemoveHcp = (id) => {
+    const hcps = resDetails.hcps.filter((item) => item.hcp.id !== id);
+    setResDetails({ ...resDetails, hcps });
   };
-  if (!details) {
-    return null;
-  }
+
   return (
     <div className=" mt-20 bg-white border-gray-500 shadow-md  flex flex-col justify-center items-center max-w-2xl mx-auto border-2 rounded-md p-6  ">
-      <Modal isOpened={isModalOpened} onClose={() => setIsModalOpened(false)}>
-        <Search setClient={setClient} closeModal={setIsModalOpened} />
+      {/* Modal for client search */}
+      <Modal
+        isOpened={isClientModalOpened}
+        onClose={() => setIsClientModalOpened(false)}
+      >
+        <ClientSearch
+          handleAddClient={handleAddClient}
+          closeModal={setIsClientModalOpened}
+        />
       </Modal>
 
+      {/* Modal for hcp search */}
+      <Modal
+        isOpened={isHcpModalOpened}
+        onClose={() => setIsHcpModalOpened(false)}
+      >
+        <HcpSearch
+          handleAddHcp={handleAddHcp}
+          closeModal={setIsHcpModalOpened}
+        />
+      </Modal>
+      {/* /////////////////// */}
       <h1 className="text-left w-full m-4 font-semibold">Event Details</h1>
 
       <div className="flex justify-between items-center w-full">
@@ -82,7 +147,7 @@ export default function AppointmentDetailsContent() {
         <div>
           <input
             type="DATETIME-LOCAL"
-            value={resDetails?.datetime || ""}
+            value={resDetails?.datetime || router.query.datetime}
             onChange={(e) =>
               setResDetails({ ...resDetails, datetime: e.target.value })
             }
@@ -92,7 +157,7 @@ export default function AppointmentDetailsContent() {
       <div className="flex justify-between items-center w-full my-3">
         <div>Duration</div>
         <div>
-          <input type="text" defaultValue={details.data.duration} />
+          <input type="text" defaultValue={resDetails?.duration} />
         </div>
       </div>
       <div className="flex justify-between items-center w-full">
@@ -106,7 +171,9 @@ export default function AppointmentDetailsContent() {
                 description: `Please Select`,
               }
             }
-            setSelected={(e) => setResDetails({ ...resDetails, category: e })}
+            setSelected={(e) =>
+              setResDetails({ ...resDetails, category: { id: `CAT1` } })
+            }
           />
         </div>
       </div>
@@ -121,7 +188,9 @@ export default function AppointmentDetailsContent() {
                 description: `Please Select`,
               }
             }
-            setSelected={(e) => setResDetails({ ...resDetails, type: e })}
+            setSelected={(e) =>
+              setResDetails({ ...resDetails, type: { id: `TYPE1` } })
+            }
           />
         </div>
       </div>
@@ -136,7 +205,9 @@ export default function AppointmentDetailsContent() {
                 description: `Please Select`,
               }
             }
-            setSelected={(e) => setResDetails({ ...resDetails, location: e })}
+            setSelected={(e) =>
+              setResDetails({ ...resDetails, location: { id: `LOCATION1` } })
+            }
           />
         </div>
       </div>
@@ -151,17 +222,23 @@ export default function AppointmentDetailsContent() {
                 description: `Please Select`,
               }
             }
-            setSelected={(e) => setResDetails({ ...resDetails, medium: e })}
+            setSelected={(e) =>
+              setResDetails({ ...resDetails, medium: { id: "MEDIUM1" } })
+            }
           />
         </div>
       </div>
 
       <ClientInfo
         data={resDetails?.clients}
-        handleRemove={handleRemoveClient}
-        handleAddClient={handleAddClient}
+        handleRemoveClient={handleRemoveClient}
+        showClientSearchModal={showClientSearchModal}
       />
-      <HcpInfo data={resDetails?.hcps} handleRemove={handleRemoveHcp} />
+      <HcpInfo
+        data={resDetails?.hcps}
+        handleRemoveHcp={handleRemoveHcp}
+        showHcpSearchModal={showHcpSearchModal}
+      />
       <div className=" mt-10 flex justify-between items-center w-full">
         <div>
           <label htmlFor="comments">Comments</label>
