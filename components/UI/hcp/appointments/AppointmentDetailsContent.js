@@ -21,7 +21,8 @@ export default function AppointmentDetailsContent() {
       },
     ],
     duration: 30,
-    datetime: router.query.datetime,
+    comment: "",
+    //datetime: router.query.datetime,
     id: null,
   });
   const [isClientModalOpened, setIsClientModalOpened] = useState(false);
@@ -54,10 +55,10 @@ export default function AppointmentDetailsContent() {
     if (details) {
       setResDetails(details.data);
     }
-    if (router.query.start) {
-      setResDetails({ ...resDetails, datetime: router.query.start });
+    if (router.query.datetime) {
+      setResDetails({ ...resDetails, datetime: router.query.datetime });
     }
-  }, [details]);
+  }, [details, router.query.datetime]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -145,19 +146,19 @@ export default function AppointmentDetailsContent() {
       <div className="flex justify-between items-center w-full">
         <div>Date/Time</div>
         <div>
-          <input
+          {/* <input
             type="DATETIME-LOCAL"
-            value={resDetails?.datetime || router.query.datetime}
+            value={resDetails?.datetime}
             onChange={(e) =>
               setResDetails({ ...resDetails, datetime: e.target.value })
             }
-          />
+          /> */}
         </div>
       </div>
       <div className="flex justify-between items-center w-full my-3">
         <div>Duration</div>
         <div>
-          <input type="text" defaultValue={resDetails?.duration} />
+          <input defaultValue={resDetails?.duration} />
         </div>
       </div>
       <div className="flex justify-between items-center w-full">
@@ -171,9 +172,7 @@ export default function AppointmentDetailsContent() {
                 description: `Please Select`,
               }
             }
-            setSelected={(e) =>
-              setResDetails({ ...resDetails, category: { id: `CAT1` } })
-            }
+            setSelected={(e) => setResDetails({ ...resDetails, category: e })}
           />
         </div>
       </div>
@@ -188,9 +187,7 @@ export default function AppointmentDetailsContent() {
                 description: `Please Select`,
               }
             }
-            setSelected={(e) =>
-              setResDetails({ ...resDetails, type: { id: `TYPE1` } })
-            }
+            setSelected={(e) => setResDetails({ ...resDetails, type: e })}
           />
         </div>
       </div>
