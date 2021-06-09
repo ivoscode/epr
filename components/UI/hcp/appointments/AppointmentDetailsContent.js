@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useAxios from "../../../hooks/useAxios";
-import { useAxiosPost } from "../../../hooks/useAxiosPost";
+import useAxiosPost from "../../../hooks/useAxiosPost";
 import Modal from "../../../Modal";
 import ClientInfo from "./ClientInfo";
 import DropList from "./DropList";

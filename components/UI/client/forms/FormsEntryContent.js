@@ -1,45 +1,13 @@
-import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Form } from "react-formio";
 import useAxios from "../../../hooks/useAxios";
-
+import useAxiosPost from "../../../hooks/useAxiosPost";
 //displays form
 
 export default function FormsEntryContent() {
-  const [formResponse, setFormResponse] = useState();
-  const [postData, setPostData] = useState();
+  const [dataToPost, setDataToPost] = useState();
   const router = useRouter();
-
-  useEffect(() => {
-    if (!postData) {
-      return;
-    }
-    const url = "/api/forms/save/";
-    const user = localStorage.getItem("EprUser");
-    const userToken = JSON.parse(user);
-    const fetchData = async () => {
-      try {
-        const response = await axios.post(
-          `https://web2.ajbsoftware.co.uk:5000${url}`,
-          { ...postData },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: userToken.token,
-            },
-          }
-        );
-
-        setFormResponse(response);
-        console.log(formResponse);
-      } catch (e) {
-        console.log(`post form error ${url}`, e);
-      }
-    };
-
-    fetchData();
-  }, [postData]);
 
   const { response: structure } = useAxios(
     `/api/forms/structure/?id=${router.query.formid}`
@@ -47,6 +15,10 @@ export default function FormsEntryContent() {
 
   const { response: formData } = useAxios(
     `/api/forms/entry/?id=${router.query.id}`
+  );
+  const { response, error, postData } = useAxiosPost(
+    `/api/forms/save/`,
+    dataToPost
   );
 
   const handleFormSubmit = (data) => {
@@ -57,7 +29,8 @@ export default function FormsEntryContent() {
       enteredBy,
       group,
     };
-    setPostData({ ...formHeader, values: { data: data.data } });
+    setDataToPost({ ...formHeader, values: { data: data.data } });
+    postData();
   };
 
   const handleCustomEvent = (e) => {

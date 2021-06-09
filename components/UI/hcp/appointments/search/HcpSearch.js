@@ -1,8 +1,7 @@
-import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAxios from "../../../../hooks/useAxios";
 import HcpResults from "./HcpResults";
-
-export default function ClientSearch({ handleAddHcp, closeModal }) {
+export default function HcpSearch({ handleAddHcp, closeModal }) {
   const [token, setToken] = useState();
   const [hcpId, setHcpId] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -13,35 +12,19 @@ export default function ClientSearch({ handleAddHcp, closeModal }) {
     firstname: firstName,
     hcpid: hcpId,
   };
+  const { response: hcpSearch, fetchData } = useAxios(
+    `/api/clients/search/`,
+    params
+  );
+
+  useEffect(() => {
+    setHcpSearchResults(hcpSearch?.data);
+  }, [hcpSearch]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const user = localStorage.getItem("EprUser");
-    const { token } = JSON.parse(user);
-    setToken(token);
-
-    try {
-      const response = await axios.get(
-        "https://web2.ajbsoftware.co.uk:5000/api/clients/search/",
-        {
-          params: {
-            ...params,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
-
-      setHcpSearchResults(response.data);
-    } catch (e) {
-      console.log(e.response);
-      console.log(e);
-      console.log(e.status);
-    }
+    fetchData();
   };
-
   return (
     <div className="bg-gray-100  rounded-xl p-10">
       <div

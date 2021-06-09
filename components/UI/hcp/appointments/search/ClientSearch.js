@@ -1,47 +1,30 @@
-import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAxios from "./../../../../hooks/useAxios";
 import ClientResults from "./ClientResults";
-
 export default function ClientSearch({ handleAddClient, closeModal }) {
-  const [token, setToken] = useState();
   const [clientId, setClientId] = useState("");
   const [nhsNumber, setNhsNumber] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [clientSearchResults, setClientSearchResults] = useState([]);
+  const [clientResults, setClientResults] = useState([]);
   const params = {
     lastname: lastName,
     firstname: firstName,
     nhsnumber: nhsNumber,
     clientid: clientId,
   };
+  const { response: clientSearch, fetchData } = useAxios(
+    `/api/clients/search/`,
+    params
+  );
+
+  useEffect(() => {
+    setClientResults(clientSearch?.data);
+  }, [clientSearch]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const user = localStorage.getItem("EprUser");
-    const { token } = JSON.parse(user);
-    setToken(token);
-
-    try {
-      const response = await axios.get(
-        "https://web2.ajbsoftware.co.uk:5000/api/clients/search/",
-        {
-          params: {
-            ...params,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
-
-      setClientSearchResults(response.data);
-    } catch (e) {
-      console.log(e.response);
-      console.log(e);
-      console.log(e.status);
-    }
+    fetchData();
   };
 
   return (
@@ -133,7 +116,7 @@ export default function ClientSearch({ handleAddClient, closeModal }) {
       </div>
 
       <ClientResults
-        clientSearchResults={clientSearchResults}
+        clientSearchResults={clientResults}
         handleAddClient={handleAddClient}
         closeModal={closeModal}
       />

@@ -17,9 +17,8 @@ const useCheckAccess = () => {
     const checkAccess = async () => {
       try {
         console.log(
-          "%c checkAccesss checking route",
-          "background: #222; color: #bada55",
-          route
+          `%c checkAccesss checking route ${router.asPath}`,
+          "background: #222; color: #bada55"
         );
         const response = await axios.get(
           `https://web2.ajbsoftware.co.uk:5000/api/session/check?url=${route}`,

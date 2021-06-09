@@ -10,7 +10,6 @@ import useAxios from "../../../hooks/useAxios";
 
 export default function ClientInfo({ id }) {
   const { response } = useAxios(`/api/client/get/?clientId=${id}`);
-  console.log("response from client info banner", response);
   if (!response) {
     return null;
   }

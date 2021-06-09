@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-export const useAxiosPost = (url, data) => {
+const useAxiosPost = (url, data) => {
   const [response, setResponse] = useState();
   const [error, setError] = useState();
 
@@ -14,8 +14,11 @@ export const useAxiosPost = (url, data) => {
       Authorization: token,
     };
     try {
-      console.log("Axios post running");
-      console.log(data);
+      console.log(
+        `%c axios saving data ${url}`,
+        "background: #8a2be2; color: #f0ffff"
+      );
+
       const response = await axios.post(
         `https://web2.ajbsoftware.co.uk:5000${url}`,
         { ...data },
@@ -30,3 +33,4 @@ export const useAxiosPost = (url, data) => {
   };
   return { response, error, postData };
 };
+export default useAxiosPost;

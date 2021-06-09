@@ -15,6 +15,7 @@ export default function LoginForm() {
     e.preventDefault();
     try {
       setLoading(true);
+      console.log("%c login API call", "background: #dc143c; color: #f0ffff");
       const response = await axios.post(
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
         { ...credentials }

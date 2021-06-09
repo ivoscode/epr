@@ -6,9 +6,7 @@ export default function ClientResults({
   closeModal,
 }) {
   const router = useRouter();
-  if (clientSearchResults === 0) {
-    return <div>Loading</div>;
-  }
+
   return (
     <div>
       <ul className=" font-bold h-10 card my-6 px-4 bg-white grid grid-cols-6">
@@ -19,7 +17,7 @@ export default function ClientResults({
         <li>Address</li>
       </ul>
       <div className="mt-10">
-        {clientSearchResults.map((result) => {
+        {clientSearchResults?.map((result) => {
           return (
             <ul
               className="card my-6 px-4 bg-white grid grid-cols-6"
