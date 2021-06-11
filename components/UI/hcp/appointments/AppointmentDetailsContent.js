@@ -146,13 +146,13 @@ export default function AppointmentDetailsContent() {
       <div className="flex justify-between items-center w-full">
         <div>Date/Time</div>
         <div>
-          {/* <input
+          <input
             type="DATETIME-LOCAL"
             value={resDetails?.datetime}
             onChange={(e) =>
               setResDetails({ ...resDetails, datetime: e.target.value })
             }
-          /> */}
+          />
         </div>
       </div>
       <div className="flex justify-between items-center w-full my-3">

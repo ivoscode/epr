@@ -9,7 +9,9 @@ export default function DashboardContent() {
   const router = useRouter();
   const ResponsiveGridLayout = WidthProvider(Responsive);
   const clientId = router.query.clientid;
-
+  if (!clientId) {
+    return null;
+  }
   const { response } = useAxios(`/api/clientdashboard/tiles/`);
 
   if (!response || !clientId) {

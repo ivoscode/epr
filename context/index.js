@@ -20,15 +20,10 @@ const rootReducer = (state, action) => {
     case "LOGOUT":
       console.log("context-logging out");
       window.localStorage.removeItem("EprUser");
+      window.sessionStorage.clear();
       window.location.replace("/");
+
       return { ...state, user: null };
-
-    case "SET-APPOINTMENT-DETAILS":
-      return {
-        ...state,
-
-        hcp: action.payload,
-      };
 
     default:
       return state;

@@ -1,17 +1,29 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useAxiosCache from "./useAxiosCache";
+
 //once called executes automatically and on url change unless params are included.
 //To call with params import fetchData and execute on click
 const useAxios = (url, params) => {
   const [response, setResponse] = useState();
   const [error, setError] = useState();
-  const router = useRouter();
+  const { getCache, putCache } = useAxiosCache();
+
   useEffect(() => {
     if (!url || params) {
       return;
     }
+    const cachedData = getCache(url);
 
+    if (cachedData) {
+      console.log(
+        `%c fetching cached data for ${url} `,
+        "background: #2ce28a; color: #f0ffff"
+      );
+
+      setResponse(cachedData.data);
+      return;
+    }
     fetchData();
   }, [url]);
 
@@ -45,6 +57,7 @@ const useAxios = (url, params) => {
         }
       );
       setResponse(response);
+      putCache(response, url);
     } catch (e) {
       console.log(`useAxios error ${url}`, e);
       setError(e.message);

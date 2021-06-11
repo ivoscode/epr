@@ -9,6 +9,7 @@ import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useAxios from "../../../hooks/useAxios";
+import useAxiosPost from "../../../hooks/useAxiosPost";
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const locales = {
@@ -22,26 +23,69 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-export default function CalendarContent() {
-  const [events, setEvents] = useState([]);
-  console.log(events);
+export default function DiaryContent() {
   const router = useRouter();
   const user = JSON.parse(localStorage.getItem("EprUser"));
-  const { response } = useAxios(
+  const [events, setEvents] = useState([]);
+  const [eventId, setEventId] = useState();
+  const [appointmentDetails, setAppointmentDetails] = useState();
+  const [appointmentToSave, setAppointmentToSave] = useState();
+  const [saveAndReload, setSaveAndReload] = useState();
+  console.log(appointmentToSave);
+  //Getting diary events
+  const { response, fetchData: getEvents } = useAxios(
     `/api/appointments/range?hcp=&start=2021-06-01&end=2021-06-30`
+  );
+  ///Getting appointment details
+  const { response: appointmentDetailsResponse } = useAxios(
+    eventId && `/api/appointment/details?id=${eventId}`
+  );
+
+  //Saving appointment with updated time
+  const { postData: saveAppointment } = useAxiosPost(
+    `/api/appointment/save`,
+    appointmentToSave
   );
 
   useEffect(() => {
     setEvents(response?.data);
   }, [response]);
 
+  useEffect(() => {
+    console.log(
+      "setting appointment details",
+      appointmentDetailsResponse?.data
+    );
+    setAppointmentDetails(appointmentDetailsResponse?.data);
+  }, [appointmentDetailsResponse]);
+
+  useEffect(() => {
+    console.log("save and reload running");
+    if (saveAndReload) {
+      saveAppointment();
+      setSaveAndReload(false);
+      setTimeout(getEvents, 2000);
+    }
+  }, [saveAndReload]);
+
   const moveEvent = (e) => {
+    setEventId(e.event.id); //axios calls event automatically once gets eventID
+
+    //--------------------------------
     const start = format(e.start, "yyyy-MM-dd'T'HH:mm");
     const end = format(e.end, "yyyy-MM-dd'T'HH:mm");
-    const eventToUpdate = events.find((item) => item.id == e.event.id);
-    const updatedEvents = events.filter((item) => item.id !== e.event.id);
-    const updatedEvent = { ...eventToUpdate, start, end };
-    setEvents([...updatedEvents, updatedEvent]);
+    // const eventToUpdate = events.find((item) => item.id == e.event.id);
+    // const updatedEvents = events.filter((item) => item.id !== e.event.id);
+    // const updatedEvent = { ...eventToUpdate, start, end };
+    // setEvents([...updatedEvents, updatedEvent]);
+    //----------------------------
+
+    setAppointmentToSave({
+      ...appointmentDetails,
+      datetime: start,
+      duration: (e.end - e.start) / 60 / 1000,
+    });
+    setSaveAndReload(true);
   };
 
   const myEventsList = events?.map((x) => {

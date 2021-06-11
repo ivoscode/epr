@@ -48,3 +48,37 @@ export const formatName = (data) => {
   const result = `${data.last.toUpperCase()}, ${data.first} (${data.title})`;
   return result;
 };
+///////////checking local storage space/////////
+export const sessionStorageSpace = function () {
+  var data = "";
+
+  console.log("Current session storage: ");
+
+  for (var key in window.sessionStorage) {
+    if (window.sessionStorage.hasOwnProperty(key)) {
+      data += window.sessionStorage[key];
+      console.log(
+        key +
+          " = " +
+          ((window.sessionStorage[key].length * 16) / (8 * 1024)).toFixed(2) +
+          " KB"
+      );
+    }
+  }
+
+  console.log(
+    data
+      ? "\n" +
+          "Total space used: " +
+          ((data.length * 16) / (8 * 1024)).toFixed(2) +
+          " KB"
+      : "Empty (0 KB)"
+  );
+  console.log(
+    data
+      ? "Approx. space remaining: " +
+          (5120 - ((data.length * 16) / (8 * 1024)).toFixed(2)) +
+          " KB"
+      : "5 MB"
+  );
+};
