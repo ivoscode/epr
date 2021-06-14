@@ -1,22 +1,26 @@
-import useAxios from "../../../hooks/useAxios";
+import { useEffect, useState } from "react";
+import getApiData from "../../../hooks/getApiData";
+
 export default function ImageComp(props) {
+  const [data, setData] = useState();
   const title = props.data.title;
   const url = props.data.api;
   const id = props.clientId;
-  const { response, error } = useAxios(`${url}?clientid=${id}`);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  useEffect(() => {
+    getApiData("GET", `${url}?clientid=${id}`).then((x) => {
+      setData(x);
+    });
+  }, []);
 
-  if (response == null) {
+  if (!data) {
     return null;
   }
 
   return (
     <div className=" flex-col flex justify-center items-center h-full">
       <h1>{title}</h1>
-      <img className=" h-full" src={response && response.data.src} />
+      <img className=" h-full" src={data?.data.src} />
     </div>
   );
 }

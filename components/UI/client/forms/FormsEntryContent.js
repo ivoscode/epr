@@ -1,26 +1,31 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-formio";
-import useAxios from "../../../hooks/useAxios";
-import useAxiosPost from "../../../hooks/useAxiosPost";
+import getApiData from "../../../hooks/getApiData";
 //displays form
 
 export default function FormsEntryContent() {
   const [dataToPost, setDataToPost] = useState();
   const router = useRouter();
+  const [structure, setStructure] = useState();
+  const [formData, setFormData] = useState();
 
-  const { response: structure } = useAxios(
-    `/api/forms/structure/?id=${router.query.formid}`
-  );
+  useEffect(() => {
+    getApiData("GET", `/api/forms/structure/?id=${router.query.formid}`).then(
+      (x) => {
+        setStructure(x);
+      }
+    );
+  }, []);
+  useEffect(() => {
+    getApiData("GET", `/api/forms/entry/?id=${router.query.id}`).then((x) => {
+      setFormData(x);
+    });
+  }, []);
 
-  const { response: formData } = useAxios(
-    `/api/forms/entry/?id=${router.query.id}`
-  );
-  const { response, error, postData } = useAxiosPost(
-    `/api/forms/save/`,
-    dataToPost
-  );
-
+  useEffect(() => {
+    dataToPost && getApiData(`POST`, `/api/forms/save`, dataToPost);
+  }, [dataToPost]);
   const handleFormSubmit = (data) => {
     const { formId, entryDateTime, enteredBy, group } = formData.data;
     const formHeader = {
@@ -30,7 +35,6 @@ export default function FormsEntryContent() {
       group,
     };
     setDataToPost({ ...formHeader, values: { data: data.data } });
-    postData();
   };
 
   const handleCustomEvent = (e) => {
@@ -43,12 +47,12 @@ export default function FormsEntryContent() {
   return (
     <div>
       <Form
-        form={structure && structure.data.structure}
+        form={structure?.data.structure}
         onSubmit={(data) => {
           handleFormSubmit(data);
         }}
         onCustomEvent={handleCustomEvent}
-        submission={formData && formData.data.values}
+        submission={formData?.data.values}
         //options={options}
       />
     </div>

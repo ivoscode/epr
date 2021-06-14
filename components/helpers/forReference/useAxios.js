@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import useAxiosCache from "./useAxiosCache";
+import useAxiosCache from "../../hooks/useAxiosCache";
 
 //once called executes automatically and on url change unless params are included.
 //To call with params import fetchData and execute on click

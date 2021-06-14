@@ -1,16 +1,24 @@
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
+import { useEffect, useState } from "react";
 import {
   calcAge,
   formatDate,
   formatName,
   formatNhs,
 } from "../../../helpers/helperFunctions";
-import useAxios from "../../../hooks/useAxios";
+import getApiData from "../../../hooks/getApiData";
 
 export default function ClientInfo({ id }) {
-  const { response } = useAxios(`/api/client/get/?clientId=${id}`);
-  if (!response) {
+  const [client, setClient] = useState();
+
+  useEffect(() => {
+    getApiData("GET", `/api/client/get/?clientId=${id}`).then((x) => {
+      setClient(x);
+    });
+  }, []);
+
+  if (!client) {
     return null;
   }
   const {
@@ -20,7 +28,7 @@ export default function ClientInfo({ id }) {
     name,
     nhs,
     telecom,
-  } = response.data;
+  } = client.data;
 
   return (
     <div className=" clientinfo w-full  mb-10 mx-auto  rounded-sm border-gray-700 border-2">

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import useAxios from "../../../hooks/useAxios";
+import { useState } from "react";
+import getApiData from "../../../hooks/getApiData";
 import ClientSearchResults from "./ClientSearchResults";
 export default function ClientSearchForm() {
   const [clientId, setClientId] = useState("");
@@ -14,18 +14,11 @@ export default function ClientSearchForm() {
     clientid: clientId,
   };
 
-  const { response: clientSearch, fetchData } = useAxios(
-    `/api/clients/search/`,
-    params
-  );
-
-  useEffect(() => {
-    setClientSearchResults(clientSearch?.data);
-  }, [clientSearch]);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    fetchData();
+    getApiData("GET", `/api/clients/search/`, params).then((x) => {
+      setClientSearchResults(x.data);
+    });
   };
 
   return (

@@ -1,24 +1,30 @@
 import { ChevronRightIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { formatTime } from "../../../helpers/helperFunctions";
-import useAxios from "../../../hooks/useAxios";
-
+import getApiData from "../../../hooks/getApiData";
 //displays available list of forms for a client
 
 export default function FormsListContent() {
+  const [forms, setForms] = useState();
   const router = useRouter();
   if (!router.query.formid || !router.query.clientid) {
     return null;
   }
-  const { response } = useAxios(
-    `/api/forms/entries/?formid=${router.query.formid}&clientid=${router.query.clientid}`
-  );
+  useEffect(() => {
+    getApiData(
+      "GET",
+      `/api/forms/entries/?formid=${router.query.formid}&clientid=${router.query.clientid}`
+    ).then((x) => {
+      setForms(x);
+    });
+  }, []);
 
-  if (!response) {
+  if (!forms) {
     return null;
   }
-  const { data } = response;
-  console.log("available client forms list", response);
+
+  console.log("available client forms list", forms);
 
   console.log(router.query);
 
@@ -31,7 +37,7 @@ export default function FormsListContent() {
       </div>
       <div>
         <ul>
-          {data.map((data) => {
+          {forms?.data.map((data) => {
             return (
               <li
                 key={data.id}

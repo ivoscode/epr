@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import useAxios from "../../../hooks/useAxios";
-import useAxiosPost from "../../../hooks/useAxiosPost";
+import getApiData from "../../../hooks/getApiData";
 import Modal from "../../../Modal";
 import ClientInfo from "./ClientInfo";
 import DropList from "./DropList";
@@ -13,58 +12,51 @@ export default function AppointmentDetailsContent() {
   const router = useRouter();
   const user = JSON.parse(localStorage.getItem("EprUser"));
   ////////////////State////////////////
-  const [resDetails, setResDetails] = useState({
-    clients: [],
-    hcps: [
-      {
-        hcp: { id: user.hcpId, description: user.name },
-      },
-    ],
-    duration: 30,
-    comment: "",
-    //datetime: router.query.datetime,
-    id: null,
-  });
+
   const [isClientModalOpened, setIsClientModalOpened] = useState(false);
   const [isHcpModalOpened, setIsHcpModalOpened] = useState(false);
-  console.log("response and save object", resDetails);
+  const [categories, setCategories] = useState(null);
+  const [medium, setMedium] = useState(null);
+  const [types, setTypes] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [details, setDetails] = useState(null);
 
-  ////////////Axios calls/////////////////
+  console.log("response and save object", details);
 
-  const { response: categories } = useAxios(
-    `/api/temp/configuration/appointmentcategories`
-  );
-  const { response: location } = useAxios(
-    `/api/temp/configuration/appointmentcategories`
-  );
-  const { response: medium } = useAxios(
-    `/api/temp/configuration/appointmentcategories`
-  );
-
-  const { response: details } = useAxios(
-    router.query.id && `/api/appointment/details?id=${router.query.id}`
-  );
-  const {
-    response: postDataResponse,
-    error,
-    postData,
-  } = useAxiosPost(`/api/appointment/save`, resDetails);
+  ////////////API calls/////////////////
+  useEffect(() => {
+    router.query.id &&
+      getApiData("GET", `/api/appointment/details?id=${router.query.id}`).then(
+        (x) => setDetails(x.data)
+      );
+  }, []);
+  useEffect(() => {
+    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
+      (x) => setCategories(x.data)
+    );
+  }, []);
+  useEffect(() => {
+    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
+      (x) => setLocation(x.data)
+    );
+  }, []);
+  useEffect(() => {
+    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
+      (x) => setMedium(x.data)
+    );
+  }, []);
 
   /////////////////////////
   useEffect(() => {
-    if (details) {
-      setResDetails(details.data);
-    }
     if (router.query.datetime) {
-      setResDetails({ ...resDetails, datetime: router.query.datetime });
+      setDetails({ ...details, datetime: router.query.datetime });
     }
-  }, [details, router.query.datetime]);
+  }, [router.query.datetime]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    postData();
-    console.log(postDataResponse);
+    getApiData(`POST`, `/api/appointment/save`, details);
     router.back();
   };
 
@@ -77,11 +69,11 @@ export default function AppointmentDetailsContent() {
   };
 
   const handleAddClient = (client) => {
-    if (resDetails.clients.find((item) => item.client.id == client.id)) {
+    if (details.clients.find((item) => item.client.id == client.id)) {
       return;
     }
 
-    const clients = resDetails.clients.concat({
+    const clients = details.clients.concat({
       client: {
         id: client.id,
         description:
@@ -89,33 +81,39 @@ export default function AppointmentDetailsContent() {
       },
     });
     console.log(clients);
-    setResDetails({ ...resDetails, clients });
+    setDetails({ ...details, clients });
   };
 
   const handleRemoveClient = (id) => {
-    const clients = resDetails.clients.filter((item) => item.client.id !== id);
-    setResDetails({ ...resDetails, clients });
+    const clients = details.clients.filter((item) => item.client.id !== id);
+    setDetails({ ...details, clients });
   };
   const handleAddHcp = (hcp) => {
-    if (resDetails.hcps.find((item) => item.hcp.id == hcp.id)) {
+    if (details.hcps.find((item) => item.hcp.id == hcp.id)) {
       return;
     }
 
-    const hcps = resDetails.hcps.concat({
+    const hcps = details.hcps.concat({
       hcp: {
-        id: 2,
+        id: hcp.id,
         description:
           hcp.name.title + ` ` + hcp.name.first + ` ` + hcp.name.last,
       },
     });
     console.log(hcps);
-    setResDetails({ ...resDetails, hcps });
+    setDetails({ ...details, hcps });
   };
 
   const handleRemoveHcp = (id) => {
-    const hcps = resDetails.hcps.filter((item) => item.hcp.id !== id);
-    setResDetails({ ...resDetails, hcps });
+    const hcps = details.hcps.filter((item) => item.hcp.id !== id);
+    setDetails({ ...details, hcps });
   };
+
+  // const handleCategoryChange = (e) => {
+  //   getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
+  //     (x) => setTypes(x.data)
+  //   );
+  // };
 
   return (
     <div className=" mt-20 bg-white border-gray-500 shadow-md  flex flex-col justify-center items-center max-w-2xl mx-auto border-2 rounded-md p-6  ">
@@ -148,9 +146,9 @@ export default function AppointmentDetailsContent() {
         <div>
           <input
             type="DATETIME-LOCAL"
-            value={resDetails?.datetime}
+            value={details?.datetime}
             onChange={(e) =>
-              setResDetails({ ...resDetails, datetime: e.target.value })
+              setDetails({ ...details, datetime: e.target.value })
             }
           />
         </div>
@@ -158,21 +156,25 @@ export default function AppointmentDetailsContent() {
       <div className="flex justify-between items-center w-full my-3">
         <div>Duration</div>
         <div>
-          <input defaultValue={resDetails?.duration} />
+          <input defaultValue={details?.duration} />
         </div>
       </div>
       <div className="flex justify-between items-center w-full">
         <div>Category</div>
         <div>
           <DropList
-            options={categories?.data}
+            options={categories}
             selected={
-              resDetails?.category || {
+              details?.category || {
                 id: "",
                 description: `Please Select`,
               }
             }
-            setSelected={(e) => setResDetails({ ...resDetails, category: e })}
+            setSelected={(e) => {
+              console.log(e);
+              setDetails({ ...details, category: e });
+            }}
+            //onChange={handleCategoryChange}
           />
         </div>
       </div>
@@ -180,14 +182,14 @@ export default function AppointmentDetailsContent() {
         <div>Type</div>
         <div>
           <DropList
-            options={categories?.data}
+            options={categories}
             selected={
-              resDetails?.Type || {
+              details?.Type || {
                 id: "",
                 description: `Please Select`,
               }
             }
-            setSelected={(e) => setResDetails({ ...resDetails, type: e })}
+            setSelected={(e) => setDetails({ ...details, type: e })}
           />
         </div>
       </div>
@@ -195,16 +197,14 @@ export default function AppointmentDetailsContent() {
         <div>Location</div>
         <div>
           <DropList
-            options={location?.data}
+            options={location}
             selected={
-              resDetails?.location || {
+              details?.location || {
                 id: "",
                 description: `Please Select`,
               }
             }
-            setSelected={(e) =>
-              setResDetails({ ...resDetails, location: { id: `LOCATION1` } })
-            }
+            setSelected={(e) => setDetails({ ...details, location: e })}
           />
         </div>
       </div>
@@ -212,27 +212,25 @@ export default function AppointmentDetailsContent() {
         <div>Medium</div>
         <div>
           <DropList
-            options={medium?.data}
+            options={medium}
             selected={
-              resDetails?.medium || {
+              details?.medium || {
                 id: "",
                 description: `Please Select`,
               }
             }
-            setSelected={(e) =>
-              setResDetails({ ...resDetails, medium: { id: "MEDIUM1" } })
-            }
+            setSelected={(e) => setDetails({ ...details, medium: e })}
           />
         </div>
       </div>
 
       <ClientInfo
-        data={resDetails?.clients}
+        data={details?.clients}
         handleRemoveClient={handleRemoveClient}
         showClientSearchModal={showClientSearchModal}
       />
       <HcpInfo
-        data={resDetails?.hcps}
+        data={details?.hcps}
         handleRemoveHcp={handleRemoveHcp}
         showHcpSearchModal={showHcpSearchModal}
       />
@@ -245,9 +243,9 @@ export default function AppointmentDetailsContent() {
             className="shadow-sm  border-2 rounded-md"
             id="comments"
             name="comments"
-            value={resDetails?.comment}
+            value={details?.comment}
             onChange={(e) =>
-              setResDetails({ ...resDetails, comment: e.target.value })
+              setDetails({ ...details, comment: e.target.value })
             }
             rows="4"
             cols="40"

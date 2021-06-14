@@ -1,20 +1,28 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import useAxios from "../../../hooks/useAxios";
+import getApiData from "../../../hooks/getApiData";
 import ImageComp from "./ImageComp";
 import LinksComp from "./LinksComp";
 import TableComp from "./TableComp";
 
 export default function DashboardContent() {
+  const [tiles, setTiles] = useState(null);
   const router = useRouter();
   const ResponsiveGridLayout = WidthProvider(Responsive);
   const clientId = router.query.clientid;
   if (!clientId) {
     return null;
   }
-  const { response } = useAxios(`/api/clientdashboard/tiles/`);
 
-  if (!response || !clientId) {
+  useEffect(() => {
+    getApiData("GET", `/api/clientdashboard/tiles/`).then((x) => {
+      setTiles(x);
+    });
+  }, []);
+
+  console.log(tiles);
+  if (tiles === null || !clientId) {
     return null;
   }
 
@@ -22,13 +30,13 @@ export default function DashboardContent() {
     <div className=" min-h-screen text-xl bg-gray-100 p-6 ">
       <ResponsiveGridLayout
         className="layout"
-        layouts={response.data.layouts}
+        layouts={tiles?.data.layouts}
         isResizable={false}
         isDraggable={false}
         breakpoints={{ lg: 1024, md: 768, sm: 640 }}
         cols={{ lg: 12, md: 6, sm: 2 }}
       >
-        {response.data.tiles.map((x) => {
+        {tiles.data.tiles.map((x) => {
           switch (x.type) {
             case `TABLE`:
               return (

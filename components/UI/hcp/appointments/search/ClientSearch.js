@@ -1,30 +1,24 @@
-import { useEffect, useState } from "react";
-import useAxios from "./../../../../hooks/useAxios";
+import { useState } from "react";
+import getApiData from "./../../../../hooks/getApiData";
 import ClientResults from "./ClientResults";
 export default function ClientSearch({ handleAddClient, closeModal }) {
   const [clientId, setClientId] = useState("");
   const [nhsNumber, setNhsNumber] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [clientResults, setClientResults] = useState([]);
+  const [clientSearchResults, setClientSearchResults] = useState([]);
   const params = {
     lastname: lastName,
     firstname: firstName,
     nhsnumber: nhsNumber,
     clientid: clientId,
   };
-  const { response: clientSearch, fetchData } = useAxios(
-    `/api/clients/search/`,
-    params
-  );
-
-  useEffect(() => {
-    setClientResults(clientSearch?.data);
-  }, [clientSearch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    fetchData();
+    getApiData("GET", `/api/clients/search/`, params).then((x) => {
+      setClientSearchResults(x.data);
+    });
   };
 
   return (
@@ -116,7 +110,7 @@ export default function ClientSearch({ handleAddClient, closeModal }) {
       </div>
 
       <ClientResults
-        clientSearchResults={clientResults}
+        clientSearchResults={clientSearchResults}
         handleAddClient={handleAddClient}
         closeModal={closeModal}
       />

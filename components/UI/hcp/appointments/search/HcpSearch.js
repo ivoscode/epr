@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import useAxios from "../../../../hooks/useAxios";
+import { useState } from "react";
+import getApiData from "./../../../../hooks/getApiData";
 import HcpResults from "./HcpResults";
 export default function HcpSearch({ handleAddHcp, closeModal }) {
   const [token, setToken] = useState();
@@ -12,18 +12,12 @@ export default function HcpSearch({ handleAddHcp, closeModal }) {
     firstname: firstName,
     hcpid: hcpId,
   };
-  const { response: hcpSearch, fetchData } = useAxios(
-    `/api/clients/search/`,
-    params
-  );
-
-  useEffect(() => {
-    setHcpSearchResults(hcpSearch?.data);
-  }, [hcpSearch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    fetchData();
+    getApiData("GET", `/api/clients/search/`, params).then((x) => {
+      setHcpSearchResults(x.data);
+    });
   };
   return (
     <div className="bg-gray-100  rounded-xl p-10">
