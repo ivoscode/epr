@@ -1,115 +1,57 @@
 import { useState } from "react";
 import getApiData from "../../../hooks/getApiData";
 import ClientSearchResults from "./ClientSearchResults";
+import SearchBox from "./SearchBox";
+
 export default function ClientSearchForm() {
-  const [clientId, setClientId] = useState("");
-  const [nhsNumber, setNhsNumber] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [clientSearchResults, setClientSearchResults] = useState([]);
-  const params = {
-    lastname: lastName,
-    firstname: firstName,
-    nhsnumber: nhsNumber,
-    clientid: clientId,
-  };
+  const [clientSearchResults, setClientSearchResults] = useState(null);
+  const [disclosureOpen, setDisclosureOpen] = useState(true);
+  const [nothingFound, setNothingFound] = useState(false);
+  const [searchParams, setSearchParams] = useState({});
+
+  const boxTitle = "Client Search";
+  const labels = [
+    { name: "nhsnumber", label: "NHS Number" },
+    { name: "clientid", label: "Client ID" },
+    { name: "lastname", label: "Last Name" },
+    { name: "firstname", label: "First Name" },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    getApiData("GET", `/api/clients/search/`, params).then((x) => {
-      setClientSearchResults(x.data);
-    });
+    if (
+      searchParams.firstname ||
+      searchParams.lastname ||
+      searchParams.nhsnumber ||
+      searchParams.clientid
+    ) {
+      getApiData("GET", `/api/clients/search/`, searchParams).then((x) => {
+        if (x.data[0] == null) {
+          setNothingFound(true);
+          return;
+        }
+        setNothingFound(false);
+        setDisclosureOpen(false);
+        setClientSearchResults(x.data);
+      });
+    }
   };
 
   return (
     <div className="bg-gray-100 p-10">
-      <div
-        className="  bg-white border-gray-500 shadow-md overflow-hidden flex 
-       flex-col justify-center items-center max-w-lg mx-auto border-2 rounded-md p-6  "
-      >
-        <div>
-          <p className="text-2xl pb-4">Client Search</p>
-        </div>
-        <form
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-          className="flex flex-col items-end  "
-        >
-          <div className="flex items-center mt-5 ">
-            <div className=" mr-5 ">
-              <label className=" text-gray-500 font-bold" htmlFor="Email">
-                Client ID
-              </label>
-            </div>
-            <div className="">
-              <input
-                type="text"
-                value={clientId}
-                onChange={(e) => setClientId(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center mt-5 ">
-            <div className=" mr-5 ">
-              <label className=" text-gray-500 font-bold" htmlFor="Email">
-                NHS Number
-              </label>
-            </div>
-            <div className="">
-              <input
-                value={nhsNumber}
-                type="text"
-                onChange={(e) => setNhsNumber(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
-          </div>
-          <div className="flex items-center mt-5 ">
-            <div className=" mr-5 ">
-              <label className=" text-gray-500 font-bold" htmlFor="Email">
-                First Name
-              </label>
-            </div>
-            <div className="">
-              <input
-                value={firstName}
-                type="text"
-                onChange={(e) => setFirstName(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
-          </div>
-          <div className="flex  items-center mt-5 ">
-            <div className=" mr-5 ">
-              <label className=" text-gray-500 font-bold" htmlFor="Email">
-                Last Name
-              </label>
-            </div>
-            <div className="">
-              <input
-                value={lastName}
-                type="text"
-                onChange={(e) => setLastName(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
-          </div>
-
-          <div className="  w-full ">
-            <button
-              type="submit"
-              className="  inline-block  mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
-            >
-              Search
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <ClientSearchResults clientSearchResults={clientSearchResults} />
+      <SearchBox
+        labels={labels}
+        title={boxTitle}
+        setSearchParams={setSearchParams}
+        handleSubmit={handleSubmit}
+        searchParams={searchParams}
+        disclosureOpen={disclosureOpen}
+        setDisclosureOpen={setDisclosureOpen}
+      />
+      <ClientSearchResults
+        clientSearchResults={clientSearchResults}
+        nothingFound={nothingFound}
+      />
     </div>
   );
 }

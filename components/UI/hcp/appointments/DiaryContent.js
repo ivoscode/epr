@@ -27,10 +27,7 @@ export default function DiaryContent() {
   const user = JSON.parse(localStorage.getItem("EprUser"));
   const [events, setEvents] = useState([]);
 
-  const [appointmentDetails, setAppointmentDetails] = useState();
-  const [appointmentToSave, setAppointmentToSave] = useState();
-  const [saveAndReload, setSaveAndReload] = useState();
-
+  console.log(events);
   //Getting diary events
 
   useEffect(() => {
@@ -41,7 +38,7 @@ export default function DiaryContent() {
       setEvents(x.data);
     });
   }, []);
-
+  //Moving an event
   const moveEvent = (e) => {
     getApiData(`GET`, `/api/appointment/details?id=${e.event.id}`).then((x) => {
       const start = format(e.start, "yyyy-MM-dd'T'HH:mm");
@@ -58,7 +55,7 @@ export default function DiaryContent() {
       });
     });
 
-    //--------------------------------
+    //-------------------------------- prevents from events from temporary jumping
 
     // const eventToUpdate = events.find((item) => item.id == e.event.id);
     // const updatedEvents = events.filter((item) => item.id !== e.event.id);

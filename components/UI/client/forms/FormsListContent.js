@@ -29,38 +29,54 @@ export default function FormsListContent() {
   console.log(router.query);
 
   return (
-    <div className="m-3  rounded-md shadow-md mx-auto max-w-3xl border-2 border-gray-700">
-      <div className="flex justify-between text-white bg-gray-700 px-4 py-2">
-        <div className="w-3/12">Date/Time</div>
-        <div>Entered By</div>
-        <div className="w-3/12"></div>
+    <div>
+      <div className="m-3  rounded-md shadow-md mx-auto max-w-3xl border-2 border-gray-700">
+        <div className="flex justify-between text-white bg-gray-700 px-4 py-2">
+          <div className="w-3/12">Date/Time</div>
+          <div>Entered By</div>
+          <div className="w-3/12"></div>
+        </div>
+        <div>
+          <ul>
+            {forms?.data.map((data) => {
+              return (
+                <li
+                  key={data.id}
+                  className="flex justify-between border-b-2 items-center px-2"
+                >
+                  <div className="w-3/12 ">
+                    {formatTime(data.entryDateTime)}
+                  </div>
+                  <div className="">{data.enteredBy.name}</div>
+                  <div className="w-3/12 flex justify-center">
+                    <button
+                      className=" flex items-center  bg-gray-700  hover:bg-gray-800 text-white rounded-md w-8 h-8"
+                      onClick={() => {
+                        router.push(
+                          `/client/forms/entry/?formid=${router.query.formid}&clientid=${router.query.clientid}&id=${data.id}`
+                        );
+                      }}
+                    >
+                      <ChevronRightIcon />
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
-      <div>
-        <ul>
-          {forms?.data.map((data) => {
-            return (
-              <li
-                key={data.id}
-                className="flex justify-between border-b-2 items-center px-2"
-              >
-                <div className="w-3/12 ">{formatTime(data.entryDateTime)}</div>
-                <div className="">{data.enteredBy.name}</div>
-                <div className="w-3/12 flex justify-center">
-                  <button
-                    className=" flex items-center  bg-gray-700  hover:bg-gray-800 text-white rounded-md w-8 h-8"
-                    onClick={() => {
-                      router.push(
-                        `/client/forms/entry/?formid=${router.query.formid}&clientid=${router.query.clientid}&id=${data.id}`
-                      );
-                    }}
-                  >
-                    <ChevronRightIcon />
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+      <div
+        onClick={() => {
+          router.push(
+            `/client/forms/entry/?formid=${router.query.formid}&clientid=${router.query.clientid}`
+          );
+        }}
+        className="w-full  fixed bottom-1 right-1 left-1 rounded-md shadow-md mx-auto max-w-3xl border-2 border-gray-700 mb-4 bg-gray-400 cursor-pointer"
+      >
+        <button className=" w-full  bg-gray-700  hover:bg-gray-800 text-white rounded-md  h-8">
+          <div>ADD FORM</div>
+        </button>
       </div>
     </div>
   );

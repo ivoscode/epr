@@ -1,7 +1,16 @@
 import { useRouter } from "next/router";
 import Select from "../../../UI/icons/Select";
-export default function ClientSearchResults({ clientSearchResults }) {
+export default function ClientSearchResults({
+  clientSearchResults,
+  nothingFound,
+}) {
   const router = useRouter();
+  if (nothingFound) {
+    return <div>nothing found</div>;
+  }
+  if (!clientSearchResults) {
+    return null;
+  }
 
   return (
     <div>
@@ -17,13 +26,13 @@ export default function ClientSearchResults({ clientSearchResults }) {
           return (
             <ul
               className="card my-6 px-4 bg-white grid grid-cols-6"
-              key={result.id}
+              key={result?.id}
             >
-              <li className="">{`${result.name.title} ${result.name.first} ${result.name.last}`}</li>
-              <li className="">{result.nhs}</li>
-              <li>{result.gender.description}</li>
-              <li>{result.dob}</li>
-              <li>{result.address.line1}</li>
+              <li className="">{`${result?.name?.title} ${result?.name?.first} ${result?.name?.last}`}</li>
+              <li className="">{result?.nhs}</li>
+              <li>{result?.gender?.description}</li>
+              <li>{result?.dob}</li>
+              <li>{result?.address?.line1}</li>
               <li>
                 <button
                   onClick={() => {

@@ -19,7 +19,9 @@ export default function AppointmentDetailsContent() {
   const [medium, setMedium] = useState(null);
   const [types, setTypes] = useState(null);
   const [location, setLocation] = useState(null);
-  const [details, setDetails] = useState(null);
+  const [details, setDetails] = useState({
+    clients: [{ client: { id: null, description: null } }],
+  });
 
   console.log("response and save object", details);
 
@@ -48,10 +50,21 @@ export default function AppointmentDetailsContent() {
 
   /////////////////////////
   useEffect(() => {
-    if (router.query.datetime) {
-      setDetails({ ...details, datetime: router.query.datetime });
+    if (router.query.datetime && user) {
+      setDetails({
+        ...details,
+        datetime: router.query.datetime,
+        hcps: [
+          {
+            hcp: {
+              id: user.hcpId,
+              description: user.name,
+            },
+          },
+        ],
+      });
     }
-  }, [router.query.datetime]);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -146,7 +159,7 @@ export default function AppointmentDetailsContent() {
         <div>
           <input
             type="DATETIME-LOCAL"
-            value={details?.datetime}
+            value={details?.datetime || "0000-00-00T00:00"}
             onChange={(e) =>
               setDetails({ ...details, datetime: e.target.value })
             }
@@ -156,7 +169,12 @@ export default function AppointmentDetailsContent() {
       <div className="flex justify-between items-center w-full my-3">
         <div>Duration</div>
         <div>
-          <input defaultValue={details?.duration} />
+          <input
+            value={details?.duration || 30}
+            onChange={(e) => {
+              console.log(e);
+            }}
+          />
         </div>
       </div>
       <div className="flex justify-between items-center w-full">

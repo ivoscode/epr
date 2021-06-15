@@ -9,7 +9,8 @@ export default function FormsEntryContent() {
   const router = useRouter();
   const [structure, setStructure] = useState();
   const [formData, setFormData] = useState();
-
+  console.log("data to post back", dataToPost);
+  //---------------------Getting form structure
   useEffect(() => {
     getApiData("GET", `/api/forms/structure/?id=${router.query.formid}`).then(
       (x) => {
@@ -17,16 +18,21 @@ export default function FormsEntryContent() {
       }
     );
   }, []);
-  useEffect(() => {
-    getApiData("GET", `/api/forms/entry/?id=${router.query.id}`).then((x) => {
-      setFormData(x);
-    });
-  }, []);
 
+  //-----------------Getting form data if id present
+  useEffect(() => {
+    router.query.id &&
+      getApiData("GET", `/api/forms/entry/?id=${router.query.id}`).then((x) => {
+        setFormData(x);
+      });
+  }, []);
+  //------------------Posting data back
   useEffect(() => {
     dataToPost && getApiData(`POST`, `/api/forms/save`, dataToPost);
   }, [dataToPost]);
+
   const handleFormSubmit = (data) => {
+    console.log("handle form submit", data);
     const { formId, entryDateTime, enteredBy, group } = formData.data;
     const formHeader = {
       formId,
