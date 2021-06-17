@@ -23,7 +23,6 @@ const getApiData = (method, url, params) => {
 
     return {
       then: (func) => {
-        console.log(cachedData);
         func(cachedData.data);
       },
     };

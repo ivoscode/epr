@@ -1,11 +1,16 @@
-import { useRouter } from "next/router";
 import Select from "../../../icons/Select";
 export default function ClientResults({
   hcpSearchResults,
   handleAddHcp,
   closeModal,
+  nothingFound,
 }) {
-  const router = useRouter();
+  if (nothingFound) {
+    return <div>nothing found</div>;
+  }
+  if (!hcpSearchResults) {
+    return null;
+  }
 
   return (
     <div>

@@ -1,5 +1,9 @@
+import DateFnsUtils from "@date-io/date-fns";
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import format from "date-fns/format";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { getDefaultOption } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import Modal from "../../../Modal";
 import ClientInfo from "./ClientInfo";
@@ -20,40 +24,58 @@ export default function AppointmentDetailsContent() {
   const [types, setTypes] = useState(null);
   const [location, setLocation] = useState(null);
   const [details, setDetails] = useState({
-    clients: [{ client: { id: null, description: null } }],
+    clients: [],
+    hcps: [],
+    duration: 0,
+    // category: getDefaultOption(), does not work
+    // type: getDefaultOption(),
+    // medium: getDefaultOption(),
+    // location: getDefaultOption(),
+
+    comment: "",
   });
-
-  console.log("response and save object", details);
-
-  ////////////API calls/////////////////
-  useEffect(() => {
-    router.query.id &&
-      getApiData("GET", `/api/appointment/details?id=${router.query.id}`).then(
-        (x) => setDetails(x.data)
-      );
-  }, []);
+  console.log(details);
+  //---------------Getting pick-list items for Categories,Location,Medium
   useEffect(() => {
     getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-      (x) => setCategories(x.data)
+      (x) => {
+        x.data.splice(0, 0, getDefaultOption()); //Adds one more option to pick-list array
+        //addDefaultOption(x.data);
+        setCategories(x.data);
+      }
     );
-  }, []);
-  useEffect(() => {
     getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-      (x) => setLocation(x.data)
+      (x) => {
+        x.data.splice(0, 0, getDefaultOption());
+        setLocation(x.data);
+      }
     );
-  }, []);
-  useEffect(() => {
     getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-      (x) => setMedium(x.data)
+      (x) => {
+        x.data.splice(0, 0, getDefaultOption());
+        setMedium(x.data);
+      }
     );
   }, []);
 
-  /////////////////////////
+  //---------------Getting pick-list items for Type
+
+  useEffect(() => {
+    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
+      (x) => {
+        x.data.splice(0, 0, getDefaultOption());
+        setTypes(x.data);
+      }
+    );
+  }, []);
+
+  //--------------Getting event details for a new entry
   useEffect(() => {
     if (router.query.datetime && user) {
       setDetails({
         ...details,
         datetime: router.query.datetime,
+        duration: 30,
         hcps: [
           {
             hcp: {
@@ -65,7 +87,14 @@ export default function AppointmentDetailsContent() {
       });
     }
   }, []);
-
+  //-----------Getting existing event details
+  useEffect(() => {
+    router.query.id &&
+      getApiData("GET", `/api/appointment/details?id=${router.query.id}`).then(
+        (x) => setDetails(x?.data)
+      );
+  }, []);
+  //--------------Saving details to API
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -73,7 +102,7 @@ export default function AppointmentDetailsContent() {
     router.back();
   };
 
-  ///////////Adding and removing clients and hcp////
+  //-------------Adding and removing clients and hcps
   const showClientSearchModal = () => {
     setIsClientModalOpened(true);
   };
@@ -127,7 +156,9 @@ export default function AppointmentDetailsContent() {
   //     (x) => setTypes(x.data)
   //   );
   // };
-
+  if (!details) {
+    return <div>no details</div>;
+  }
   return (
     <div className=" mt-20 bg-white border-gray-500 shadow-md  flex flex-col justify-center items-center max-w-2xl mx-auto border-2 rounded-md p-6  ">
       {/* Modal for client search */}
@@ -157,22 +188,32 @@ export default function AppointmentDetailsContent() {
       <div className="flex justify-between items-center w-full">
         <div>Date/Time</div>
         <div>
-          <input
-            type="DATETIME-LOCAL"
-            value={details?.datetime || "0000-00-00T00:00"}
-            onChange={(e) =>
-              setDetails({ ...details, datetime: e.target.value })
-            }
-          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DateTimePicker
+              showTodayButton
+              disablePast
+              autoOk
+              ampm={false}
+              value={details?.datetime}
+              onChange={(e) =>
+                setDetails({
+                  ...details,
+                  datetime: format(e, "yyyy-MM-dd'T'HH:mm"),
+                })
+              }
+            />
+          </MuiPickersUtilsProvider>
         </div>
       </div>
       <div className="flex justify-between items-center w-full my-3">
         <div>Duration</div>
         <div>
           <input
-            value={details?.duration || 30}
+            value={details?.duration}
+            placeholder="0"
             onChange={(e) => {
-              console.log(e);
+              console.log(e.target.value);
+              setDetails({ ...details, duration: e.target.value });
             }}
           />
         </div>
@@ -182,12 +223,7 @@ export default function AppointmentDetailsContent() {
         <div>
           <DropList
             options={categories}
-            selected={
-              details?.category || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
+            selected={details?.category || getDefaultOption()}
             setSelected={(e) => {
               console.log(e);
               setDetails({ ...details, category: e });
@@ -200,13 +236,8 @@ export default function AppointmentDetailsContent() {
         <div>Type</div>
         <div>
           <DropList
-            options={categories}
-            selected={
-              details?.Type || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
+            options={types}
+            selected={details?.type || getDefaultOption()}
             setSelected={(e) => setDetails({ ...details, type: e })}
           />
         </div>
@@ -216,12 +247,7 @@ export default function AppointmentDetailsContent() {
         <div>
           <DropList
             options={location}
-            selected={
-              details?.location || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
+            selected={details?.location || getDefaultOption()}
             setSelected={(e) => setDetails({ ...details, location: e })}
           />
         </div>
@@ -231,12 +257,7 @@ export default function AppointmentDetailsContent() {
         <div>
           <DropList
             options={medium}
-            selected={
-              details?.medium || {
-                id: "",
-                description: `Please Select`,
-              }
-            }
+            selected={details?.medium || getDefaultOption()}
             setSelected={(e) => setDetails({ ...details, medium: e })}
           />
         </div>
@@ -261,7 +282,7 @@ export default function AppointmentDetailsContent() {
             className="shadow-sm  border-2 rounded-md"
             id="comments"
             name="comments"
-            value={details?.comment}
+            value={details?.comment || ""}
             onChange={(e) =>
               setDetails({ ...details, comment: e.target.value })
             }

@@ -13,6 +13,10 @@ export default function ClientInfo({ id }) {
   const [client, setClient] = useState();
 
   useEffect(() => {
+    if (isNaN(id)) {
+      return;
+    }
+
     getApiData("GET", `/api/client/get/?clientId=${id}`).then((x) => {
       setClient(x);
     });

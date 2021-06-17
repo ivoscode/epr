@@ -1,5 +1,6 @@
 import useCheckAccess from "../../components/hooks/useCheckAccess";
 import Layout from "../../components/Layout";
+import DemographicsContent from "../../components/UI/client/demographics/demographicsContent";
 
 export default function Demographics() {
   const { authorized } = useCheckAccess();
@@ -7,7 +8,7 @@ export default function Demographics() {
   if (!authorized) return null;
   return (
     <Layout>
-      <div>demographics</div>
+      <DemographicsContent />
     </Layout>
   );
 }

@@ -19,7 +19,7 @@ function Modal({ isOpened, children, onClose }) {
               <XCircleIcon className="w-12 h-12 " />
             </span>
           </div>
-          <div className="-mt-16"> {children}</div>
+          <div className="-mt-16 "> {children}</div>
         </div>
       </div>
     </div>,

@@ -48,6 +48,25 @@ export const formatName = (data) => {
   const result = `${data.last.toUpperCase()}, ${data.first} (${data.title})`;
   return result;
 };
+////Create GUID
+export const generateGUID = () => {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+    (
+      c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+    ).toString(16)
+  );
+};
+
+////Default option text for a pick-list
+
+export const getDefaultOption = () => {
+  return {
+    id: "",
+    description: `Please Select`,
+  };
+};
+
 ///////////checking local storage space/////////
 export const sessionStorageSpace = function () {
   var data = "";

@@ -1,15 +1,16 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Form } from "react-formio";
+import { generateGUID } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 //displays form
 
 export default function FormsEntryContent() {
-  const [dataToPost, setDataToPost] = useState();
+  const user = JSON.parse(localStorage.getItem("EprUser"));
   const router = useRouter();
   const [structure, setStructure] = useState();
   const [formData, setFormData] = useState();
-  console.log("data to post back", dataToPost);
+  console.log("form data recieved", formData);
   //---------------------Getting form structure
   useEffect(() => {
     getApiData("GET", `/api/forms/structure/?id=${router.query.formid}`).then(
@@ -23,31 +24,30 @@ export default function FormsEntryContent() {
   useEffect(() => {
     router.query.id &&
       getApiData("GET", `/api/forms/entry/?id=${router.query.id}`).then((x) => {
-        setFormData(x);
+        setFormData(x.data);
       });
   }, []);
-  //------------------Posting data back
-  useEffect(() => {
-    dataToPost && getApiData(`POST`, `/api/forms/save`, dataToPost);
-  }, [dataToPost]);
 
-  const handleFormSubmit = (data) => {
-    console.log("handle form submit", data);
-    const { formId, entryDateTime, enteredBy, group } = formData.data;
+  const handleFormSubmit = (form) => {
     const formHeader = {
-      formId,
-      entryDateTime,
-      enteredBy,
-      group,
+      id: formData?.id ?? null,
+      formId: router.query.formid,
+      clientId: router.query.clientid,
+      entryDateTime: new Date(),
+      enteredBy: {
+        id: user.hcpId,
+        description: user.name,
+      },
+      group: formData?.group ?? generateGUID(),
     };
-    setDataToPost({ ...formHeader, values: { data: data.data } });
-  };
 
-  const handleCustomEvent = (e) => {
-    if (e.type == `close`) {
-      // do back stuff
+    getApiData(`POST`, `/api/forms/save`, {
+      ...formHeader,
+      values: { data: form.data },
+    });
+    setTimeout(() => {
       router.back();
-    }
+    }, 3000);
   };
 
   return (
@@ -57,8 +57,7 @@ export default function FormsEntryContent() {
         onSubmit={(data) => {
           handleFormSubmit(data);
         }}
-        onCustomEvent={handleCustomEvent}
-        submission={formData?.data.values}
+        submission={formData?.values}
         //options={options}
       />
     </div>

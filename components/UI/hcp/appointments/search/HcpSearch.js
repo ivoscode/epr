@@ -1,101 +1,52 @@
 import { useState } from "react";
+import SearchBox from "../../../client/search/SearchBox";
 import getApiData from "./../../../../hooks/getApiData";
 import HcpResults from "./HcpResults";
 export default function HcpSearch({ handleAddHcp, closeModal }) {
-  const [token, setToken] = useState();
-  const [hcpId, setHcpId] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [hcpSearchResults, setHcpSearchResults] = useState([]);
-  const params = {
-    lastname: lastName,
-    firstname: firstName,
-    hcpid: hcpId,
+  const [disclosureOpen, setDisclosureOpen] = useState(true);
+  const [nothingFound, setNothingFound] = useState(false);
+  const [searchParams, setSearchParams] = useState({});
+
+  const boxTitle = "HCP Search";
+  const labels = [
+    { name: "hcpid", label: "HCP ID" },
+    { name: "lastname", label: "Last Name" },
+    { name: "firstname", label: "First Name" },
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (searchParams.firstname || searchParams.lastname || searchParams.hcpid) {
+      getApiData("GET", `/api/clients/search/`, searchParams).then((x) => {
+        console.log(x.data);
+        if (x.data[0] == null) {
+          setNothingFound(true);
+          return;
+        }
+        setNothingFound(false);
+        setDisclosureOpen(false);
+        setHcpSearchResults(x.data);
+      });
+    }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    getApiData("GET", `/api/clients/search/`, params).then((x) => {
-      setHcpSearchResults(x.data);
-    });
-  };
   return (
     <div className="bg-gray-100  rounded-xl p-10">
-      <div
-        className="  bg-white border-gray-500 shadow-md overflow-hidden flex 
-       flex-col justify-center items-center max-w-lg mx-auto border-2 rounded-md p-6  "
-      >
-        <div>
-          <p className="text-2xl pb-4">HCP Search</p>
-        </div>
-        <form
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-          className="flex flex-col items-end  "
-        >
-          <div className="flex items-center mt-5 ">
-            <div className=" mr-5 ">
-              <label className=" text-gray-500 font-bold" htmlFor="Email">
-                HCP ID
-              </label>
-            </div>
-            <div className="">
-              <input
-                type="text"
-                value={hcpId}
-                onChange={(e) => setHcpId(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center mt-5 ">
-            <div className=" mr-5 ">
-              <label className=" text-gray-500 font-bold" htmlFor="Email">
-                First Name
-              </label>
-            </div>
-            <div className="">
-              <input
-                value={firstName}
-                type="text"
-                onChange={(e) => setFirstName(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
-          </div>
-          <div className="flex  items-center mt-5 ">
-            <div className=" mr-5 ">
-              <label className=" text-gray-500 font-bold" htmlFor="Email">
-                Last Name
-              </label>
-            </div>
-            <div className="">
-              <input
-                value={lastName}
-                type="text"
-                onChange={(e) => setLastName(e.target.value)}
-                className=" w-full border-2 border-blue-300   rounded  py-2 px-4 "
-              />
-            </div>
-          </div>
-
-          <div className="  w-full ">
-            <button
-              type="submit"
-              className="  inline-block  mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
-            >
-              Search
-            </button>
-          </div>
-        </form>
-      </div>
-
+      <SearchBox
+        labels={labels}
+        title={boxTitle}
+        setSearchParams={setSearchParams}
+        handleSubmit={handleSubmit}
+        searchParams={searchParams}
+        disclosureOpen={disclosureOpen}
+        setDisclosureOpen={setDisclosureOpen}
+      />
       <HcpResults
         hcpSearchResults={hcpSearchResults}
         handleAddHcp={handleAddHcp}
         closeModal={closeModal}
+        nothingFound={nothingFound}
       />
     </div>
   );

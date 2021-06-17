@@ -1,11 +1,16 @@
-import { useRouter } from "next/router";
 import Select from "../../../icons/Select";
 export default function ClientResults({
   clientSearchResults,
   handleAddClient,
   closeModal,
+  nothingFound,
 }) {
-  const router = useRouter();
+  if (nothingFound) {
+    return <div>nothing found</div>;
+  }
+  if (!clientSearchResults) {
+    return null;
+  }
 
   return (
     <div>
