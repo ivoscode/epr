@@ -27,6 +27,7 @@ export default function AppointmentDetailsContent() {
     clients: [],
     hcps: [],
     duration: 0,
+    id: null,
     // category: getDefaultOption(), does not work
     // type: getDefaultOption(),
     // medium: getDefaultOption(),
@@ -97,7 +98,7 @@ export default function AppointmentDetailsContent() {
   //--------------Saving details to API
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log("details in POST function", details);
     getApiData(`POST`, `/api/appointment/save`, details);
     router.back();
   };

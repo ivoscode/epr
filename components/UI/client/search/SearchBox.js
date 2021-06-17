@@ -8,6 +8,8 @@ export default function SearchBox({
   setSearchParams,
   disclosureOpen,
   setDisclosureOpen,
+  handleNavigateToDemographics,
+  displayAddButton,
 }) {
   const handleChange = (evt) => {
     const value = evt.target.value;
@@ -81,12 +83,23 @@ export default function SearchBox({
                     );
                   })}
 
-                  <div className="  w-full ">
+                  <div className="  w-full flex justify-evenly ">
                     <button
                       type="submit"
                       className="  inline-block  mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
                     >
                       Search
+                    </button>
+                    <button
+                      onClick={handleNavigateToDemographics}
+                      type="button"
+                      className={`${
+                        displayAddButton
+                          ? "inline-block  mt-8 bg-green-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
+                          : "hidden"
+                      }`}
+                    >
+                      Add
                     </button>
                   </div>
                 </form>

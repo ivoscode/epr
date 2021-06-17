@@ -1,15 +1,36 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-//import * as Yup from "yup";
 import getApiData from "../../../hooks/getApiData";
-export default function DemographicsContent({ id }) {
+
+export default function DemographicsContent() {
   const router = useRouter();
-  const [client, setClient] = useState();
+  const [client, setClient] = useState({
+    nhs: "",
+    name: {
+      title: "",
+      first: "",
+      last: "",
+    },
+    address: {
+      line1: "",
+      line2: "",
+      line: "",
+      line4: "",
+      line5: "",
+      postcode: "",
+    },
+    dob: "",
+    gender: {
+      code: "2", ////mandatory field
+    },
+    telecom: null,
+  });
   console.log(client);
 
+  //----------- Getting data for existing client
   useEffect(() => {
-    if (isNaN(router.query.clientid)) {
+    if (isNaN(parseInt(router.query.clientid))) {
       return;
     }
     getApiData(
@@ -19,20 +40,19 @@ export default function DemographicsContent({ id }) {
       setClient(x.data);
     });
   }, []);
-  if (!client) {
-    return null;
-  }
+
+  //--------------Posting form back----
+  const handleSubmit = (e) => {
+    console.log("formik event", e);
+
+    getApiData(`POST`, `/api/client/save`, e);
+  };
   return (
     <div className="bg-gray-300 ">
-      {/* <label>NHS Number</label>: <input type="text" value={client?.nhs} />
-      <br />
-      <label>Date of Birth</label>: <input type="DATE" value="" />
-      <br /> */}
       <Formik
+        enableReinitialize={true}
         initialValues={client}
-        onSubmit={(e) => {
-          console.log("formik event", e);
-        }}
+        onSubmit={handleSubmit}
         // validationSchema={Yup.object().shape({
         //   name: Yup.object().shape({
         //     first: Yup.string().required("Must be a valid name"),
@@ -50,24 +70,7 @@ export default function DemographicsContent({ id }) {
        flex-col justify-center items-center max-w-lg mx-auto border-2 rounded-md p-6  "
               >
                 <div className="flex flex-col items-end">
-                  <div className="flex items-center mt-4 ">
-                    <div className="flex  w-full justify-evenly items-center py-1">
-                      <div className=" text-gray-500 font-bold mr-10">
-                        <label htmlFor="Name">name</label>
-                      </div>
-                      <Field
-                        type="text"
-                        name="name.first"
-                        className="w-full border-2 border-blue-300 text-gray-500 rounded  py-2 px-4 "
-                      />
-                    </div>
-                    <ErrorMessage
-                      name="name"
-                      component="div"
-                      className="text-pink-300"
-                    />
-                  </div>
-                  {/*-----------------item 2*/}
+                  {/*-----------------nhs----------*/}
                   <div className="flex items-center mt-4">
                     <div className="flex  w-full justify-evenly items-center py-1">
                       <div className=" text-gray-500 font-bold mr-10">
@@ -85,6 +88,44 @@ export default function DemographicsContent({ id }) {
                       className="text-pink-300"
                     />
                   </div>
+                  {/*----------first-----------*/}
+                  <div className="flex items-center mt-4 ">
+                    <div className="flex  w-full justify-evenly items-center py-1">
+                      <div className=" text-gray-500 font-bold mr-10">
+                        <label htmlFor="Name">First Name</label>
+                      </div>
+                      <Field
+                        type="text"
+                        name="name.first"
+                        className="w-full border-2 border-blue-300 text-gray-500 rounded  py-2 px-4 "
+                      />
+                    </div>
+                    <ErrorMessage
+                      name="name"
+                      component="div"
+                      className="text-pink-300"
+                    />
+                  </div>
+                  {/*----------last-----------*/}
+                  <div className="flex items-center mt-4 ">
+                    <div className="flex  w-full justify-evenly items-center py-1">
+                      <div className=" text-gray-500 font-bold mr-10">
+                        <label htmlFor="Name">Last Name</label>
+                      </div>
+                      <Field
+                        type="text"
+                        name="name.last"
+                        className="w-full border-2 border-blue-300 text-gray-500 rounded  py-2 px-4 "
+                      />
+                    </div>
+                    <ErrorMessage
+                      name="name"
+                      component="div"
+                      className="text-pink-300"
+                    />
+                  </div>
+
+                  {/*----------button-------------*/}
                   <button
                     className=" inline-block  mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
                     type="submit"

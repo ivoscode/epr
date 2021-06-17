@@ -1,9 +1,11 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import getApiData from "../../../hooks/getApiData";
 import ClientSearchResults from "./ClientSearchResults";
 import SearchBox from "./SearchBox";
 
 export default function ClientSearchForm() {
+  const router = useRouter();
   const [clientSearchResults, setClientSearchResults] = useState(null);
   const [disclosureOpen, setDisclosureOpen] = useState(true);
   const [nothingFound, setNothingFound] = useState(false);
@@ -16,7 +18,9 @@ export default function ClientSearchForm() {
     { name: "lastname", label: "Last Name" },
     { name: "firstname", label: "First Name" },
   ];
-
+  const handleNavigateToDemographics = () => {
+    router.push("/client/demographics?clientid=NEW");
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
@@ -47,6 +51,8 @@ export default function ClientSearchForm() {
         searchParams={searchParams}
         disclosureOpen={disclosureOpen}
         setDisclosureOpen={setDisclosureOpen}
+        displayAddButton
+        handleNavigateToDemographics={handleNavigateToDemographics}
       />
       <ClientSearchResults
         clientSearchResults={clientSearchResults}
