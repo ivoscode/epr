@@ -20,6 +20,7 @@ export default function AppointmentDetailsContent() {
   const [isClientModalOpened, setIsClientModalOpened] = useState(false);
   const [isHcpModalOpened, setIsHcpModalOpened] = useState(false);
   const [categories, setCategories] = useState(null);
+
   const [medium, setMedium] = useState(null);
   const [types, setTypes] = useState(null);
   const [location, setLocation] = useState(null);
