@@ -27,7 +27,7 @@ export default function DashboardContent() {
   }
 
   return (
-    <div className=" min-h-screen text-xl bg-gray-100 p-6 ">
+    <div className="  text-sm -mx-3 ">
       <ResponsiveGridLayout
         className="layout"
         layouts={tiles?.data.layouts}

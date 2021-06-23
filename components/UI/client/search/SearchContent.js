@@ -42,7 +42,7 @@ export default function ClientSearchForm() {
   };
 
   return (
-    <div className="bg-gray-100 p-10">
+    <div className=" mt-20">
       <SearchBox
         labels={labels}
         title={boxTitle}

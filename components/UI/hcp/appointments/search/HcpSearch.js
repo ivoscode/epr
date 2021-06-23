@@ -32,7 +32,7 @@ export default function HcpSearch({ handleAddHcp, closeModal }) {
   };
 
   return (
-    <div className="bg-gray-100  rounded-xl p-10">
+    <div className="mt-20">
       <SearchBox
         labels={labels}
         title={boxTitle}

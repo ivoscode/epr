@@ -35,11 +35,11 @@ export default function ClientInfo({ id }) {
   } = client.data;
 
   return (
-    <div className=" clientinfo w-full  mb-10 mx-auto  rounded-sm border-gray-700 border-2">
+    <div className=" clientinfo backdrop-filter backdrop-blur-2xl  sticky top-20 z-20   w-full  mb-8 mx-auto  rounded-md border-gray-700 border-b-2 border-r-2 border-l-2">
       <Disclosure>
         {({ open }) => (
           <>
-            <div className="flex justify-between">
+            <div className="flex justify-between text-lg">
               <div className="flex justify-between w-full p-3">
                 <div>{formatName(name)}</div>
                 <div className="flex flex-col sm:flex-row ">
@@ -75,7 +75,7 @@ export default function ClientInfo({ id }) {
                 />
               </Disclosure.Button>
             </div>
-            <Disclosure.Panel className="flex justify-between w-full  px-10 py-3 text-sm font-medium text-left text-white  hover:bg-gray-50 ">
+            <Disclosure.Panel className="flex justify-between w-full backdrop-filter-none  px-10 py-3 text-sm font-medium text-left text-white  bg-gray-50 ">
               <div className="flex flex-col sm:flex-row text-black justify-between w-full">
                 <div className="mb-8 sm:mb-0">
                   <h1>Usual address</h1>

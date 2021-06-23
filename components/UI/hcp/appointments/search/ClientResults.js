@@ -28,11 +28,11 @@ export default function ClientResults({
               className="card my-6 px-4 bg-white grid grid-cols-6"
               key={result.id}
             >
-              <li className="">{`${result.name.title} ${result.name.first} ${result.name.last}`}</li>
-              <li className="">{result.nhs}</li>
-              <li>{result.gender.description}</li>
-              <li>{result.dob}</li>
-              <li>{result.address.line1}</li>
+              <li className="">{`${result?.name?.title} ${result?.name?.first} ${result?.name?.last}`}</li>
+              <li className="">{result?.nhs}</li>
+              <li>{result?.gender?.description}</li>
+              <li>{result?.dob}</li>
+              <li>{result?.address?.line1}</li>
               <li>
                 <button
                   onClick={() => {

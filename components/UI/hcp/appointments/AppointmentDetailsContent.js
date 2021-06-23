@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getDefaultOption } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import Modal from "../../../Modal";
+import BtnMain from "../../../Shared/Buttons/BtnMain";
 import ClientInfo from "./ClientInfo";
 import DropList from "./DropList";
 import HcpInfo from "./HcpInfo";
@@ -296,22 +297,16 @@ export default function AppointmentDetailsContent() {
 
       <div className="flex w-full justify-around">
         <div>
-          <button
-            onClick={handleSubmit}
-            className=" mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
-          >
-            Save
-          </button>
+          <BtnMain onClick={handleSubmit}>Save</BtnMain>
         </div>
         <div>
-          <button
+          <BtnMain
             onClick={() => {
               router.back();
             }}
-            className=" mt-8 bg-pink-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
           >
             Cancel
-          </button>
+          </BtnMain>
         </div>
       </div>
     </div>

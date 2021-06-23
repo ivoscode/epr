@@ -1,16 +1,14 @@
 import DateFnsUtils from "@date-io/date-fns";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import format from "date-fns/format";
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 import { useField } from "formik";
 import React from "react";
 
 export default function MyDatePicker(props) {
   const [field, meta, helpers] = useField(props.name);
-  const { label, name, options } = props;
-
-  // console.log(meta);
-  // console.log(field);
-  // console.log(helpers);
+  const { label, name, options, ...rest } = props;
 
   return (
     <div className="flex items-center mt-4">
@@ -20,25 +18,22 @@ export default function MyDatePicker(props) {
         </div>
         <div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
+            <KeyboardDatePicker
               {...field}
               showTodayButton
+              openTo="year"
+              format="dd/MM/yyyy"
+              views={["year", "month", "date"]}
               autoOk
+              maxDate={new Date()}
               ampm={false}
               value={meta.value}
-              onChange={(e) =>
-                helpers.setValue(format(e, "yyyy-MM-dd'T'HH:mm"))
-              }
+              onChange={(e) => {
+                helpers.setValue(e);
+              }}
             />
           </MuiPickersUtilsProvider>
         </div>
-        {/* <select {...field}>
-          {options.map((option) => (
-            <option key={option.description} value={option.code}>
-              {option.description}
-            </option>
-          ))}
-        </select> */}
       </div>
       {meta.touched && meta.error ? (
         <div className="text-pink-300">{meta.error}</div>

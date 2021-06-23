@@ -75,9 +75,9 @@ export default function FormsListContent() {
             `/client/forms/entry/?formid=${router.query.formid}&clientid=${router.query.clientid}`
           );
         }}
-        className=" custom-blur w-full flex justify-center fixed bottom-1 right-1 left-1  py-4 "
+        className=" backdrop-filter backdrop-blur-2xl w-full flex justify-center fixed bottom-1 right-1 left-1  py-4 "
       >
-        <button className=" w-full  bg-gray-700 cursor-pointer  hover:bg-gray-800 text-white rounded-md  h-8 shadow-md mx-auto max-w-3xl">
+        <button className=" w-full  bg-primary-btn-color cursor-pointer  hover:bg-primary-hover-btn-color text-white rounded-md  h-8 shadow-md mx-auto max-w-3xl">
           <div>ADD</div>
         </button>
       </div>

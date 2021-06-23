@@ -3,7 +3,7 @@ import React from "react";
 
 export default function MySelect(props) {
   const [field, meta] = useField(props.name);
-  const { label, name, options } = props;
+  const { label, name, options, ...rest } = props;
 
   //   console.log(meta);
   //   console.log(field);
@@ -15,7 +15,7 @@ export default function MySelect(props) {
         <div className=" text-gray-500 font-bold mr-10">
           <label htmlFor={name}>{label}</label>
         </div>
-        <select {...field}>
+        <select {...field} {...rest}>
           {options.map((option) => (
             <option key={option.description} value={option.code}>
               {option.description}

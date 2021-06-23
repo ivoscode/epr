@@ -6,21 +6,25 @@ function Modal({ isOpened, children, onClose }) {
     return null;
   }
   return createPortal(
-    <div className="">
-      <div className="custom-backdrop" onClick={onClose}></div>
+    <div>
+      <div
+        className="fixed top-0 left-0 w-full h-screen z-60 bg-black bg-opacity-75"
+        onClick={onClose}
+      ></div>
 
-      <div className="custom-modal  overflow-y-auto   ">
-        <div>
-          <div className="flex sticky top-4 justify-end z-40 ">
-            <span
-              onClick={onClose}
-              className="text-gray-600  mr-4  cursor-pointer  "
-            >
-              <XCircleIcon className="w-12 h-12 " />
-            </span>
-          </div>
-          <div className="-mt-16 "> {children}</div>
+      <div className="custom-modal  overflow-y-auto bg-gray-50   ">
+        {/*----------------Close button------------------*/}
+
+        <div className="flex sticky top-0 justify-end bg-gray-50 z-70 ">
+          <span
+            onClick={onClose}
+            className="text-pink-800  mr-4 mt-4 cursor-pointer  "
+          >
+            <XCircleIcon className="w-12 h-12 " />
+          </span>
         </div>
+        {/*----------------Content------------------*/}
+        <div> {children}</div>
       </div>
     </div>,
     document.getElementById("modal")

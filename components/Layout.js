@@ -12,9 +12,10 @@ export default function Layout(props) {
     }
   }, []);
 
+  //Nav sits on top, this slides under and covers the whole page
   return (
-    <div className="flex flex-col w-full mt-20 h-full">
-      <main className="  mx-auto max-w-screen-2xl w-full    ">
+    <div className=" w-full  h-full min-h-screen -mt-20 flex flex-col">
+      <main className="  mx-auto w-full max-w-8xl flex-1 pt-20 px-3 sm:px-6 lg:px-8  bg-gray-50 text-primary-text-color  ">
         {router.query.clientid ? (
           <ClientInfo id={router.query.clientid} />
         ) : null}
