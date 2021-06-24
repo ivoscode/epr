@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Select from "../../../UI/icons/Select";
+import ClientSearchResultsTable from "./ClientSearchResultsTable";
 export default function ClientSearchResults({
   clientSearchResults,
   nothingFound,
@@ -11,48 +11,19 @@ export default function ClientSearchResults({
   if (!clientSearchResults) {
     return null;
   }
-
+  const handleSelection = (result) => {
+    const back = localStorage.getItem(`search-back`);
+    //might need refactoring
+    if (back.indexOf(`?`) > 0) {
+      router.push(back + `&clientid=${result.id}`);
+    } else {
+      router.push(back + `?clientid=${result.id}`);
+    }
+  };
   return (
-    <div>
-      <ul className=" font-bold h-10 card my-6 px-4 bg-white grid grid-cols-6">
-        <li>Name</li>
-        <li>NHS Number</li>
-        <li>Gender</li>
-        <li>Date of Birth</li>
-        <li>Address</li>
-      </ul>
-      <div className="mt-10">
-        {clientSearchResults?.map((result) => {
-          return (
-            <ul
-              className="card my-6 px-4 bg-white grid grid-cols-6"
-              key={result?.id}
-            >
-              <li className="">{`${result?.name?.title} ${result?.name?.first} ${result?.name?.last}`}</li>
-              <li className="">{result?.nhs}</li>
-              <li>{result?.gender?.description}</li>
-              <li>{result?.dob}</li>
-              <li>{result?.address?.line1}</li>
-              <li>
-                <button
-                  onClick={() => {
-                    const back = localStorage.getItem(`search-back`);
-                    //might need refactoring
-                    if (back.indexOf(`?`) > 0) {
-                      router.push(back + `&clientid=${result.id}`);
-                    } else {
-                      router.push(back + `?clientid=${result.id}`);
-                    }
-                  }}
-                  className=""
-                >
-                  <Select />
-                </button>
-              </li>
-            </ul>
-          );
-        })}
-      </div>
-    </div>
+    <ClientSearchResultsTable
+      handleSelection={handleSelection}
+      clientSearchResults={clientSearchResults}
+    />
   );
 }

@@ -79,9 +79,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 95%;
-  height: 95%;
+  width: 93%;
+  height: 93%;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 40;
+}
+ {
+  /*------------overriding Bootstrap-------*/
+}
+.btn-primary {
+  @apply bg-gray-700 border-gray-700 !important;
 }

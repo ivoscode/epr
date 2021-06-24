@@ -51,7 +51,7 @@ export default function DemographicsContent() {
   //------styling container
   const Container = (props) => {
     return (
-      <div className="w-full border-2 border-gray-900 rounded-xl p-3 mb-3 ">
+      <div className="w-full shadow-md rounded-xl p-8 mb-6 ">
         <div>{props.title}</div>
         {props.children}
       </div>
@@ -97,69 +97,63 @@ export default function DemographicsContent() {
         return (
           <Form>
             <div
-              className="  bg-comp-bg-color border-comp-border-color shadow-md overflow-hidden flex 
-       flex-col justify-center items-center max-w-xl mx-auto border-2 rounded-md p-6  "
+              className=" my-10   overflow-hidden flex 
+       flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  "
             >
-              <div className="flex flex-col w-full items-end">
-                {/*-----------------ID Container----------*/}
+              {/*-----------------ID Container----------*/}
 
-                <Container title="ID">
-                  <MyTextInput
-                    label="NHS Number"
-                    name="nhs"
-                    type="text"
-                    placeholder="Please enter NHS number"
-                  />
-                </Container>
-                {/*------------Name container-------------------------------------------*/}
-                <Container title="name">
-                  {/*----title picklist------*/}
-                  <MySelect
-                    label="Title"
-                    name="name.title"
-                    options={titleDropdownOptions}
-                  />
-                  {/*----gender picklist------*/}
-                  <MySelect
-                    label="Gender"
-                    name="gender.code"
-                    options={genderDropdownOptions}
-                  />
+              <Container title="ID">
+                <MyTextInput
+                  label="NHS Number"
+                  name="nhs"
+                  type="text"
+                  placeholder="Please enter NHS number"
+                />
+              </Container>
+              {/*------------Name container-------------------------------------------*/}
+              <Container title="Name">
+                {/*----title picklist------*/}
+                <MySelect
+                  label="Title"
+                  name="name.title"
+                  options={titleDropdownOptions}
+                />
+                {/*----gender picklist------*/}
+                <MySelect
+                  label="Gender"
+                  name="gender.code"
+                  options={genderDropdownOptions}
+                />
 
-                  {/*----Date of birth------*/}
-                  <MyDatePicker label="DOB" name="dob" />
-                  {/*--------------first name---------*/}
-                  <MyTextInput
-                    label="First Name"
-                    name="name.first"
-                    type="text"
-                    placeholder="Please enter name"
-                  />
+                {/*----Date of birth------*/}
+                <MyDatePicker label="DOB" name="dob" />
+                {/*--------------first name---------*/}
+                <MyTextInput
+                  label="First Name"
+                  name="name.first"
+                  type="text"
+                  placeholder="Please enter name"
+                />
 
-                  {/*----------last name-----------*/}
-                  <MyTextInput
-                    label="Last Name"
-                    name="name.last"
-                    type="text"
-                    placeholder="Please enter last name"
-                  />
-                </Container>
+                {/*----------last name-----------*/}
+                <MyTextInput
+                  label="Last Name"
+                  name="name.last"
+                  type="text"
+                  placeholder="Please enter last name"
+                />
+              </Container>
 
-                {/*-----------Address container-----------------------------------------*/}
-                <Container title="Address">
-                  <MyAddressSearch name="address" />
-                </Container>
+              {/*-----------Address container-----------------------------------------*/}
+              <Container title="Address">
+                <MyAddressSearch name="address" />
+              </Container>
 
-                {/*----------button-------------*/}
+              {/*----------button-------------*/}
 
-                <BtnMain
-                  className="inline-block  mt-8 bg-blue-500 px-3 py-2 rounded-md text-white font-semibold tracking-widest"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  Submit
-                </BtnMain>
-              </div>
+              <BtnMain style="mt-8" type="submit" disabled={isSubmitting}>
+                Submit
+              </BtnMain>
             </div>
           </Form>
         );

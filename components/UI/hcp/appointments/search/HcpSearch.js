@@ -3,7 +3,7 @@ import SearchBox from "../../../client/search/SearchBox";
 import getApiData from "./../../../../hooks/getApiData";
 import HcpResults from "./HcpResults";
 export default function HcpSearch({ handleAddHcp, closeModal }) {
-  const [hcpSearchResults, setHcpSearchResults] = useState([]);
+  const [hcpSearchResults, setHcpSearchResults] = useState();
   const [disclosureOpen, setDisclosureOpen] = useState(true);
   const [nothingFound, setNothingFound] = useState(false);
   const [searchParams, setSearchParams] = useState({});

@@ -12,10 +12,10 @@ function Modal({ isOpened, children, onClose }) {
         onClick={onClose}
       ></div>
 
-      <div className="custom-modal  overflow-y-auto bg-gray-50   ">
+      <div className="custom-modal  overflow-y-auto bg-comp-bg-color   ">
         {/*----------------Close button------------------*/}
 
-        <div className="flex sticky top-0 justify-end bg-gray-50 z-70 ">
+        <div className="flex sticky top-0 justify-end bg-comp-bg-color z-70 ">
           <span
             onClick={onClose}
             className="text-pink-800  mr-4 mt-4 cursor-pointer  "
@@ -24,7 +24,7 @@ function Modal({ isOpened, children, onClose }) {
           </span>
         </div>
         {/*----------------Content------------------*/}
-        <div> {children}</div>
+        <div className="px-5"> {children}</div>
       </div>
     </div>,
     document.getElementById("modal")

@@ -1,7 +1,7 @@
 import {
-  ClipboardListIcon,
+  PencilAltIcon,
+  TrashIcon,
   UserAddIcon,
-  UserRemoveIcon,
 } from "@heroicons/react/outline";
 
 export default function ClientInfo({
@@ -10,7 +10,7 @@ export default function ClientInfo({
   showHcpSearchModal,
 }) {
   return (
-    <div className=" mt-10  border-2 rounded-md bg-gray-50 shadow-md p-3">
+    <div className=" mt-10  border-2 rounded-md bg-gray-50 shadow-sm p-3">
       <table className="table-fixed w-full ">
         <thead>
           <tr className="text-left ">
@@ -24,18 +24,21 @@ export default function ClientInfo({
               <tr key={x} className="">
                 <td className=" p-1 ">{item?.hcp?.description}</td>
                 <td className="flex justify-between  p-1">
-                  <button className=" bg-yellow-500 px-3 py-1 rounded-md text-white text-xs font-semibold tracking-widest flex items-center">
-                    <ClipboardListIcon className="w-4 h-4 mr-1" />{" "}
-                    <span>edit</span>
+                  <button className="  px-2 py-2 rounded-md cursor-pointer text-gray-800  ">
+                    <span>
+                      <PencilAltIcon className="w-5 h-5 " />
+                    </span>
                   </button>
+
                   <button
                     onClick={() => {
                       handleRemoveHcp(item.hcp.id);
                     }}
-                    className=" bg-red-500 px-3 py-1 rounded-md text-white text-xs font-semibold tracking-widest flex items-center"
+                    className="  px-2 py-2 cursor-pointer rounded-md text-gray-800 mr-6  "
                   >
-                    <UserRemoveIcon className="w-4 h-4 mr-1" />
-                    <span>remove</span>
+                    <span>
+                      <TrashIcon className="w-5 h-5 " />
+                    </span>
                   </button>
                 </td>
               </tr>
@@ -43,12 +46,12 @@ export default function ClientInfo({
           })}
         </tbody>
       </table>
-      <div className="flex justify-end mr-10 mt-4">
+      <div className="flex justify-end mr-20 mt-4">
         <button
           onClick={showHcpSearchModal}
-          className=" bg-green-800 px-3 py-1 rounded-md text-white text-xs font-semibold tracking-widest flex items-center"
+          className=" bg-gray-700 px-3 py-1 rounded-md text-white text-xs font-semibold tracking-widest flex items-center"
         >
-          <UserAddIcon className="w-4 h-4 mr-1" /> <span>add user</span>
+          <UserAddIcon className="w-4 h-4 mr-1" /> <span>add HCP</span>
         </button>
       </div>
     </div>

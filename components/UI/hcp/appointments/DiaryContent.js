@@ -77,7 +77,7 @@ export default function DiaryContent() {
     return null;
   }
   return (
-    <div className="p-10 ">
+    <div className="py-10 px-4 lg:px-2 ">
       <DragAndDropCalendar
         selectable
         resizable

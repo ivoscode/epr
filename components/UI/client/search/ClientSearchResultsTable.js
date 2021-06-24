@@ -3,25 +3,11 @@ import {
   formatDate,
   formatName,
   formatNhs,
-} from "../../../../helpers/helperFunctions";
-export default function ClientResults({
-  hcpSearchResults,
-  handleAddHcp,
-  closeModal,
-  nothingFound,
+} from "../../../helpers/helperFunctions";
+export default function ClientSearchResultsTable({
+  clientSearchResults,
+  handleSelection,
 }) {
-  if (nothingFound) {
-    return <div>nothing found</div>;
-  }
-  if (!hcpSearchResults) {
-    return null;
-  }
-
-  const handleSelection = (result) => {
-    closeModal();
-    handleAddHcp(result);
-  };
-
   return (
     <div className="pb-20 ">
       {/*----------comp---------------*/}
@@ -38,7 +24,7 @@ export default function ClientResults({
         {/*-------data-------------*/}
         <div>
           <ul>
-            {hcpSearchResults?.map((result, x) => {
+            {clientSearchResults?.map((result, x) => {
               return (
                 <li
                   key={x}

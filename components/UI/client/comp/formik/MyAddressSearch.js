@@ -77,9 +77,9 @@ export default function MyAddressSearch({ ...props }) {
         isOpened={isAddressSearchModalOpened}
         onClose={() => setIsAddressSearchModalOpened(false)}
       >
-        <div className="bg-red-700">
+        <div className="max-w-xl mx-auto my-10 bg-comp-bg-color border-comp-border-color border-2 p-10 rounded-xl">
           {/* --------get address button*/}
-          <div className="flex items-center  w-full justify-between mt-16">
+          <div className="flex items-center  w-full justify-between ">
             <div>
               <input
                 type="text"
@@ -87,10 +87,12 @@ export default function MyAddressSearch({ ...props }) {
                 onChange={(e) => {
                   setPostcodeToSearch(e.target.value);
                 }}
-                className="w-full border-2 border-blue-300 text-gray-500 rounded  py-2 px-4 "
+                className="input-box"
               />
             </div>
-            <BtnMain onClick={handleGetAddress}> Search</BtnMain>
+            <BtnMain style={{ color: "red" }} onClick={handleGetAddress}>
+              Search
+            </BtnMain>
           </div>
           {/*-------------------Drop List------------------------------*/}
           <div className={`${showSearchResultsList ? "block" : "hidden"}`}>
@@ -132,11 +134,13 @@ export default function MyAddressSearch({ ...props }) {
               );
             })}
           </ul>
-          <BtnMain onClick={handleSave}>Save</BtnMain>
+          <BtnMain style="mt-8" onClick={handleSave}>
+            Save
+          </BtnMain>
         </div>
       </Modal>
 
-      <div className="w-full border-2 border-blue-300 text-gray-500 rounded  py-2 px-4">
+      <div className="w-full border-2 h-40 border-blue-300 text-gray-500 rounded  py-2 px-4">
         <ul>
           <li>{meta.value.line1}</li>
           <li>{meta.value.line2}</li>

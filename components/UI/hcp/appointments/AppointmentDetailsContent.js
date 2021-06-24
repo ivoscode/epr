@@ -163,7 +163,7 @@ export default function AppointmentDetailsContent() {
     return <div>no details</div>;
   }
   return (
-    <div className=" mt-20 bg-white border-gray-500 shadow-md  flex flex-col justify-center items-center max-w-2xl mx-auto border-2 rounded-md p-6  ">
+    <div className=" my-20  shadow-md  flex flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  ">
       {/* Modal for client search */}
       <Modal
         isOpened={isClientModalOpened}
@@ -297,10 +297,13 @@ export default function AppointmentDetailsContent() {
 
       <div className="flex w-full justify-around">
         <div>
-          <BtnMain onClick={handleSubmit}>Save</BtnMain>
+          <BtnMain style="mt-8" onClick={handleSubmit}>
+            Save
+          </BtnMain>
         </div>
         <div>
           <BtnMain
+            style="mt-8"
             onClick={() => {
               router.back();
             }}

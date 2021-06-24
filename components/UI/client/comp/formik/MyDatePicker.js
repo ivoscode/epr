@@ -11,12 +11,12 @@ export default function MyDatePicker(props) {
   const { label, name, options, ...rest } = props;
 
   return (
-    <div className="flex items-center mt-4">
-      <div className="flex  w-full justify-evenly items-center py-1">
-        <div className=" text-gray-500 font-bold mr-10">
+    <div className="flex flex-col items-center mt-4">
+      <div className="flex w-full justify-evenly items-center mt-4">
+        <div className=" text-gray-500 font-bold mr-10 w-1/2">
           <label htmlFor={name}>{label}</label>
         </div>
-        <div>
+        <div className="w-1/2 text-center">
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               {...field}

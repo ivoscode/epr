@@ -48,8 +48,8 @@ export default function SearchBox({
               className="flex justify-between  w-full  px-10 py-2 text-sm font-medium text-left   "
             >
               <div
-                className="  bg-comp-bg-color border-comp-border-color shadow-md overflow-hidden flex 
-       flex-col justify-center items-center max-w-lg mx-auto border-2 rounded-md p-6  "
+                className=" overflow-hidden flex 
+       flex-col justify-center items-center max-w-lg mx-auto shadow-md rounded-md p-6  "
               >
                 <div>
                   <p className="text-2xl  pb-2">{title}</p>
@@ -82,8 +82,11 @@ export default function SearchBox({
                   })}
 
                   <div className="  w-full flex justify-evenly ">
-                    <BtnMain type="submit">Search</BtnMain>
+                    <BtnMain style="mt-8" type="submit">
+                      Search
+                    </BtnMain>
                     <BtnMain
+                      style="mt-8"
                       hidden={!displayAddButton}
                       onClick={handleNavigateToDemographics}
                     >
