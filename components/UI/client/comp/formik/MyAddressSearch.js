@@ -78,7 +78,7 @@ export default function MyAddressSearch({ ...props }) {
         isOpened={isAddressSearchModalOpened}
         onClose={() => setIsAddressSearchModalOpened(false)}
       >
-        <div className="max-w-xl mx-auto mt-10  shadow-md p-10 rounded-xl">
+        <div className="max-w-xl mx-auto mt-10   p-10 rounded-xl">
           {/* --------get address button*/}
           <div className="flex items-center  w-full justify-between ">
             <div>
