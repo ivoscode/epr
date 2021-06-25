@@ -48,18 +48,19 @@ export default function MyAddressSearch({ ...props }) {
   };
   //--------------------Call to  post code API----------------------
   const handleGetAddress = () => {
-    getAddressApi(postcodeToSearch).then((x) => {
-      console.log("response from getAddressApi", x);
-      setAddresses(x.data);
-      const picklistOptions = x.data.addresses?.map((address) => {
-        return {
-          id: address.line_1,
-          description: address.formatted_address.toString(),
-        };
+    postcodeToSearch &&
+      getAddressApi(postcodeToSearch).then((x) => {
+        console.log("response from getAddressApi", x);
+        setAddresses(x.data);
+        const picklistOptions = x.data.addresses?.map((address) => {
+          return {
+            id: address.line_1,
+            description: address.formatted_address.toString(),
+          };
+        });
+        setPicklistOptions(picklistOptions);
+        setShowSearchResultsList(true);
       });
-      setPicklistOptions(picklistOptions);
-      setShowSearchResultsList(true);
-    });
   };
   const picklistOption1 = () => {
     if (!selectedAddress) {
@@ -77,7 +78,7 @@ export default function MyAddressSearch({ ...props }) {
         isOpened={isAddressSearchModalOpened}
         onClose={() => setIsAddressSearchModalOpened(false)}
       >
-        <div className="max-w-xl mx-auto my-10 bg-comp-bg-color border-comp-border-color border-2 p-10 rounded-xl">
+        <div className="max-w-xl mx-auto mt-10  shadow-md p-10 rounded-xl">
           {/* --------get address button*/}
           <div className="flex items-center  w-full justify-between ">
             <div>
@@ -90,9 +91,7 @@ export default function MyAddressSearch({ ...props }) {
                 className="input-box"
               />
             </div>
-            <BtnMain style={{ color: "red" }} onClick={handleGetAddress}>
-              Search
-            </BtnMain>
+            <BtnMain onClick={handleGetAddress}>Search</BtnMain>
           </div>
           {/*-------------------Drop List------------------------------*/}
           <div className={`${showSearchResultsList ? "block" : "hidden"}`}>
@@ -110,7 +109,7 @@ export default function MyAddressSearch({ ...props }) {
             />
           </div>
           {/* ------------search results------------ */}
-          <ul className=" mx-auto mt-20 max-w-3xl">
+          <ul className=" mx-auto mt-10 max-w-3xl">
             {[
               { line: line1, def: meta.value.line1, label: "Address Line 1" },
               { line: line2, def: meta.value.line2, label: "Address Line 2" },
@@ -121,12 +120,12 @@ export default function MyAddressSearch({ ...props }) {
             ].map((item, x) => {
               return (
                 <li key={x}>
-                  <div className=" text-gray-500 font-bold mr-10">
+                  <div className=" text-primary-text-color font-bold mr-10">
                     <label htmlFor={item.line}>{item.label}</label>
                   </div>
                   <input
                     type="text"
-                    className="w-full border-2 border-blue-300 text-gray-500 rounded  py-2 px-4 mt-2"
+                    className="w-full border-2 border-blue-300 text-primary-text-color rounded  py-2 px-4 mt-2"
                     ref={item.line}
                     defaultValue={item.def}
                   />

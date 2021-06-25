@@ -10,7 +10,7 @@ export default function ClientInfo({
   showHcpSearchModal,
 }) {
   return (
-    <div className=" mt-10  border-2 rounded-md bg-gray-50 shadow-sm p-3">
+    <div className=" mt-10  border-2 rounded-md bg-gray-50 border-gray-100 p-3">
       <table className="table-fixed w-full ">
         <thead>
           <tr className="text-left ">

@@ -12,10 +12,10 @@ function Modal({ isOpened, children, onClose }) {
         onClick={onClose}
       ></div>
 
-      <div className="custom-modal  overflow-y-auto bg-comp-bg-color   ">
+      <div className="custom-modal  overflow-y-auto  bg-comp-bg-color  ">
         {/*----------------Close button------------------*/}
 
-        <div className="flex sticky top-0 justify-end bg-comp-bg-color z-70 ">
+        <div className="sticky top-5 mr-5 inline-block  left-full  z-70 ">
           <span
             onClick={onClose}
             className="text-pink-800  mr-4 mt-4 cursor-pointer  "

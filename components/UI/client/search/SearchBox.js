@@ -49,7 +49,7 @@ export default function SearchBox({
             >
               <div
                 className=" overflow-hidden flex 
-       flex-col justify-center items-center max-w-lg mx-auto shadow-md rounded-md p-6  "
+       flex-col justify-center items-center max-w-lg mx-auto main-comp rounded-md p-6  "
               >
                 <div>
                   <p className="text-2xl  pb-2">{title}</p>

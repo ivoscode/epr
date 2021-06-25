@@ -10,7 +10,7 @@ export default function ClientInfo({
   showClientSearchModal,
 }) {
   return (
-    <div className=" mt-10  border-2 rounded-md bg-gray-50 shadow-sm p-3">
+    <div className=" mt-10  border-2 rounded-md bg-gray-50 border-gray-100 p-3">
       <table className="table-fixed w-full ">
         <thead>
           <tr className="text-left ">
@@ -50,7 +50,7 @@ export default function ClientInfo({
           onClick={showClientSearchModal}
           className=" bg-gray-700 px-3 py-1 rounded-md text-white text-xs font-semibold tracking-widest flex items-center"
         >
-          <UserAddIcon className="w-4 h-4 mr-1" /> <span>add user</span>
+          <UserAddIcon className="w-4 h-4 mr-1" /> <span>add client</span>
         </button>
       </div>
     </div>

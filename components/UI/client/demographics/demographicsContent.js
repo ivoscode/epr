@@ -37,6 +37,7 @@ export default function DemographicsContent() {
     },
     telecom: null,
   });
+
   const titleDropdownOptions = [
     { description: "Select ", code: "" },
     { description: "Mr", code: "Mr" },
@@ -51,7 +52,7 @@ export default function DemographicsContent() {
   //------styling container
   const Container = (props) => {
     return (
-      <div className="w-full shadow-md rounded-xl p-8 mb-6 ">
+      <div className="w-full border-2 border-gray-100 rounded-xl p-8 mb-6 ">
         <div>{props.title}</div>
         {props.children}
       </div>

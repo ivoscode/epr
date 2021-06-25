@@ -163,7 +163,7 @@ export default function AppointmentDetailsContent() {
     return <div>no details</div>;
   }
   return (
-    <div className=" my-20  shadow-md  flex flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  ">
+    <div className=" my-20    flex flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  ">
       {/* Modal for client search */}
       <Modal
         isOpened={isClientModalOpened}
