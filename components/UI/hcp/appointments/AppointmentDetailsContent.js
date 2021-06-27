@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getDefaultOption } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import Modal from "../../../Modal";
-import BtnMain from "../../../Shared/buttons/BtnMain";
+import BtnMain from "../../../Shared/buttons/BtMain";
 import Picklist from "../../../Shared/formElements/Picklist";
 import ClientInfo from "./ClientInfo";
 import HcpInfo from "./HcpInfo";

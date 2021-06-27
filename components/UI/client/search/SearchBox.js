@@ -1,6 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
-import BtnMain from "../../../Shared/buttons/BtnMain";
+import BtnMain from "../../../Shared/buttons/BtMain";
 export default function SearchBox({
   title,
   labels,

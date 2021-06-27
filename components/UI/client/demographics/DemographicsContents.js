@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import getApiData from "../../../hooks/getApiData";
-import BtnMain from "../../../Shared/buttons/BtnMain";
+import BtnMain from "../../../Shared/buttons/BtMain";
 import MyAddressSearch from "../comp/formik/MyAddressSearch";
 import MyDatePicker from "../comp/formik/MyDatePicker";
 import MySelect from "../comp/formik/MySelect";

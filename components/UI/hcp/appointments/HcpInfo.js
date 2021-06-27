@@ -1,5 +1,5 @@
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
-import BtnMain from "../../../Shared/buttons/BtnMain";
+import BtnMain from "../../../Shared/buttons/BtMain";
 
 export default function ClientInfo({
   data,
