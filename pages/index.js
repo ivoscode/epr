@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import LoginForm from "../components/UI/client/LoginForm";
+import LoginForm from "../components/LoginForm";
 import { Context } from "../context/index";
 
 export default function Home() {

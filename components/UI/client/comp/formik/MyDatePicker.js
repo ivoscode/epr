@@ -8,7 +8,7 @@ import React from "react";
 
 export default function MyDatePicker(props) {
   const [field, meta, helpers] = useField(props.name);
-  const { label, name, options, ...rest } = props;
+  const { label, name, options, setFormIsTouched, ...rest } = props;
 
   return (
     <div className="flex flex-col items-center mt-4">
@@ -20,16 +20,17 @@ export default function MyDatePicker(props) {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               {...field}
-              showTodayButton
-              openTo="year"
+              //showTodayButton
+              openTo="month"
               format="dd/MM/yyyy"
-              views={["year", "month", "date"]}
+              views={["month", "date", "year"]}
               autoOk
-              maxDate={new Date()}
+              //maxDate={new Date()}
               ampm={false}
               value={meta.value}
               onChange={(e) => {
                 helpers.setValue(e);
+                setFormIsTouched(true);
               }}
             />
           </MuiPickersUtilsProvider>

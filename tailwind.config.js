@@ -6,11 +6,10 @@ module.exports = {
     extend: {
       maxWidth: { "8xl": "90rem" },
       colors: {
-        "primary-text-color": "var(--primary-text-color)",
+        "main-bg-color": "var(--main-bg-color)",
+        "main-text-color": "var(--main-text-color)",
         "chevron-color": "var(--chevron-color)",
         "chevron-hover-color": "var(--chevron-hover-color)",
-        "comp-border-color": "var(--comp-border-color)",
-        "comp-bg-color": "var(--comp-bg-color)",
       },
     },
   },

@@ -1,7 +1,7 @@
 import { useField } from "formik";
 import React from "react";
 
-export default function MyTextInput({ label, ...props }) {
+export default function MyTextInput({ label, setFormIsTouched, ...props }) {
   const [field, meta] = useField(props);
 
   return (
@@ -10,7 +10,12 @@ export default function MyTextInput({ label, ...props }) {
         <div className=" text-gray-500 font-bold mr-10 w-1/2">
           <label htmlFor={props.id || props.name}>{label}</label>
         </div>
-        <div className="w-1/2">
+        <div
+          className="w-1/2"
+          onChange={() => {
+            setFormIsTouched(true);
+          }}
+        >
           <input className="input-box " {...field} {...props} />
         </div>
       </div>

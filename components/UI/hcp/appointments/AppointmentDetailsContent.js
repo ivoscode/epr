@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { getDefaultOption } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import Modal from "../../../Modal";
-import BtnMain from "../../../Shared/Buttons/BtnMain";
+import BtnMain from "../../../Shared/buttons/BtnMain";
+import Picklist from "../../../Shared/formElements/Picklist";
 import ClientInfo from "./ClientInfo";
-import DropList from "./DropList";
 import HcpInfo from "./HcpInfo";
 import ClientSearch from "./search/ClientSearch";
 import HcpSearch from "./search/HcpSearch";
@@ -20,31 +20,26 @@ export default function AppointmentDetailsContent() {
 
   const [isClientModalOpened, setIsClientModalOpened] = useState(false);
   const [isHcpModalOpened, setIsHcpModalOpened] = useState(false);
-  const [categories, setCategories] = useState(null);
+  const [category, setCategory] = useState(null);
 
   const [medium, setMedium] = useState(null);
-  const [types, setTypes] = useState(null);
+  const [type, setType] = useState(null);
   const [location, setLocation] = useState(null);
   const [details, setDetails] = useState({
     clients: [],
     hcps: [],
     duration: 0,
     id: null,
-    // category: getDefaultOption(), does not work
-    // type: getDefaultOption(),
-    // medium: getDefaultOption(),
-    // location: getDefaultOption(),
-
     comment: "",
   });
-  console.log(details);
-  //---------------Getting pick-list items for Categories,Location,Medium
+  console.log("details", details);
+  //---------------Getting pick-list items for Category,Location,Medium
   useEffect(() => {
     getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
       (x) => {
         x.data.splice(0, 0, getDefaultOption()); //Adds one more option to pick-list array
         //addDefaultOption(x.data);
-        setCategories(x.data);
+        setCategory(x.data);
       }
     );
     getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
@@ -67,7 +62,7 @@ export default function AppointmentDetailsContent() {
     getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
       (x) => {
         x.data.splice(0, 0, getDefaultOption());
-        setTypes(x.data);
+        setType(x.data);
       }
     );
   }, []);
@@ -101,8 +96,12 @@ export default function AppointmentDetailsContent() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("details in POST function", details);
-    getApiData(`POST`, `/api/appointment/save`, details);
-    router.back();
+    getApiData(`POST`, `/api/appointment/save`, details).then((x) => {
+      if (x.status == 200) {
+        router.back();
+        console.log(x);
+      }
+    });
   };
 
   //-------------Adding and removing clients and hcps
@@ -194,7 +193,6 @@ export default function AppointmentDetailsContent() {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DateTimePicker
               showTodayButton
-              disablePast
               autoOk
               ampm={false}
               value={details?.datetime}
@@ -208,10 +206,12 @@ export default function AppointmentDetailsContent() {
           </MuiPickersUtilsProvider>
         </div>
       </div>
+      {/*------------duration--------*/}
       <div className="flex justify-between items-center w-full my-3">
         <div>Duration</div>
         <div>
           <input
+            className="bg-main-bg-color"
             value={details?.duration}
             placeholder="0"
             onChange={(e) => {
@@ -221,50 +221,31 @@ export default function AppointmentDetailsContent() {
           />
         </div>
       </div>
-      <div className="flex justify-between items-center w-full">
-        <div>Category</div>
-        <div>
-          <DropList
-            options={categories}
-            selected={details?.category || getDefaultOption()}
-            setSelected={(e) => {
-              console.log(e);
-              setDetails({ ...details, category: e });
-            }}
-            //onChange={handleCategoryChange}
-          />
-        </div>
-      </div>
-      <div className="flex justify-between items-center w-full">
-        <div>Type</div>
-        <div>
-          <DropList
-            options={types}
-            selected={details?.type || getDefaultOption()}
-            setSelected={(e) => setDetails({ ...details, type: e })}
-          />
-        </div>
-      </div>
-      <div className="flex justify-between items-center w-full">
-        <div>Location</div>
-        <div>
-          <DropList
-            options={location}
-            selected={details?.location || getDefaultOption()}
-            setSelected={(e) => setDetails({ ...details, location: e })}
-          />
-        </div>
-      </div>
-      <div className="flex justify-between items-center w-full">
-        <div>Medium</div>
-        <div>
-          <DropList
-            options={medium}
-            selected={details?.medium || getDefaultOption()}
-            setSelected={(e) => setDetails({ ...details, medium: e })}
-          />
-        </div>
-      </div>
+      <Picklist
+        options={category}
+        value={details?.category?.id}
+        label="Category"
+        setSelected={(e) => setDetails({ ...details, category: { id: e } })}
+      />
+
+      <Picklist
+        options={type}
+        value={details?.type?.id}
+        label="Type"
+        setSelected={(e) => setDetails({ ...details, type: { id: e } })}
+      />
+      <Picklist
+        options={location}
+        value={details?.location?.id}
+        label="Location"
+        setSelected={(e) => setDetails({ ...details, location: { id: e } })}
+      />
+      <Picklist
+        options={medium}
+        value={details?.medium?.id}
+        label="Medium"
+        setSelected={(e) => setDetails({ ...details, medium: { id: e } })}
+      />
 
       <ClientInfo
         data={details?.clients}
@@ -298,7 +279,7 @@ export default function AppointmentDetailsContent() {
       <div className="flex w-full justify-around">
         <div>
           <BtnMain style="mt-8" onClick={handleSubmit}>
-            Save
+            Add
           </BtnMain>
         </div>
         <div>

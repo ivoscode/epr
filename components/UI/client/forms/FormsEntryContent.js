@@ -51,7 +51,7 @@ export default function FormsEntryContent() {
   };
 
   return (
-    <div className=" mx-auto max-w-2xl my-20">
+    <div className=" mx-auto max-w-2xl mb-20 mt-44 sm:mt-24 lg:mt-16">
       <Form
         form={structure?.data.structure}
         onSubmit={(data) => {

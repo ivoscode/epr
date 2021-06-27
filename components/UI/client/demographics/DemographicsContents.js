@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import getApiData from "../../../hooks/getApiData";
-import BtnMain from "../../../Shared/Buttons/BtnMain";
+import BtnMain from "../../../Shared/buttons/BtnMain";
 import MyAddressSearch from "../comp/formik/MyAddressSearch";
 import MyDatePicker from "../comp/formik/MyDatePicker";
 import MySelect from "../comp/formik/MySelect";
@@ -37,6 +37,7 @@ export default function DemographicsContent() {
     },
     telecom: null,
   });
+  const [formIsTouched, setFormIsTouched] = useState(false);
 
   const titleDropdownOptions = [
     { description: "Select ", code: "" },
@@ -77,6 +78,7 @@ export default function DemographicsContent() {
   const handleSubmit = (values, actions) => {
     getApiData(`POST`, `/api/client/save`, values);
     actions.setSubmitting(false);
+    setFormIsTouched(false);
   };
   // const validationSchema={Yup.object().shape({
   //         name: Yup.object().shape({
@@ -98,7 +100,7 @@ export default function DemographicsContent() {
         return (
           <Form>
             <div
-              className=" my-10   overflow-hidden flex 
+              className=" mb-10  mt-52 sm:mt-16  overflow-hidden flex 
        flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  "
             >
               {/*-----------------ID Container----------*/}
@@ -108,7 +110,7 @@ export default function DemographicsContent() {
                   label="NHS Number"
                   name="nhs"
                   type="text"
-                  placeholder="Please enter NHS number"
+                  setFormIsTouched={setFormIsTouched}
                 />
               </Container>
               {/*------------Name container-------------------------------------------*/}
@@ -118,22 +120,29 @@ export default function DemographicsContent() {
                   label="Title"
                   name="name.title"
                   options={titleDropdownOptions}
+                  setFormIsTouched={setFormIsTouched}
                 />
                 {/*----gender picklist------*/}
                 <MySelect
                   label="Gender"
                   name="gender.code"
                   options={genderDropdownOptions}
+                  setFormIsTouched={setFormIsTouched}
                 />
 
                 {/*----Date of birth------*/}
-                <MyDatePicker label="DOB" name="dob" />
+                <MyDatePicker
+                  label="DOB"
+                  name="dob"
+                  setFormIsTouched={setFormIsTouched}
+                />
                 {/*--------------first name---------*/}
                 <MyTextInput
                   label="First Name"
                   name="name.first"
                   type="text"
-                  placeholder="Please enter name"
+                  setFormIsTouched={setFormIsTouched}
+                  placeholder="Please enter first name"
                 />
 
                 {/*----------last name-----------*/}
@@ -142,18 +151,27 @@ export default function DemographicsContent() {
                   name="name.last"
                   type="text"
                   placeholder="Please enter last name"
+                  setFormIsTouched={setFormIsTouched}
                 />
               </Container>
 
               {/*-----------Address container-----------------------------------------*/}
               <Container title="Address">
-                <MyAddressSearch name="address" />
+                <MyAddressSearch
+                  name="address"
+                  setFormIsTouched={setFormIsTouched}
+                />
               </Container>
 
               {/*----------button-------------*/}
 
-              <BtnMain style="mt-8" type="submit" disabled={isSubmitting}>
-                Submit
+              <BtnMain
+                style="mt-8"
+                type="submit"
+                hidden={!formIsTouched}
+                disabled={isSubmitting}
+              >
+                Save
               </BtnMain>
             </div>
           </Form>

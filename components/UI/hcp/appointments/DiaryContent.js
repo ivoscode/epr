@@ -77,7 +77,7 @@ export default function DiaryContent() {
     return null;
   }
   return (
-    <div className="py-10 px-4 lg:px-2 ">
+    <div className="mt-5 px-4 lg:px-2  ">
       <DragAndDropCalendar
         selectable
         resizable
@@ -90,7 +90,7 @@ export default function DiaryContent() {
         events={myEventsList}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 600 }}
+        style={{ height: screen }}
         onSelectEvent={(event) => {
           router.push(
             ///ternary operator to account for cases when there is no client id

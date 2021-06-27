@@ -12,13 +12,13 @@ function Modal({ isOpened, children, onClose }) {
         onClick={onClose}
       ></div>
 
-      <div className="custom-modal  overflow-y-auto  bg-comp-bg-color  ">
+      <div className="custom-modal  overflow-y-auto  bg-main-bg-color  ">
         {/*----------------Close button------------------*/}
 
         <div className="sticky top-5 mr-5 inline-block  left-full  z-70 ">
           <span
             onClick={onClose}
-            className="text-pink-800  mr-4 mt-4 cursor-pointer  "
+            className="text-gray-700 hover:text-gray-900  mr-4 mt-4 cursor-pointer  "
           >
             <XCircleIcon className="w-12 h-12 " />
           </span>

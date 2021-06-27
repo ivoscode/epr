@@ -27,7 +27,7 @@ export default function DashboardContent() {
   }
 
   return (
-    <div className="  text-sm -mx-3 ">
+    <div className="mt-40 sm:mt-24 lg:mt-16 text-sm -mx-3 ">
       <ResponsiveGridLayout
         className="layout"
         layouts={tiles?.data.layouts}

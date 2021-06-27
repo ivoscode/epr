@@ -1,8 +1,5 @@
-import {
-  PencilAltIcon,
-  TrashIcon,
-  UserAddIcon,
-} from "@heroicons/react/outline";
+import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
+import BtnMain from "../../../Shared/buttons/BtnMain";
 
 export default function ClientInfo({
   data,
@@ -47,12 +44,7 @@ export default function ClientInfo({
         </tbody>
       </table>
       <div className="flex justify-end mr-20 mt-4">
-        <button
-          onClick={showHcpSearchModal}
-          className=" bg-gray-700 px-3 py-1 rounded-md text-white text-xs font-semibold tracking-widest flex items-center"
-        >
-          <UserAddIcon className="w-4 h-4 mr-1" /> <span>add HCP</span>
-        </button>
+        <BtnMain onClick={showHcpSearchModal}>Add</BtnMain>
       </div>
     </div>
   );

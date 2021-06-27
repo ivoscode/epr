@@ -2,8 +2,8 @@ import { useField } from "formik";
 import React, { useRef, useState } from "react";
 import getAddressApi from "../../../../hooks/getAddressApi";
 import Modal from "../../../../Modal";
-import BtnMain from "../../../../Shared/Buttons/BtnMain";
-import AddressDropList from "./AddressDropList";
+import BtnMain from "../../../../Shared/buttons/BtnMain";
+import Picklist from "../../../../Shared/formElements/Picklist";
 export default function MyAddressSearch({ ...props }) {
   const [field, meta, helpers] = useField(props);
   const line1 = useRef(null);
@@ -34,8 +34,9 @@ export default function MyAddressSearch({ ...props }) {
 
   ///--------Sets the right address based on the picklist-----------------
   const pickAddress = (e) => {
+    console.log(e);
     const pickedAddress = addresses.addresses.find((item) => {
-      return item.line_1 == e.id;
+      return item.line_1 == e;
     });
     setSelectedAddress(pickedAddress);
     //---populates the fields but is not saving
@@ -88,24 +89,22 @@ export default function MyAddressSearch({ ...props }) {
                 onChange={(e) => {
                   setPostcodeToSearch(e.target.value);
                 }}
-                className="input-box"
+                className="input-box uppercase"
               />
             </div>
             <BtnMain onClick={handleGetAddress}>Search</BtnMain>
           </div>
-          {/*-------------------Drop List------------------------------*/}
+          {/*-------------------Address Pick List------------------------------*/}
           <div className={`${showSearchResultsList ? "block" : "hidden"}`}>
-            <AddressDropList
+            <Picklist
               options={picklistOptions}
-              selected={
+              value={
                 picklistOption1() || {
                   id: "",
                   description: `Please select your address`,
                 }
               }
-              setSelected={(e) => {
-                pickAddress(e);
-              }}
+              setSelected={(e) => pickAddress(e)}
             />
           </div>
           {/* ------------search results------------ */}
@@ -120,7 +119,7 @@ export default function MyAddressSearch({ ...props }) {
             ].map((item, x) => {
               return (
                 <li key={x}>
-                  <div className=" text-primary-text-color font-bold mr-10">
+                  <div className=" text-main-text-color font-bold mr-10">
                     <label htmlFor={item.line}>{item.label}</label>
                   </div>
                   <input

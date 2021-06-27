@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import { Context } from "../../../context/index";
+import { Context } from "../context/index";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,9 @@ export default function LoginForm() {
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
         { ...credentials }
       );
-      getRoutes(response.data.token, response.data.name, 2);
+      console.log(response);
+      getRoutes(response.data.token, response.data.name, 1); //need hcp id from server from the first response
+
       setLoading(false);
     } catch (e) {
       console.log(e);

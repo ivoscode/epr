@@ -3,7 +3,7 @@ import React from "react";
 
 export default function MySelect(props) {
   const [field, meta] = useField(props.name);
-  const { label, name, options, ...rest } = props;
+  const { label, name, options, setFormIsTouched, ...rest } = props;
 
   //   console.log(meta);
   //   console.log(field);
@@ -15,7 +15,13 @@ export default function MySelect(props) {
         <div className=" text-gray-500 font-bold mr-10 w-1/2">
           <label htmlFor={name}>{label}</label>
         </div>
-        <div className="w-1/2">
+        <div
+          className="w-1/2"
+          onChange={() => {
+            console.log("on change trigered");
+            setFormIsTouched(true);
+          }}
+        >
           <select {...field} {...rest} className="input-box ">
             {options.map((option) => (
               <option key={option.description} value={option.code}>

@@ -35,83 +35,85 @@ export default function ClientInfo({ id }) {
   } = client.data;
 
   return (
-    <div className=" clientinfo backdrop-filter backdrop-blur-2xl  sticky top-20 z-20   w-full  mb-8 mx-auto  rounded-md border-gray-700 border-b-2 border-r-2 border-l-2">
-      <Disclosure>
-        {({ open }) => (
-          <>
-            <div className="flex justify-between text-lg">
-              <div className="flex justify-between w-full p-3">
-                <div>{formatName(name)}</div>
-                <div className="flex flex-col sm:flex-row ">
-                  <div className="ml-6 ">
-                    <span className="font-light mr-2 text-gray-500 text-sm">
-                      Born
-                    </span>
-                    <span className="font-bold">{formatDate(dob)}</span>
-                    <span className="ml-1">{`(${calcAge(dob)}y)`}</span>
-                  </div>
+    <div className=" clientinfo  bg-main-bg-color fixed top-20 z-20 left-0 right-0 mx-auto w-full  max-w-8xl px-3 sm:px-6 lg:px-8   ">
+      <div className=" rounded-b-md border-gray-700 border-b-2 border-r-2 border-l-2">
+        <Disclosure>
+          {({ open }) => (
+            <>
+              <div className="flex justify-between text-lg">
+                <div className="flex justify-between w-full p-3">
+                  <div>{formatName(name)}</div>
+                  <div className="flex flex-col sm:flex-row ">
+                    <div className="ml-6 ">
+                      <span className="font-light mr-2 text-gray-500 text-sm">
+                        Born
+                      </span>
+                      <span className="font-bold">{formatDate(dob)}</span>
+                      <span className="ml-1">{`(${calcAge(dob)}y)`}</span>
+                    </div>
 
-                  <div className="ml-6">
-                    <span className="font-light mr-2 text-gray-500 text-sm">
-                      Gender
-                    </span>
-                    <span className="font-bold">{description}</span>
-                  </div>
+                    <div className="ml-6">
+                      <span className="font-light mr-2 text-gray-500 text-sm">
+                        Gender
+                      </span>
+                      <span className="font-bold">{description}</span>
+                    </div>
 
-                  <div className="ml-6">
-                    <span className="font-light mr-2 text-gray-500 text-sm">
-                      NHS No.
-                    </span>
-                    <span className="font-bold">{formatNhs(nhs)}</span>
+                    <div className="ml-6">
+                      <span className="font-light mr-2 text-gray-500 text-sm">
+                        NHS No.
+                      </span>
+                      <span className="font-bold">{formatNhs(nhs)}</span>
+                    </div>
                   </div>
                 </div>
+
+                <Disclosure.Button className="flex justify-between items-center  px-2 py-2  text-white bg-gray-700  hover:bg-gray-800 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                  <ChevronUpIcon
+                    className={`${
+                      open ? "transform rotate-180" : ""
+                    } w-8 h-8 text-white `}
+                  />
+                </Disclosure.Button>
               </div>
-
-              <Disclosure.Button className="flex justify-between items-center  px-2 py-2  text-white bg-gray-700  hover:bg-gray-800 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                <ChevronUpIcon
-                  className={`${
-                    open ? "transform rotate-180" : ""
-                  } w-8 h-8 text-white `}
-                />
-              </Disclosure.Button>
-            </div>
-            <Disclosure.Panel className="flex justify-between w-full backdrop-filter-none  px-10 py-3 text-sm font-medium text-left text-white  bg-gray-50 ">
-              <div className="flex flex-col sm:flex-row text-black justify-between w-full">
-                <div className="mb-8 sm:mb-0">
-                  <h1>Usual address</h1>
-                  <div>{line1}</div>
-                  <div>{line2}</div>
-                  <div>{line3}</div>
-                  <div>{postcode}</div>
-                </div>
-                <div className="mb-8 sm:mb-0">
-                  <div>
-                    <span>Home:</span> <span>020 599943</span>
+              <Disclosure.Panel className="flex justify-between w-full   px-10 py-3 text-sm font-medium text-left text-white  bg-main-bg-color ">
+                <div className="flex flex-col sm:flex-row text-black justify-between w-full">
+                  <div className="mb-8 sm:mb-0">
+                    <h1>Usual address</h1>
+                    <div>{line1}</div>
+                    <div>{line2}</div>
+                    <div>{line3}</div>
+                    <div>{postcode}</div>
                   </div>
-                  <div>
-                    <span>Work:</span>
+                  <div className="mb-8 sm:mb-0">
+                    <div>
+                      <span>Home:</span> <span>020 599943</span>
+                    </div>
+                    <div>
+                      <span>Work:</span>
+                    </div>
+                    <div>
+                      <span>Mobile:</span>
+                    </div>
+                    <div>
+                      <span>Email:</span>
+                    </div>
                   </div>
-                  <div>
-                    <span>Mobile:</span>
-                  </div>
-                  <div>
-                    <span>Email:</span>
-                  </div>
-                </div>
-                <div className="mb-8 sm:mb-0">
-                  <div>
-                    <span>Latex</span> <span>14-Nov-1961</span>
-                  </div>
-                  <div>
-                    <span>Peanuts</span>
-                    <span>14-Nov-1961</span>
+                  <div className="mb-8 sm:mb-0">
+                    <div>
+                      <span>Latex</span> <span>14-Nov-1961</span>
+                    </div>
+                    <div>
+                      <span>Peanuts</span>
+                      <span>14-Nov-1961</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+      </div>
     </div>
   );
 }

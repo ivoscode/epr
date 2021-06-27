@@ -3,14 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --primary-text-color: #374151; /* gray 700 */
+  --main-bg-color: #f9fafb; /* gray 50 */
+  --main-text-color: #374151; /* gray 700 */
   --chevron-color: #374151; /* gray 700 */
   --chevron-hover-color: #111827; /* gray 900 */
-  --comp-border-color: #4b5563; /* gray 600 */
-  --comp-bg-color: white; /* gray 600 */
 }
 .input-box {
-  @apply w-full border-2 border-blue-300  rounded  py-2 px-4;
+  @apply w-full border-2 border-blue-300  rounded  py-2 px-4  !important;
 }
 .card {
   @apply rounded border-gray-200 shadow-md overflow-hidden;
