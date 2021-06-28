@@ -1,59 +1,29 @@
-import { useField } from "formik";
-import React, { useRef, useState } from "react";
-import getAddressApi from "../../../../hooks/getAddressApi";
-import Modal from "../../../../Modal";
+import { Form, Formik } from "formik";
+import React, { useEffect, useState } from "react";
+import * as Yup from "yup";
 import BtnMain from "../../../../Shared/buttons/BtMain";
-import Picklist from "../../../../Shared/formElements/Picklist";
+import MyAddressSearchInput from "./MyAddressSearchInput";
+import MyTextInput from "./MyTextInput";
 export default function MyAddressSearch(props) {
-  const [field, meta, helpers] = useField(props.name);
-  console.log(field);
-  console.log(meta);
-  console.log(helpers);
-  const line1 = useRef(null);
-  const line2 = useRef(null);
-  const line3 = useRef(null);
-  const line4 = useRef(null);
-  const line5 = useRef(null);
-  const postcode = useRef(null);
-  const [isAddressSearchModalOpened, setIsAddressSearchModalOpened] =
-    useState(false);
+  const [initialAddress, setInitialAddress] = useState({
+    line1: "",
+    line2: "",
+    line3: "",
+    line4: "",
+    line5: "",
+    postcode: "",
+  });
+  useEffect(() => {
+    setInitialAddress(props.initialAddress);
+  }, [props.initialAddress]);
 
-  const [addresses, setAddresses] = useState([]);
-  const [postcodeToSearch, setPostcodeToSearch] = useState("");
-  const [picklistOptions, setPicklistOptions] = useState();
-  const [showSearchResultsList, setShowSearchResultsList] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState();
-
-  const handleSave = () => {
-    let address = meta.value;
-    if (!isValidPostcode(postcode.current.value)) {
-      console.log("invalid postcode");
-      return;
-    }
-    address.line1 = line1.current.value;
-    address.line2 = line2.current.value;
-    address.line3 = line3.current.value;
-    address.line4 = line4.current.value;
-    address.line5 = line5.current.value;
-    address.postcode = formatPostcode(postcode.current.value);
-    helpers.setValue(address);
-    setIsAddressSearchModalOpened(false);
-  };
-
-  ///--------Sets the right address based on the picklist-----------------
-  const pickAddress = (e) => {
-    console.log("picked address", e);
-    const pickedAddress = addresses.addresses.find((item) => {
-      return item.line_1 == e;
-    });
-    setSelectedAddress(pickedAddress);
-    //---populates the fields but is not saving
-    line1.current.value = pickedAddress.line_1;
-    line2.current.value = pickedAddress.line_2;
-    line3.current.value = pickedAddress.locality;
-    line4.current.value = pickedAddress.town_or_city;
-    line5.current.value = pickedAddress.county;
-    postcode.current.value = addresses.postcode;
+  const Container = (props) => {
+    return (
+      <div className="w-full border-2 border-gray-100 rounded-xl p-8 mb-6 ">
+        <div>{props.title}</div>
+        {props.children}
+      </div>
+    );
   };
   //--------------------Post code validate and format----------------------
   const isValidPostcode = (p) => {
@@ -71,152 +41,69 @@ export default function MyAddressSearch(props) {
     }
   };
 
-  //--------------------Call to  post code API----------------------
-  const handleGetAddress = () => {
-    postcodeToSearch &&
-      getAddressApi(postcodeToSearch).then((x) => {
-        console.log("response from getAddressApi", x);
-        setAddresses(x.data);
-        const picklistOptions = x.data.addresses?.map((address) => {
-          return {
-            id: address.line_1,
-            description: address.formatted_address.toString(),
-          };
-        });
-        setPicklistOptions(picklistOptions);
-        setShowSearchResultsList(true);
-      });
+  const handleSubmit = (values, actions) => {
+    props.setValues({ ...props.values, address: { ...values } });
+    actions.setSubmitting(false);
+    props.onClose();
   };
-  const picklistOption1 = () => {
-    if (!selectedAddress) {
-      return null;
-    }
 
-    return {
-      id: "",
-      description: selectedAddress?.formatted_address.toString(),
-    };
-  };
+  {
+    /*------------Validation------------*/
+  }
+  const validationSchema = Yup.object().shape({
+    line1: Yup.string().required("Required"),
+    postcode: Yup.string().required("Required"),
+  });
   return (
     <div>
-      <Modal
-        isOpened={isAddressSearchModalOpened}
-        onClose={() => setIsAddressSearchModalOpened(false)}
+      <Container>
+        <MyAddressSearchInput setInitialAddress={setInitialAddress} />
+      </Container>
+      <Formik
+        enableReinitialize={true}
+        initialValues={initialAddress}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
       >
-        <div className="max-w-xl mx-auto mt-10   p-10 rounded-xl">
-          {/* --------get address button*/}
-          <div className="flex items-center  w-full justify-between ">
-            <div>
-              <input
-                type="text"
-                value={postcodeToSearch}
-                onChange={(e) => {
-                  setPostcodeToSearch(e.target.value);
-                  //props.setFormIsTouched(true);
-                }}
-                className="input-box uppercase"
-              />
-            </div>
-            <BtnMain onClick={handleGetAddress}>Search</BtnMain>
-          </div>
-          {/*-------------------Address Pick List------------------------------*/}
-          <div className={`${showSearchResultsList ? "block" : "hidden"}`}>
-            <Picklist
-              options={picklistOptions}
-              value={
-                picklistOption1() || {
-                  id: "",
-                  description: `Please select your address`,
-                }
-              }
-              setSelected={(e) => pickAddress(e)}
-            />
-          </div>
-
-          {/* ------------search results------------ */}
-          <ul className=" mx-auto mt-10 max-w-3xl">
-            {[
-              {
-                line: line1,
-                def: meta.value.line1,
-                name: "address.line1",
-                label: "Address Line 1",
-              },
-              {
-                line: line2,
-                def: meta.value.line2,
-                name: "address.line2",
-                label: "Address Line 2",
-              },
-              {
-                line: line3,
-                def: meta.value.line3,
-                name: "address.line3",
-                label: "Locality",
-              },
-              {
-                line: line4,
-                def: meta.value.line4,
-                name: "address.line4",
-                label: "Town or City",
-              },
-              {
-                line: line5,
-                def: meta.value.line5,
-                name: "address.line5",
-                label: "County",
-              },
-              {
-                line: postcode,
-                def: meta.value.postcode,
-                name: "address.postcode",
-                label: "Postcode",
-              },
-            ].map((item, x) => {
-              return (
-                <li key={x}>
-                  <div className=" text-main-text-color font-bold mr-10">
-                    <label htmlFor={item.line}>{item.label}</label>
-                  </div>
-                  <input
+        {(props) => {
+          const { isSubmitting, values } = props;
+          {
+            console.log(isSubmitting);
+          }
+          return (
+            <Form>
+              <div
+                className=" mb-10  mt-52 sm:mt-16  overflow-hidden flex 
+       flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  "
+              >
+                {/*----------Address fields-----------*/}
+                <Container>
+                  <MyTextInput
+                    label="Address Line 1"
+                    name="line1"
                     type="text"
-                    className="w-full border-2 border-blue-300 text-primary-text-color rounded  py-2 px-4 mt-2"
-                    ref={item.line}
-                    defaultValue={item.def}
-                    onChange={() => {
-                      helpers.setTouched();
-                    }}
-                    name={item.name}
                   />
-                </li>
-              );
-            })}
-          </ul>
-          <BtnMain style="mt-8" onClick={handleSave}>
-            Save
-          </BtnMain>
-        </div>
-      </Modal>
+                  <MyTextInput
+                    label="Address Line 2"
+                    name="line2"
+                    type="text"
+                  />
+                  <MyTextInput label="Locality" name="line3" type="text" />
+                  <MyTextInput label="Town or City" name="line4" type="text" />
+                  <MyTextInput label="County" name="line5" type="text" />
+                  <MyTextInput label="Postcode" name="postcode" type="text" />
+                </Container>
+                {/*----------button-------------*/}
 
-      <div className="w-full border-2 h-40 border-blue-300 text-gray-500 rounded  py-2 px-4">
-        <ul>
-          <li>{meta.value.line1}</li>
-          <li>{meta.value.line2}</li>
-          <li>{meta.value.line3}</li>
-          <li>{meta.value.line4}</li>
-          <li>{meta.value.line5}</li>
-          <li>{meta.value.postcode}</li>
-        </ul>
-      </div>
-      <div className="flex items-center mt-8 w-full justify-between">
-        <BtnMain
-          onClick={() => {
-            setIsAddressSearchModalOpened(true);
-          }}
-        >
-          Search
-        </BtnMain>
-      </div>
+                <BtnMain style="mt-8" type="submit">
+                  {/* disabled={isSubmitting} */}
+                  Save
+                </BtnMain>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 }

@@ -48,9 +48,9 @@ const getApiData = (method, url, params) => {
       .catch((e) => {
         console.log("getApiData catching error", e);
 
-        window.sessionStorage.removeItem("EprUser");
-        window.sessionStorage.clear();
-        window.location.replace("/");
+        // window.sessionStorage.removeItem("EprUser");
+        // window.sessionStorage.clear();
+        // window.location.replace("/");
       });
 
     promise.then((x) => putCache(x, url));

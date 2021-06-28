@@ -8,7 +8,7 @@ import React from "react";
 
 export default function MyDatePicker(props) {
   const [field, meta, helpers] = useField(props.name);
-  const { label, name, options, setFormIsTouched, ...rest } = props;
+  const { label, name, options, onChange, ...rest } = props;
 
   return (
     <div className="flex flex-col items-center mt-4">
@@ -30,7 +30,11 @@ export default function MyDatePicker(props) {
               value={meta.value}
               onChange={(e) => {
                 helpers.setValue(e);
-                setFormIsTouched(true);
+
+                if (typeof onChange == "function") {
+                  onChange(e);
+                  console.log("onchange fired");
+                }
               }}
             />
           </MuiPickersUtilsProvider>
