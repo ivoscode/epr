@@ -12,7 +12,7 @@ export default function Home() {
 
   useEffect(() => {
     //If user is logged in, pushes it to home route
-    const user = JSON.parse(window.localStorage.getItem("EprUser"));
+    const user = JSON.parse(window.sessionStorage.getItem("EprUser"));
     if (user) {
       setUser(user);
       dispatch({ type: "LOGIN", payload: user });

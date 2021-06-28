@@ -18,7 +18,6 @@ export default function MySelect(props) {
         <div
           className="w-1/2"
           onChange={() => {
-            console.log("on change trigered");
             setFormIsTouched(true);
           }}
         >

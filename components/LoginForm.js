@@ -45,7 +45,7 @@ export default function LoginForm() {
 
       const homeRoute = routes.data.find((o) => o.isHomePage === true);
       const user = { ...routes, token, username, name, homeRoute, hcpId };
-      localStorage.setItem("EprUser", JSON.stringify(user));
+      sessionStorage.setItem("EprUser", JSON.stringify(user));
       dispatch({ type: "LOGIN", payload: user });
       router.push(homeRoute.url);
 

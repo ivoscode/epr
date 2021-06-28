@@ -19,7 +19,7 @@ const rootReducer = (state, action) => {
 
     case "LOGOUT":
       console.log("context-logging out");
-      window.localStorage.removeItem("EprUser");
+      window.sessionStorage.removeItem("EprUser");
       window.sessionStorage.clear();
       window.location.replace("/");
 
@@ -37,7 +37,7 @@ const Provider = ({ children }) => {
 
   //preserves state on refresh
   useEffect(() => {
-    const user = JSON.parse(window.localStorage.getItem("EprUser"));
+    const user = JSON.parse(window.sessionStorage.getItem("EprUser"));
 
     // console.log("use effect inside context", user);
     dispatch({

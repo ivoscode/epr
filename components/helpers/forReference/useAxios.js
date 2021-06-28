@@ -36,7 +36,7 @@ const useAxios = (url, params) => {
       );
     }
 
-    const user = localStorage.getItem("EprUser");
+    const user = sessionStorage.getItem("EprUser");
     const userToken = JSON.parse(user);
     try {
       console.log(

@@ -16,11 +16,11 @@ const useCheckAccess = () => {
     );
 
     getApiData("GET", `/api/session/check?url=${route}`).then((x) => {
-      if (x.status === 200) {
+      if (x?.status === 200) {
         setAuthorized(true);
         switch (x.data.missing) {
           case "client":
-            localStorage.setItem(`search-back`, router.asPath);
+            sessionStorage.setItem(`search-back`, router.asPath);
             router.push("/client/search/");
 
           default:

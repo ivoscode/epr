@@ -15,7 +15,7 @@ import HcpSearch from "./search/HcpSearch";
 
 export default function AppointmentDetailsContent() {
   const router = useRouter();
-  const user = JSON.parse(localStorage.getItem("EprUser"));
+  const user = JSON.parse(sessionStorage.getItem("EprUser"));
   ////////////////State////////////////
 
   const [isClientModalOpened, setIsClientModalOpened] = useState(false);

@@ -6,7 +6,7 @@ const useAxiosPost = (url, data) => {
   const [error, setError] = useState();
 
   const postData = async () => {
-    const user = localStorage.getItem("EprUser");
+    const user = sessionStorage.getItem("EprUser");
     const { token } = JSON.parse(user);
 
     const headers = {

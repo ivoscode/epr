@@ -1,11 +1,9 @@
 import axios from "axios";
-//import { useContext } from "react";
-//import { Context } from "../../context/index";
 import useAxiosCache from "./useAxiosCache";
 
 const getApiData = (method, url, params) => {
   const { getCache, putCache } = useAxiosCache();
-  //const { state, dispatch } = useContext(Context);
+
   if (params) {
     console.log(
       "%c params getApiData POST",
@@ -28,7 +26,7 @@ const getApiData = (method, url, params) => {
     };
   }
 
-  const user = localStorage.getItem("EprUser");
+  const user = sessionStorage.getItem("EprUser");
   const userToken = JSON.parse(user);
 
   const headers = {
@@ -46,11 +44,13 @@ const getApiData = (method, url, params) => {
         params: params,
         headers: headers,
       })
+
       .catch((e) => {
-        console.log("useCheckAccess error", e.response);
-        // if (e.response.status === 401) {
-        //   dispatch({ type: "LOGOUT" });
-        // }
+        console.log("getApiData catching error", e);
+
+        window.sessionStorage.removeItem("EprUser");
+        window.sessionStorage.clear();
+        window.location.replace("/");
       });
 
     promise.then((x) => putCache(x, url));

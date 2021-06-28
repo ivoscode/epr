@@ -4,8 +4,11 @@ import getAddressApi from "../../../../hooks/getAddressApi";
 import Modal from "../../../../Modal";
 import BtnMain from "../../../../Shared/buttons/BtMain";
 import Picklist from "../../../../Shared/formElements/Picklist";
-export default function MyAddressSearch({ ...props }) {
-  const [field, meta, helpers] = useField(props);
+export default function MyAddressSearch(props) {
+  const [field, meta, helpers] = useField(props.name);
+  console.log(field);
+  console.log(meta);
+  console.log(helpers);
   const line1 = useRef(null);
   const line2 = useRef(null);
   const line3 = useRef(null);
@@ -14,27 +17,32 @@ export default function MyAddressSearch({ ...props }) {
   const postcode = useRef(null);
   const [isAddressSearchModalOpened, setIsAddressSearchModalOpened] =
     useState(false);
+
   const [addresses, setAddresses] = useState([]);
   const [postcodeToSearch, setPostcodeToSearch] = useState("");
   const [picklistOptions, setPicklistOptions] = useState();
   const [showSearchResultsList, setShowSearchResultsList] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState();
+
   const handleSave = () => {
     let address = meta.value;
-
+    if (!isValidPostcode(postcode.current.value)) {
+      console.log("invalid postcode");
+      return;
+    }
     address.line1 = line1.current.value;
     address.line2 = line2.current.value;
     address.line3 = line3.current.value;
     address.line4 = line4.current.value;
     address.line5 = line5.current.value;
-    address.postcode = postcode.current.value;
+    address.postcode = formatPostcode(postcode.current.value);
     helpers.setValue(address);
     setIsAddressSearchModalOpened(false);
   };
 
   ///--------Sets the right address based on the picklist-----------------
   const pickAddress = (e) => {
-    console.log(e);
+    console.log("picked address", e);
     const pickedAddress = addresses.addresses.find((item) => {
       return item.line_1 == e;
     });
@@ -47,6 +55,22 @@ export default function MyAddressSearch({ ...props }) {
     line5.current.value = pickedAddress.county;
     postcode.current.value = addresses.postcode;
   };
+  //--------------------Post code validate and format----------------------
+  const isValidPostcode = (p) => {
+    var postcodeRegEx = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i;
+    const result = postcodeRegEx.test(p);
+
+    return result;
+  };
+  const formatPostcode = (p) => {
+    if (isValidPostcode(p)) {
+      var postcodeRegEx = /(^[A-Z]{1,2}[0-9]{1,2})([0-9][A-Z]{2}$)/i;
+      return p.replace(postcodeRegEx, "$1 $2").toUpperCase();
+    } else {
+      return p;
+    }
+  };
+
   //--------------------Call to  post code API----------------------
   const handleGetAddress = () => {
     postcodeToSearch &&
@@ -88,6 +112,7 @@ export default function MyAddressSearch({ ...props }) {
                 value={postcodeToSearch}
                 onChange={(e) => {
                   setPostcodeToSearch(e.target.value);
+                  //props.setFormIsTouched(true);
                 }}
                 className="input-box uppercase"
               />
@@ -107,15 +132,46 @@ export default function MyAddressSearch({ ...props }) {
               setSelected={(e) => pickAddress(e)}
             />
           </div>
+
           {/* ------------search results------------ */}
           <ul className=" mx-auto mt-10 max-w-3xl">
             {[
-              { line: line1, def: meta.value.line1, label: "Address Line 1" },
-              { line: line2, def: meta.value.line2, label: "Address Line 2" },
-              { line: line3, def: meta.value.line3, label: "Locality" },
-              { line: line4, def: meta.value.line4, label: "Town or City" },
-              { line: line5, def: meta.value.line5, label: "County" },
-              { line: postcode, def: meta.value.postcode, label: "Postcode" },
+              {
+                line: line1,
+                def: meta.value.line1,
+                name: "address.line1",
+                label: "Address Line 1",
+              },
+              {
+                line: line2,
+                def: meta.value.line2,
+                name: "address.line2",
+                label: "Address Line 2",
+              },
+              {
+                line: line3,
+                def: meta.value.line3,
+                name: "address.line3",
+                label: "Locality",
+              },
+              {
+                line: line4,
+                def: meta.value.line4,
+                name: "address.line4",
+                label: "Town or City",
+              },
+              {
+                line: line5,
+                def: meta.value.line5,
+                name: "address.line5",
+                label: "County",
+              },
+              {
+                line: postcode,
+                def: meta.value.postcode,
+                name: "address.postcode",
+                label: "Postcode",
+              },
             ].map((item, x) => {
               return (
                 <li key={x}>
@@ -127,6 +183,10 @@ export default function MyAddressSearch({ ...props }) {
                     className="w-full border-2 border-blue-300 text-primary-text-color rounded  py-2 px-4 mt-2"
                     ref={item.line}
                     defaultValue={item.def}
+                    onChange={() => {
+                      helpers.setTouched();
+                    }}
+                    name={item.name}
                   />
                 </li>
               );

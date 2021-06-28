@@ -24,7 +24,7 @@ const localizer = dateFnsLocalizer({
 
 export default function DiaryContent() {
   const router = useRouter();
-  const user = JSON.parse(localStorage.getItem("EprUser"));
+  const user = JSON.parse(sessionStorage.getItem("EprUser"));
   const [events, setEvents] = useState([]);
 
   console.log(events);

@@ -6,7 +6,7 @@ import getApiData from "../../../hooks/getApiData";
 //displays form
 
 export default function FormsEntryContent() {
-  const user = JSON.parse(localStorage.getItem("EprUser"));
+  const user = JSON.parse(sessionStorage.getItem("EprUser"));
   const router = useRouter();
   const [structure, setStructure] = useState();
   const [formData, setFormData] = useState();

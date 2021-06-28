@@ -12,7 +12,7 @@ export default function ClientSearchResults({
     return null;
   }
   const handleSelection = (result) => {
-    const back = localStorage.getItem(`search-back`);
+    const back = sessionStorage.getItem(`search-back`);
     //might need refactoring
     if (back.indexOf(`?`) > 0) {
       router.push(back + `&clientid=${result.id}`);
