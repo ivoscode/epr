@@ -1,8 +1,6 @@
 import { createContext, useEffect, useReducer } from "react";
 //initial state
-const initialState = {
-  user: null,
-};
+const initialState = {};
 //create context
 const Context = createContext();
 
@@ -12,9 +10,7 @@ const rootReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
       return {
-        ...state,
-
-        user: action.payload,
+        ...action.payload,
       };
 
     case "LOGOUT":
@@ -23,7 +19,7 @@ const rootReducer = (state, action) => {
       window.sessionStorage.clear();
       window.location.replace("/");
 
-      return { ...state, user: null };
+      return {};
 
     default:
       return state;
@@ -37,12 +33,12 @@ const Provider = ({ children }) => {
 
   //preserves state on refresh
   useEffect(() => {
-    const user = JSON.parse(window.sessionStorage.getItem("EprUser"));
+    const userState = JSON.parse(window.sessionStorage.getItem("EprUser"));
 
     // console.log("use effect inside context", user);
     dispatch({
       type: "LOGIN",
-      payload: user,
+      payload: userState,
     });
   }, []);
   ///

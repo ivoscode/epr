@@ -56,9 +56,6 @@ export default function MyAddressSearch(props) {
   });
   return (
     <div>
-      <Container>
-        <MyAddressSearchInput setInitialAddress={setInitialAddress} />
-      </Container>
       <Formik
         enableReinitialize={true}
         initialValues={initialAddress}
@@ -76,6 +73,10 @@ export default function MyAddressSearch(props) {
                 className=" mb-10  mt-52 sm:mt-16  overflow-hidden flex 
        flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  "
               >
+                {/*----------search box--------------*/}
+                <Container>
+                  <MyAddressSearchInput setInitialAddress={setInitialAddress} />
+                </Container>
                 {/*----------Address fields-----------*/}
                 <Container>
                   <MyTextInput

@@ -18,13 +18,13 @@ function classNames(...classes) {
 export default function Navbar() {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
-  const [user, setUser] = useState();
-
+  const [navRoutes, setNavRoutes] = useState();
+  console.log(state);
   useEffect(() => {
-    setUser(state.user && state.user.data);
+    state.navRoutes && setNavRoutes(state.navRoutes);
   }, [state]);
 
-  if (!user) {
+  if (!navRoutes) {
     return null;
   }
 
@@ -63,8 +63,8 @@ export default function Navbar() {
                 </div>
                 <div className="hidden sm:block sm:ml-6 ">
                   <div className="flex space-x-4">
-                    {user &&
-                      user.map((item) => (
+                    {navRoutes &&
+                      navRoutes.map((item) => (
                         <a
                           key={item.id}
                           href={item.url}
@@ -156,8 +156,8 @@ export default function Navbar() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {user &&
-                user.map((item) => (
+              {navRoutes &&
+                navRoutes.map((item) => (
                   <a
                     key={item.id}
                     href={item.url}

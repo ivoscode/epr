@@ -21,7 +21,7 @@ export default function LoginForm() {
         { ...credentials }
       );
       console.log(response);
-      getRoutes(response.data.token, response.data.name, 1); //need hcp id from server from the first response
+      getRoutes(response.data.token, response.data.user, response.data.hcp); //need hcp id from server from the first response
 
       setLoading(false);
     } catch (e) {
@@ -30,7 +30,7 @@ export default function LoginForm() {
     }
   };
 
-  const getRoutes = async (token, name, hcpId) => {
+  const getRoutes = async (token, user, hcp) => {
     try {
       setLoading(true);
       const routes = await axios.get(
@@ -44,9 +44,15 @@ export default function LoginForm() {
       );
 
       const homeRoute = routes.data.find((o) => o.isHomePage === true);
-      const user = { ...routes, token, username, name, homeRoute, hcpId };
-      sessionStorage.setItem("EprUser", JSON.stringify(user));
-      dispatch({ type: "LOGIN", payload: user });
+      const userState = {
+        navRoutes: [...routes.data],
+        token,
+        user,
+        hcp,
+        homeRoute,
+      };
+      sessionStorage.setItem("EprUser", JSON.stringify(userState));
+      dispatch({ type: "LOGIN", payload: userState });
       router.push(homeRoute.url);
 
       setLoading(false);

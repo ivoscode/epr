@@ -15,7 +15,7 @@ import HcpSearch from "./search/HcpSearch";
 
 export default function AppointmentDetailsContent() {
   const router = useRouter();
-  const user = JSON.parse(sessionStorage.getItem("EprUser"));
+  const userState = JSON.parse(sessionStorage.getItem("EprUser"));
   ////////////////State////////////////
 
   const [isClientModalOpened, setIsClientModalOpened] = useState(false);
@@ -69,7 +69,7 @@ export default function AppointmentDetailsContent() {
 
   //--------------Getting event details for a new entry
   useEffect(() => {
-    if (router.query.datetime && user) {
+    if (router.query.datetime && userState) {
       setDetails({
         ...details,
         datetime: router.query.datetime,
@@ -77,8 +77,8 @@ export default function AppointmentDetailsContent() {
         hcps: [
           {
             hcp: {
-              id: user.hcpId,
-              description: user.name,
+              id: userState.hcp.hcpId,
+              description: userState.hcp.description,
             },
           },
         ],

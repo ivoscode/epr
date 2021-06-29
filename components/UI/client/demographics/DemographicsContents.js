@@ -187,11 +187,13 @@ export default function DemographicsContent() {
                     <li>{values.address.postcode}</li>
                   </ul>
                 </div>
-                <div className="mt-8">
-                  <BtnMain onClick={() => setIsAddressSearchModalOpened(true)}>
-                    Search
-                  </BtnMain>
-                </div>
+
+                <BtnMain
+                  style="mt-8"
+                  onClick={() => setIsAddressSearchModalOpened(true)}
+                >
+                  Search
+                </BtnMain>
               </Container>
 
               {/*-------------Modal for address search-------------*/}
@@ -211,7 +213,7 @@ export default function DemographicsContent() {
 
               <div>
                 <BtnMain
-                  style="mt-8"
+                  style="mt-4"
                   type="submit"
                   hidden={!formIsTouched}
                   disabled={isSubmitting}
