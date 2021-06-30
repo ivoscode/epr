@@ -19,7 +19,7 @@ export default function Navbar() {
   const { state, dispatch } = useContext(Context);
   const router = useRouter();
   const [navRoutes, setNavRoutes] = useState();
-  console.log(state);
+
   useEffect(() => {
     state.navRoutes && setNavRoutes(state.navRoutes);
   }, [state]);

@@ -33,9 +33,9 @@ export default function AppointmentDetailsContent() {
     comment: "",
   });
   console.log("details", details);
-  //---------------Getting pick-list items for Category,Location,Medium
+  //---------------Getting pick-list items for Category
   useEffect(() => {
-    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
+    getApiData("GET", `/api/appointments/configuration-categories`).then(
       (x) => {
         x.data.splice(0, 0, getDefaultOption()); //Adds one more option to pick-list array
         //addDefaultOption(x.data);
@@ -225,7 +225,9 @@ export default function AppointmentDetailsContent() {
         options={category}
         value={details?.category?.id}
         label="Category"
-        setSelected={(e) => setDetails({ ...details, category: { id: e } })}
+        setSelected={(e) => {
+          setDetails({ ...details, category: { id: e } });
+        }}
       />
 
       <Picklist
