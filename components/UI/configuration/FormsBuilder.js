@@ -11,6 +11,7 @@ export default function FormsBuilder() {
   const [form, setForm] = useState(null);
   const [idDisabled, setIdDisabled] = useState(false);
   let [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [message, setMessage] = useState(null);
   const router = useRouter();
 
   {
@@ -52,9 +53,20 @@ export default function FormsBuilder() {
       title: form.title,
       structure: JSON.stringify(schema),
     };
-
+    if (data.id.length <= 1) {
+      setIsDialogOpen(true);
+      setMessage("Please add a form ID.");
+      return;
+    }
+    if (data.title.length <= 1) {
+      setIsDialogOpen(true);
+      setMessage("Please add a form Title.");
+      return;
+    }
+    console.log(data.id.length <= 1);
     if (schema.components.length <= 1) {
       setIsDialogOpen(true);
+      setMessage("Please add an element to the form.");
       return;
     }
 
@@ -73,7 +85,7 @@ export default function FormsBuilder() {
       <MyDialog
         isOpen={isDialogOpen}
         setIsOpen={setIsDialogOpen}
-        message="Please add an element to the form."
+        message={message}
       />
       {/*----------------------------------------*/}
       <div className=" mx-auto   w-full p-12 mt-4 border-2 border-gray-300">
