@@ -6,54 +6,77 @@ import BtnMain from "../../Shared/buttons/BtMain";
 export default function FormsBuilder() {
   const [schema, setSchema] = useState();
   const [form, setForm] = useState(null);
+  const [idDisabled, setIdDisabled] = useState(false);
   const router = useRouter();
-  console.log("form state", form);
+
   {
     /*----------------Getting existing form-------------*/
   }
-  console.log("builder is rendering");
+
   useEffect(() => {
+    console.log("fetching data");
     if (router.query.id) {
       getApiData(
         "GET",
         `/api/forms/structure/?id=${router.query.id}&datetime=${router.query.datetime}`
       ).then((x) => {
-        console.log(x);
-        setForm(x.data);
+        console.log(x.data);
+        setIdDisabled(true);
+        setForm({
+          id: x.data.id,
+          title: x.data.title,
+          structure: JSON.parse(x.data.structure),
+        });
       });
     } else {
       setForm({
-        id: "referral",
+        id: "",
         title: "",
-        structure: JSON.stringify({ display: "form" }),
+        structure: { display: "form" },
       });
     }
   }, []);
-
+  {
+    /*---------------submit form---------------------*/
+  }
   const handleFormSubmit = () => {
-    console.log("to be sent back to api", form);
     const data = {
       id: form.id,
       title: form.title,
       structure: JSON.stringify(schema),
     };
-    getApiData("POST", `/api/forms/structure/`, data);
+    getApiData("POST", `/api/forms/structure/`, data).then((x) => {
+      x.status == 200 && router.back();
+    });
   };
+
   if (form === null) {
     return null;
   }
 
   return (
     <div className=" mx-auto   w-full p-12 mt-4 border-2 border-gray-300">
-      <input
-        value={form.title}
-        onChange={(e) => {
-          setForm({ ...form, title: e.target.value });
-        }}
-        className="bg-red-200"
-      ></input>
+      <div className="flex justify-evenly mb-5 ">
+        <input
+          disabled={idDisabled}
+          placeholder="Please enter type"
+          value={form.id}
+          onChange={(e) => {
+            setForm({ ...form, id: e.target.value });
+          }}
+          className="form-control max-w-sm"
+        ></input>
+        <input
+          placeholder="Please enter title"
+          value={form.title}
+          onChange={(e) => {
+            setForm({ ...form, title: e.target.value });
+          }}
+          className="form-control max-w-sm"
+        ></input>
+      </div>
       <FormBuilder
-        form={JSON.parse(form.structure)}
+        form={form.structure}
         onChange={(schema) => setSchema(schema)}
       />
       <div className="flex justify-center">

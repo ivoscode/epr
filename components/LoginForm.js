@@ -20,7 +20,7 @@ export default function LoginForm() {
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
         { ...credentials }
       );
-      console.log(response);
+
       getRoutes(response.data.token, response.data.user, response.data.hcp); //need hcp id from server from the first response
 
       setLoading(false);
@@ -42,7 +42,7 @@ export default function LoginForm() {
           },
         }
       );
-
+      console.log(routes);
       const homeRoute = routes.data.find((o) => o.isHomePage === true);
       const userState = {
         navRoutes: [...routes.data],

@@ -3,11 +3,10 @@ import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import format from "date-fns/format";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getDefaultOption } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import Modal from "../../../Modal";
 import BtnMain from "../../../Shared/buttons/BtMain";
-import Picklist from "../../../Shared/formElements/Picklist";
+import AppDetailsPicklists from "./AppDetailsPicklists";
 import ClientInfo from "./ClientInfo";
 import HcpInfo from "./HcpInfo";
 import ClientSearch from "./search/ClientSearch";
@@ -20,11 +19,7 @@ export default function AppointmentDetailsContent() {
 
   const [isClientModalOpened, setIsClientModalOpened] = useState(false);
   const [isHcpModalOpened, setIsHcpModalOpened] = useState(false);
-  const [category, setCategory] = useState(null);
 
-  const [medium, setMedium] = useState(null);
-  const [type, setType] = useState(null);
-  const [location, setLocation] = useState(null);
   const [details, setDetails] = useState({
     clients: [],
     hcps: [],
@@ -33,39 +28,6 @@ export default function AppointmentDetailsContent() {
     comment: "",
   });
   console.log("details", details);
-  //---------------Getting pick-list items for Category
-  useEffect(() => {
-    getApiData("GET", `/api/appointments/configuration-categories`).then(
-      (x) => {
-        x.data.splice(0, 0, getDefaultOption()); //Adds one more option to pick-list array
-        //addDefaultOption(x.data);
-        setCategory(x.data);
-      }
-    );
-    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-      (x) => {
-        x.data.splice(0, 0, getDefaultOption());
-        setLocation(x.data);
-      }
-    );
-    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-      (x) => {
-        x.data.splice(0, 0, getDefaultOption());
-        setMedium(x.data);
-      }
-    );
-  }, []);
-
-  //---------------Getting pick-list items for Type
-
-  useEffect(() => {
-    getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-      (x) => {
-        x.data.splice(0, 0, getDefaultOption());
-        setType(x.data);
-      }
-    );
-  }, []);
 
   //--------------Getting event details for a new entry
   useEffect(() => {
@@ -153,11 +115,6 @@ export default function AppointmentDetailsContent() {
     setDetails({ ...details, hcps });
   };
 
-  // const handleCategoryChange = (e) => {
-  //   getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-  //     (x) => setTypes(x.data)
-  //   );
-  // };
   if (!details) {
     return <div>no details</div>;
   }
@@ -221,33 +178,10 @@ export default function AppointmentDetailsContent() {
           />
         </div>
       </div>
-      <Picklist
-        options={category}
-        value={details?.category?.id}
-        label="Category"
-        setSelected={(e) => {
-          setDetails({ ...details, category: { id: e } });
-        }}
-      />
+      {/*-------------Picklists for categories,type......*/}
+      <AppDetailsPicklists details={details} setDetails={setDetails} />
 
-      <Picklist
-        options={type}
-        value={details?.type?.id}
-        label="Type"
-        setSelected={(e) => setDetails({ ...details, type: { id: e } })}
-      />
-      <Picklist
-        options={location}
-        value={details?.location?.id}
-        label="Location"
-        setSelected={(e) => setDetails({ ...details, location: { id: e } })}
-      />
-      <Picklist
-        options={medium}
-        value={details?.medium?.id}
-        label="Medium"
-        setSelected={(e) => setDetails({ ...details, medium: { id: e } })}
-      />
+      {/*-------Client and HCP info-----------------*/}
 
       <ClientInfo
         data={details?.clients}
@@ -259,6 +193,8 @@ export default function AppointmentDetailsContent() {
         handleRemoveHcp={handleRemoveHcp}
         showHcpSearchModal={showHcpSearchModal}
       />
+
+      {/*----------Comments box---------------*/}
       <div className=" mt-10 flex justify-between items-center w-full">
         <div>
           <label htmlFor="comments">Comments</label>
@@ -279,11 +215,14 @@ export default function AppointmentDetailsContent() {
       </div>
 
       <div className="flex w-full justify-around">
+        {/*-----------submit button-------*/}
         <div>
           <BtnMain style="mt-8" onClick={handleSubmit}>
             Add
           </BtnMain>
         </div>
+
+        {/*------cancel button--------*/}
         <div>
           <BtnMain
             style="mt-8"

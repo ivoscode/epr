@@ -54,10 +54,9 @@ export default function FormsEntryContent() {
     getApiData(`POST`, `/api/forms/save`, {
       ...formHeader,
       values: { data: form.data },
+    }).then((x) => {
+      x.status == 200 && router.back();
     });
-    setTimeout(() => {
-      router.back();
-    }, 3000);
   };
 
   if (form == null) {
@@ -66,7 +65,7 @@ export default function FormsEntryContent() {
 
   return (
     <div className=" mx-auto max-w-2xl mb-20 mt-44 sm:mt-24 lg:mt-16">
-      <h1>{form.title}</h1>
+      <h1 className="text-center text-lg mb-5">{form.title}</h1>
       <Form
         form={JSON.parse(form.structure)}
         onSubmit={(data) => {
