@@ -1,8 +1,12 @@
 export default function Picklist(props) {
-  const { label, name, options, setSelected, value } = props;
+  const { label, name, options, setSelected, value, hidden } = props;
   // console.log(options);
   return (
-    <div className="flex w-full justify-between items-center mt-4">
+    <div
+      className={`${
+        hidden ? "invisible" : "flex w-full justify-between items-center mt-4"
+      }`}
+    >
       <div
         className={`" text-gray-500 font-bold mr-10 " ${
           label ? "w-1/2" : "hidden"

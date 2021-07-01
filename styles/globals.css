@@ -87,6 +87,13 @@
  {
   /*------------overriding Bootstrap-------*/
 }
-.btn-primary {
+.btn-primary,
+.btn-success,
+/* .btn-secondary, */
+.btn-danger {
   @apply bg-gray-700 border-gray-700 !important;
+}
+
+#eu9y5wn {
+  @apply mt-10 !important;
 }

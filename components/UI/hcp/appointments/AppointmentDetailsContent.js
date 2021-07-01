@@ -27,7 +27,6 @@ export default function AppointmentDetailsContent() {
     id: null,
     comment: "",
   });
-  console.log("details", details);
 
   //--------------Getting event details for a new entry
   useEffect(() => {
@@ -39,7 +38,7 @@ export default function AppointmentDetailsContent() {
         hcps: [
           {
             hcp: {
-              id: userState.hcp.hcpId,
+              id: userState.hcp.id,
               description: userState.hcp.description,
             },
           },

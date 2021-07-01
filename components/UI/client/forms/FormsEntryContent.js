@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Form } from "react-formio";
 import { generateGUID } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
+import BtnMain from "../../../Shared/buttons/BtMain";
 
 export default function FormsEntryContent() {
   const user = JSON.parse(sessionStorage.getItem("EprUser"));
@@ -74,6 +75,15 @@ export default function FormsEntryContent() {
         submission={formData?.values}
         //options={options}
       />
+      <div className="flex justify-center mt-8">
+        <BtnMain
+          onClick={() => {
+            router.back();
+          }}
+        >
+          Back
+        </BtnMain>
+      </div>
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default function DiaryContent() {
   useEffect(() => {
     getApiData(
       "GET",
-      `/api/appointments/range?hcp=&start=2021-06-01&end=2021-06-30`
+      `/api/appointments/range?hcp=&start=2021-06-01&end=2021-07-30`
     ).then((x) => {
       setEvents(x.data);
     });

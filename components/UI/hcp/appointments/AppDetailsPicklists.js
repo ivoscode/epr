@@ -8,6 +8,7 @@ export default function AppDetailsPicklists({ details, setDetails }) {
   const [mediums, setMediums] = useState(null);
   const [types, setTypes] = useState(null);
   const [locations, setLocations] = useState(null);
+
   //---------------Getting pick-list items for Category
   useEffect(() => {
     getApiData("GET", `/api/appointments/configuration-categories`).then(
@@ -17,32 +18,12 @@ export default function AppDetailsPicklists({ details, setDetails }) {
         setCategories(x.data);
       }
     );
-    // getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-    //   (x) => {
-    //     x.data.splice(0, 0, getDefaultOption());
-    //     setLocations(x.data);
-    //   }
-    // );
-    // getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-    //   (x) => {
-    //     x.data.splice(0, 0, getDefaultOption());
-    //     setMedium(x.data);
-    //   }
-    // );
   }, []);
 
   //---------------Getting pick-list items for category
 
-  //   useEffect(() => {
-  //     getApiData("GET", `/api/temp/configuration/appointmentcategories`).then(
-  //       (x) => {
-  //         x.data.splice(0, 0, getDefaultOption());
-  //         setType(x.data);
-  //       }
-  //     );
-  //   }, []);
-
   const handleCategoryChange = (e) => {
+    setMediums(null);
     getApiData(
       "GET",
       `/api/appointments/configuration-types?category=${e}`
@@ -51,6 +32,11 @@ export default function AppDetailsPicklists({ details, setDetails }) {
       "GET",
       `/api/appointments/configuration-locations?category=${e}`
     ).then((x) => setLocations(x.data));
+    e == "CLIENT" &&
+      getApiData(
+        "GET",
+        `/api/appointments/configuration-mediums?category=${e}`
+      ).then((x) => setMediums(x.data));
   };
   return (
     <div className="w-full">
@@ -65,18 +51,21 @@ export default function AppDetailsPicklists({ details, setDetails }) {
       />
 
       <Picklist
+        hidden={!types}
         options={types}
         value={details?.type?.id}
         label="Type"
         setSelected={(e) => setDetails({ ...details, type: { id: e } })}
       />
       <Picklist
+        hidden={!locations}
         options={locations}
         value={details?.location?.id}
         label="Location"
         setSelected={(e) => setDetails({ ...details, location: { id: e } })}
       />
       <Picklist
+        hidden={!mediums}
         options={mediums}
         value={details?.medium?.id}
         label="Medium"
