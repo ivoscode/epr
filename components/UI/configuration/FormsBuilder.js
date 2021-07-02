@@ -58,13 +58,13 @@ export default function FormsBuilder() {
       setMessage("Please add a form ID.");
       return;
     }
-    if (data.title.length <= 1) {
+    if (data.title.length < 1) {
       setIsDialogOpen(true);
       setMessage("Please add a form Title.");
       return;
     }
-    console.log(data.id.length <= 1);
-    if (schema.components.length <= 1) {
+
+    if (schema.components.length < 1) {
       setIsDialogOpen(true);
       setMessage("Please add an element to the form.");
       return;

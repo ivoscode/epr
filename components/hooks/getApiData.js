@@ -46,11 +46,25 @@ const getApiData = (method, url, params) => {
       })
 
       .catch((e) => {
-        console.log("getApiData catching error", e);
+        console.log(e);
+        switch (e.response.status) {
+          case 401:
+            console.log(
+              `%c Error 401 ${url} `,
+              "background: #dc143c; color: #f0ffff",
+              e.response.data.Message
+            );
+            window.sessionStorage.clear();
+            window.location.replace("/");
+          case 500:
+            console.log(
+              `%c Internal server error 500 ${url} `,
+              "background: #dc143c; color: #f0ffff",
+              e.response.data.Message
+            );
 
-        // window.sessionStorage.removeItem("EprUser");
-        // window.sessionStorage.clear();
-        // window.location.replace("/");
+          default:
+        }
       });
 
     promise.then((x) => putCache(x, url));
@@ -65,7 +79,16 @@ const getApiData = (method, url, params) => {
       { headers }
     )
     .catch((e) => {
-      console.log(e);
+      switch (e.response.status) {
+        case 500:
+          console.log(
+            `%c Internal server error 500 ${url} `,
+            "background: #dc143c; color: #f0ffff",
+            e.response.data.Message
+          );
+
+        default:
+      }
     });
   promise.then((x) => putCache(x, url));
   return promise;

@@ -16,7 +16,7 @@ export default function Home() {
     if (user) {
       setUser(user);
       dispatch({ type: "LOGIN", payload: user });
-      router.push(user.homeRoute.url);
+      router.push(user.homepage);
     }
   }, []);
 

@@ -3,6 +3,7 @@ import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Context } from "../../../context/index";
+import DropdownMenu from "./DropdownMenu";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -61,24 +62,10 @@ export default function Navbar() {
                     alt="Workflow"
                   />
                 </div>
-                <div className="hidden sm:block sm:ml-6 ">
-                  <div className="flex space-x-4">
+                <div className="hidden sm:block  pt-1 sm:ml-6 ">
+                  <div className="flex  space-x-4">
                     {navRoutes &&
-                      navRoutes.map((item) => (
-                        <a
-                          key={item.id}
-                          href={item.url}
-                          className={classNames(
-                            item.current
-                              ? "bg-gray-900 text-white"
-                              : "text-gray-300 hover:bg-gray-600 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium"
-                          )}
-                          aria-current={item.current ? "page" : undefined}
-                        >
-                          {item.title}
-                        </a>
-                      ))}
+                      navRoutes.map((item) => <DropdownMenu item={item} />)}
                   </div>
                 </div>
               </div>

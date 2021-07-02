@@ -16,6 +16,7 @@ const useCheckAccess = () => {
     );
 
     getApiData("GET", `/api/session/check?url=${route}`).then((x) => {
+      console.log(x);
       if (x?.status === 200) {
         setAuthorized(true);
         switch (x.data.missing) {

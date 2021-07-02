@@ -58,9 +58,8 @@ export default function AppointmentDetailsContent() {
     e.preventDefault();
     console.log("details in POST function", details);
     getApiData(`POST`, `/api/appointment/save`, details).then((x) => {
-      if (x.status == 200) {
+      if (x?.status == 200) {
         router.back();
-        console.log(x);
       }
     });
   };

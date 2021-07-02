@@ -97,3 +97,9 @@
 #eu9y5wn {
   @apply mt-10 !important;
 }
+.rc-menu {
+  @apply bg-gray-800 rounded-md mt-4 -ml-3 !important;
+}
+.rc-menu__item {
+  @apply bg-gray-800 rounded-md mt-4 text-white !important;
+}

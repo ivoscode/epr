@@ -8,7 +8,7 @@ export default function LoginForm() {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const credentials = { username, password };
-  const { state, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
   const router = useRouter();
 
   const handleSubmit = async (e, credentials) => {
@@ -18,11 +18,10 @@ export default function LoginForm() {
       console.log("%c login API call", "background: #dc143c; color: #f0ffff");
       const response = await axios.post(
         "https://web2.ajbsoftware.co.uk:5000/api/session/create/",
-        { ...credentials }
+        credentials
       );
 
-      getRoutes(response.data.token, response.data.user, response.data.hcp); //need hcp id from server from the first response
-
+      getRoutes(response.data.token, response.data.user, response.data.hcp);
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -42,23 +41,23 @@ export default function LoginForm() {
           },
         }
       );
-      console.log(routes);
-      const homeRoute = routes.data.find((o) => o.isHomePage === true);
+      console.log(routes.data);
+
       const userState = {
-        navRoutes: [...routes.data],
+        navRoutes: routes.data.menus,
         token,
         user,
         hcp,
-        homeRoute,
+        homepage: routes.data.homepage,
       };
       sessionStorage.setItem("EprUser", JSON.stringify(userState));
       dispatch({ type: "LOGIN", payload: userState });
-      router.push(homeRoute.url);
+      router.push(routes.data.homepage);
 
       setLoading(false);
     } catch (e) {
       setLoading(false);
-      console.log(e.response);
+      console.log(e);
     }
   };
 
