@@ -1,7 +1,7 @@
 import { ChevronRightIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import getApiData from "../../../components/hooks/getApiData";
+import getApiData from "../../../../components/hooks/getApiData";
 export default function FormsList() {
   const [forms, setForms] = useState(null);
   const router = useRouter();

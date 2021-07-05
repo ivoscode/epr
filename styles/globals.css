@@ -93,9 +93,15 @@
 .btn-danger {
   @apply bg-gray-700 border-gray-700 !important;
 }
-
+ {
+  /*-----------overriding forms io style sheet----------*/
+}
 #eu9y5wn {
   @apply mt-10 !important;
+}
+
+ {
+  /*-------overriding menu component style---------------*/
 }
 .rc-menu {
   @apply bg-gray-800 rounded-md mt-4 -ml-3 !important;

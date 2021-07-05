@@ -6,14 +6,24 @@ export default function DropdownMenu(props) {
   const createMenu = (item) => {
     if (item.children.length === 0) {
       return (
-        <MenuItem className="text-white hover:bg-gray-700" href={item.url}>
+        <MenuItem
+          className="text-white "
+          href={item.url}
+          key={"menu-" + item.id}
+        >
           {item.title}
         </MenuItem>
       );
     } else {
       return (
-        <SubMenu className="text-white hover:bg-gray-700" label={item.title}>
-          {item.children.map((x) => createMenu(x))}
+        <SubMenu
+          className="text-white "
+          label={item.title}
+          key={"submenu-" + item.id}
+        >
+          {item.children.map((x) => {
+            return createMenu(x);
+          })}
         </SubMenu>
       );
     }
@@ -23,8 +33,8 @@ export default function DropdownMenu(props) {
     <div className="text-white ">
       <Menu
         menuButton={
-          <MenuButton className="bg-gray-700  text-gray-300 hover:bg-gray-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-            {props.item.title}{" "}
+          <MenuButton className="bg-gray-700    px-3 py-2 rounded-md text-sm font-medium">
+            {props.item.title}
           </MenuButton>
         }
       >

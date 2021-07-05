@@ -2,9 +2,9 @@ import format from "date-fns/format";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FormBuilder } from "react-formio";
-import getApiData from "../../hooks/getApiData";
-import BtnMain from "../../Shared/buttons/BtMain";
-import MyDialog from "../../Shared/MyDialog";
+import getApiData from "../../../hooks/getApiData";
+import BtnMain from "../../../Shared/buttons/BtMain";
+import MyDialog from "../../../Shared/MyDialog";
 
 export default function FormsBuilder() {
   const [schema, setSchema] = useState();

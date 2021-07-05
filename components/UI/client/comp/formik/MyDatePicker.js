@@ -1,15 +1,13 @@
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { useField } from "formik";
 import React from "react";
 
 export default function MyDatePicker(props) {
   const [field, meta, helpers] = useField(props.name);
-  const { label, name, options, onChange, ...rest } = props;
-
+  const { label, name, options, registerChange, ...rest } = props;
+  // console.log(typeof field.value);
+  // console.log(field.value);
   return (
     <div className="flex flex-col items-center mt-4">
       <div className="flex w-full justify-evenly items-center mt-4">
@@ -18,8 +16,7 @@ export default function MyDatePicker(props) {
         </div>
         <div className="w-1/2 text-center">
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              {...field}
+            <DatePicker
               //showTodayButton
               openTo="month"
               format="dd/MM/yyyy"
@@ -29,10 +26,11 @@ export default function MyDatePicker(props) {
               ampm={false}
               value={meta.value}
               onChange={(e) => {
+                console.log(e);
                 helpers.setValue(e);
 
-                if (typeof onChange == "function") {
-                  onChange(e);
+                if (typeof registerChange == "function") {
+                  registerChange();
                   console.log("onchange fired");
                 }
               }}

@@ -9,12 +9,27 @@ export default function MyAddressSearchInput({ setInitialAddress }) {
   const [showSearchResultsList, setShowSearchResultsList] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState();
   const [addresses, setAddresses] = useState([]);
+  //--------------------Post code validate and format----------------------
+  const isValidPostcode = (p) => {
+    var postcodeRegEx = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i;
+    const result = postcodeRegEx.test(p);
 
+    return result;
+  };
+  // const formatPostcode = (p) => {
+  //   if (isValidPostcode(p)) {
+  //     var postcodeRegEx = /(^[A-Z]{1,2}[0-9]{1,2})([0-9][A-Z]{2}$)/i;
+  //     return p.replace(postcodeRegEx, "$1 $2").toUpperCase();
+  //   } else {
+  //     return p;
+  //   }
+  // };
   //--------------------Call to  post code API----------------------
   const handleGetAddress = () => {
     isValidPostcode(postcodeToSearch) &&
       getAddressApi(postcodeToSearch).then((x) => {
         console.log("response from getAddressApi", x);
+
         setAddresses(x.data);
         const picklistOptions = x.data.addresses?.map((address) => {
           return {
@@ -23,6 +38,14 @@ export default function MyAddressSearchInput({ setInitialAddress }) {
           };
         });
         setPicklistOptions(picklistOptions);
+        if (x.data.addresses.length == 0) {
+          setPicklistOptions([
+            {
+              id: 1,
+              description: "nothing found",
+            },
+          ]);
+        }
         setShowSearchResultsList(true);
       });
   };
@@ -40,21 +63,6 @@ export default function MyAddressSearchInput({ setInitialAddress }) {
       line5: pickedAddress.county,
       postcode: addresses.postcode,
     });
-  };
-  //--------------------Post code validate and format----------------------
-  const isValidPostcode = (p) => {
-    var postcodeRegEx = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i;
-    const result = postcodeRegEx.test(p);
-
-    return result;
-  };
-  const formatPostcode = (p) => {
-    if (isValidPostcode(p)) {
-      var postcodeRegEx = /(^[A-Z]{1,2}[0-9]{1,2})([0-9][A-Z]{2}$)/i;
-      return p.replace(postcodeRegEx, "$1 $2").toUpperCase();
-    } else {
-      return p;
-    }
   };
 
   const picklistOption1 = () => {

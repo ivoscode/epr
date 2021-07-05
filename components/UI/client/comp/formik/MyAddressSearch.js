@@ -52,7 +52,13 @@ export default function MyAddressSearch(props) {
   }
   const validationSchema = Yup.object().shape({
     line1: Yup.string().required("Required"),
-    postcode: Yup.string().required("Required"),
+    postcode: Yup.string()
+      .trim()
+      .matches(
+        /(^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$)/i,
+        "Is not in correct format"
+      )
+      .required("Required"),
   });
   return (
     <div>
@@ -65,7 +71,9 @@ export default function MyAddressSearch(props) {
         {(props) => {
           const { isSubmitting, values } = props;
           {
+            /* {
             console.log(isSubmitting);
+          } */
           }
           return (
             <Form>
@@ -78,21 +86,45 @@ export default function MyAddressSearch(props) {
                   <MyAddressSearchInput setInitialAddress={setInitialAddress} />
                 </Container>
                 {/*----------Address fields-----------*/}
+
                 <Container>
                   <MyTextInput
                     label="Address Line 1"
                     name="line1"
                     type="text"
+                    registerChange={props.registerChange}
                   />
                   <MyTextInput
                     label="Address Line 2"
                     name="line2"
                     type="text"
+                    registerChange={props.registerChange}
                   />
-                  <MyTextInput label="Locality" name="line3" type="text" />
-                  <MyTextInput label="Town or City" name="line4" type="text" />
-                  <MyTextInput label="County" name="line5" type="text" />
-                  <MyTextInput label="Postcode" name="postcode" type="text" />
+                  <MyTextInput
+                    label="Locality"
+                    name="line3"
+                    type="text"
+                    registerChange={props.registerChange}
+                  />
+                  <MyTextInput
+                    label="Town or City"
+                    name="line4"
+                    type="text"
+                    registerChange={props.registerChange}
+                  />
+                  <MyTextInput
+                    label="County"
+                    name="line5"
+                    type="text"
+                    registerChange={props.registerChange}
+                  />
+                  <MyTextInput
+                    label="Postcode"
+                    name="postcode"
+                    type="text"
+                    style="uppercase"
+                    registerChange={props.registerChange}
+                  />
                 </Container>
                 {/*----------button-------------*/}
 

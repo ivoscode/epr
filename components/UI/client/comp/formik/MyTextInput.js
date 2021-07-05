@@ -1,7 +1,12 @@
 import { useField } from "formik";
 import React from "react";
 
-export default function MyTextInput({ label, onChange, ...props }) {
+export default function MyTextInput({
+  label,
+  registerChange,
+  style,
+  ...props
+}) {
   const [field, meta] = useField(props);
 
   return (
@@ -13,14 +18,13 @@ export default function MyTextInput({ label, onChange, ...props }) {
         <div
           className="w-1/2"
           onChange={(e) => {
-            // console.log(typeof onChange);
-            if (typeof onChange == "function") {
-              onChange(e);
+            if (typeof registerChange == "function") {
+              registerChange();
               console.log("onchange fired");
             }
           }}
         >
-          <input className="input-box " {...field} {...props} />
+          <input className={`input-box ${style}`} {...field} {...props} />
         </div>
       </div>
       {meta.touched && meta.error ? (

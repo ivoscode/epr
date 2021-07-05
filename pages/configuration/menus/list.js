@@ -1,6 +1,6 @@
 //import useCheckAccess from "../../../../components/hooks/useCheckAccess";
 import Layout from "../../../components/Layout";
-import FormsList from "../../../components/UI/configuration/forms/FormsList";
+import MenusList from "../../../components/UI/configuration/menus/MenusList";
 
 export default function List() {
   // const { authorized } = useCheckAccess();
@@ -10,7 +10,7 @@ export default function List() {
   // }
   return (
     <Layout>
-      <FormsList />
+      <MenusList />
     </Layout>
   );
 }

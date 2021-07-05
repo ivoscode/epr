@@ -3,7 +3,14 @@ import React from "react";
 
 export default function MySelect(props) {
   const [field, meta] = useField(props.name);
-  const { label, name, options, setFormIsTouched, onChange, ...rest } = props;
+  const {
+    label,
+    name,
+    options,
+
+    registerChange,
+    ...rest
+  } = props;
 
   //   console.log(meta);
   //   console.log(field);
@@ -18,8 +25,8 @@ export default function MySelect(props) {
         <div
           className="w-1/2"
           onChange={(e) => {
-            if (typeof onChange == "function") {
-              onChange(e);
+            if (typeof registerChange == "function") {
+              registerChange(e);
               console.log("onchange fired");
             }
           }}

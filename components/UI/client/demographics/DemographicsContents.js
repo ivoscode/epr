@@ -40,7 +40,9 @@ export default function DemographicsContent() {
     },
     telecom: null,
   });
+
   const [formIsTouched, setFormIsTouched] = useState(false);
+
   const [isAddressSearchModalOpened, setIsAddressSearchModalOpened] =
     useState(false);
   const titleDropdownOptions = [
@@ -84,6 +86,7 @@ export default function DemographicsContent() {
     actions.setSubmitting(false);
     setFormIsTouched(false);
   };
+
   const validationSchema = Yup.object().shape({
     nhs: Yup.string()
       .min(10, "Too Short!")
@@ -101,7 +104,7 @@ export default function DemographicsContent() {
       postcode: Yup.string().required("Required"),
     }),
 
-    dob: Yup.string().required("Required"),
+    dob: Yup.string().nullable().required("Required"),
   });
   return (
     <Formik
@@ -114,11 +117,13 @@ export default function DemographicsContent() {
         const { isSubmitting, values, setValues } = props;
 
         {
+          /* {
           console.log(props);
+        } */
         }
 
         return (
-          <Form>
+          <Form autoComplete="off">
             <div
               className=" mb-10  mt-52 sm:mt-16  overflow-hidden flex 
        flex-col justify-center items-center max-w-2xl mx-auto  rounded-md p-6  "
@@ -130,7 +135,7 @@ export default function DemographicsContent() {
                   label="NHS Number"
                   name="nhs"
                   type="text"
-                  onChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setFormIsTouched(true)}
                 />
               </Container>
               {/*------------Name container-------------------------------------------*/}
@@ -140,15 +145,14 @@ export default function DemographicsContent() {
                   label="Title"
                   name="name.title"
                   options={titleDropdownOptions}
-                  onChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setFormIsTouched(true)}
                 />
                 {/*--------------first name---------*/}
                 <MyTextInput
                   label="First Name"
                   name="name.first"
                   type="text"
-                  setFormIsTouched={setFormIsTouched}
-                  onChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setFormIsTouched(true)}
                 />
 
                 {/*----------last name-----------*/}
@@ -157,27 +161,30 @@ export default function DemographicsContent() {
                   name="name.last"
                   type="text"
                   placeholder="Please enter last name"
-                  onChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setFormIsTouched(true)}
                 />
                 {/*----gender picklist------*/}
                 <MySelect
                   label="Gender"
                   name="gender.code"
                   options={genderDropdownOptions}
-                  onChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setFormIsTouched(true)}
                 />
 
                 {/*----Date of birth------*/}
                 <MyDatePicker
                   label="DOB"
                   name="dob"
-                  onChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setFormIsTouched(true)}
                 />
               </Container>
 
               {/*-----------Address-----------------------------------------*/}
               <Container title="Address">
                 <div className="w-full border-2 h-40 border-blue-300 text-gray-500 rounded  py-2 px-4">
+                  {!values.address.line1 ? (
+                    <div className="text-pink-300">Please enter an address</div>
+                  ) : null}
                   <ul>
                     <li>{values.address.line1}</li>
                     <li>{values.address.line2}</li>
@@ -190,7 +197,9 @@ export default function DemographicsContent() {
 
                 <BtnMain
                   style="mt-8"
-                  onClick={() => setIsAddressSearchModalOpened(true)}
+                  onClick={() => {
+                    setIsAddressSearchModalOpened(true);
+                  }}
                 >
                   Search
                 </BtnMain>
@@ -202,7 +211,10 @@ export default function DemographicsContent() {
                 onClose={() => setIsAddressSearchModalOpened(false)}
               >
                 <MyAddressSearch
-                  onClose={() => setIsAddressSearchModalOpened(false)}
+                  onClose={() => {
+                    setFormIsTouched(true);
+                    setIsAddressSearchModalOpened(false);
+                  }}
                   initialAddress={values.address}
                   setValues={setValues}
                   values={values}
