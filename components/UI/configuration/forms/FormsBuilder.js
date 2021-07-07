@@ -6,7 +6,7 @@ import getApiData from "../../../hooks/getApiData";
 import BtnMain from "../../../Shared/buttons/BtMain";
 import MyDialog from "../../../Shared/MyDialog";
 
-export default function FormBuilder() {
+export default function FormsBuilder() {
   const [schema, setSchema] = useState();
   const [form, setForm] = useState(null);
   const [idDisabled, setIdDisabled] = useState(false);
