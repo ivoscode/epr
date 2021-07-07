@@ -61,7 +61,7 @@ export default function FormsList() {
       {/*Bottom button*/}
       <div
         onClick={() => {
-          router.push(`/configuration/forms/builder`);
+          router.push(`/configuration/menus/builder`);
         }}
         className=" backdrop-filter backdrop-blur-2xl w-full flex justify-center fixed bottom-1 right-1 left-1  py-4 "
       >
