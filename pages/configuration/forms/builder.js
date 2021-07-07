@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
 //import useCheckAccess from "../../../components/hooks/useCheckAccess";
 import Layout from "../../../components/Layout";
-const FormsBuilder = dynamic(
-  () => import("../../../components/UI/configuration/FormsBuilder"),
+const FormBuilder = dynamic(
+  () => import("../../../components/UI/configuration/FormBuilder"),
   {
     ssr: false,
   }
@@ -13,7 +13,7 @@ export default function Builder() {
   //   if (!authorized) return null;
   return (
     <Layout>
-      <FormsBuilder />
+      <FormBuilder />
     </Layout>
   );
 }
