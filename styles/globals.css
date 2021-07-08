@@ -114,10 +114,10 @@
 }
 
 .rst__row {
-  @apply !important;
+  @apply  rounded-r-md !important;
 }
 .rst__moveHandle {
-  @apply bg-gray-700 rounded-sm overflow-hidden !important;
+  @apply bg-gray-700 rounded-l-md overflow-hidden !important;
 }
 
 .rst__placeholder {

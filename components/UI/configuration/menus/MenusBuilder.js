@@ -82,10 +82,10 @@ export default function MenusBuilder() {
 
     if (node.hasOwnProperty("url")) {
       console.log("it is an endpoint");
-      testclass = "bg-blue-300";
+      testclass = "bg-blue-300 text-black py-2 px-3 -ml-4 rounded-r-md";
     } else {
       console.log("it is a folder");
-      testclass = "bg-gray-300 ";
+      testclass = "bg-gray-700 text-white py-2 px-3 -ml-4 rounded-r-md";
     }
 
     console.log(node);
@@ -120,7 +120,7 @@ export default function MenusBuilder() {
           }}
         >
           <span>
-            <TrashIcon className="w-5 h-5 mt-1 " />
+            <TrashIcon className="w-5 h-5 mt-1 mr-1 " />
           </span>
         </button>,
       ],
@@ -186,9 +186,20 @@ export default function MenusBuilder() {
           </button> */}
           </div>
         </div>
-        <div className="mt-20 flex justify-center">
-          <BtnMain onClick={handleMenusSubmit}>Save</BtnMain>{" "}
+         <div className=" mt-20 flex justify-center">
+          <BtnMain style="mx-12" onClick={handleMenusSubmit}>
+            Save
+          </BtnMain>
+          <BtnMain
+            style="mx-12"
+            onClick={() => {
+              router.push("/configuration/menus/list");
+            }}
+          >
+            Close
+          </BtnMain>
         </div>
+        
       </DndProvider>
     </>
   );

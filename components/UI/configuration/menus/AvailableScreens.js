@@ -40,7 +40,7 @@ export default function AvailableScreens() {
           return (
             <div
               key={item.id}
-              className="bg-blue-500 text-white p-2 rounded-md my-2"
+              className="bg-blue-300 text-black p-2 rounded-md my-2"
             >
               <ExternalNodeComponent node={item} />
             </div>
