@@ -5,6 +5,8 @@ import { Provider } from "../context/index";
 import "../node_modules/react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "../node_modules/react-grid-layout/css/styles.css";
 import "../node_modules/react-resizable/css/styles.css";
+import "../node_modules/@nosferatu500/react-sortable-tree/style.css";
+
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
