@@ -10,8 +10,8 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { generateGUID } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
+import MyDialog from "../../../Shared/alerts/MyDialog";
 import BtnMain from "../../../Shared/buttons/BtMain";
-import MyDialog from "../../../Shared/MyDialog";
 import AvailableScreens from "./AvailableScreens";
 export default function MenusBuilder() {
   const router = useRouter();
