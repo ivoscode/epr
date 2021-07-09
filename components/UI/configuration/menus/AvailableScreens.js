@@ -12,6 +12,12 @@ export default function AvailableScreens() {
     },
     {
       id: generateGUID(),
+      title: "Demographics",
+      url: "/client/demographics",
+      requiresClient: true,
+    },
+    {
+      id: generateGUID(),
       title: "Menus list",
       url: "/configuration/menus/list",
       requiresClient: false,

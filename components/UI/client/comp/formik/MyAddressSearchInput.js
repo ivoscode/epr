@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { getDefaultOption } from "../../../../helpers/helperFunctions";
 import getAddressApi from "../../../../hooks/getAddressApi";
 import BtnMain from "../../../../Shared/buttons/BtMain";
 import Picklist from "../../../../Shared/formElements/Picklist";
-
 export default function MyAddressSearchInput({ setInitialAddress }) {
   const [postcodeToSearch, setPostcodeToSearch] = useState("");
   const [picklistOptions, setPicklistOptions] = useState();
@@ -31,13 +31,16 @@ export default function MyAddressSearchInput({ setInitialAddress }) {
         console.log("response from getAddressApi", x);
 
         setAddresses(x.data);
-        const picklistOptions = x.data.addresses?.map((address) => {
+        const picklistOpt = x.data.addresses?.map((address) => {
           return {
             id: address.line_1,
             description: address.formatted_address.toString(),
           };
         });
+        const picklistOptions = [getDefaultOption()].concat(picklistOpt);
+        console.log(picklistOptions);
         setPicklistOptions(picklistOptions);
+
         if (x.data.addresses.length == 0) {
           setPicklistOptions([
             {
@@ -65,16 +68,6 @@ export default function MyAddressSearchInput({ setInitialAddress }) {
     });
   };
 
-  const picklistOption1 = () => {
-    if (!selectedAddress) {
-      return null;
-    }
-
-    return {
-      id: "",
-      description: selectedAddress?.formatted_address.toString(),
-    };
-  };
   return (
     <div>
       <div className="flex items-center  w-full justify-between ">
@@ -94,12 +87,6 @@ export default function MyAddressSearchInput({ setInitialAddress }) {
       <div className={`${showSearchResultsList ? "block" : "hidden"}`}>
         <Picklist
           options={picklistOptions}
-          value={
-            picklistOption1() || {
-              id: "",
-              description: `Please select your address`,
-            }
-          }
           setSelected={(e) => pickAddress(e)}
         />
       </div>

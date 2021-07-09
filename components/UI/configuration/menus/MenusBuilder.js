@@ -1,13 +1,13 @@
 import { TrashIcon } from "@heroicons/react/outline";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import {
   changeNodeAtPath,
   removeNodeAtPath,
   SortableTreeWithoutDndContext as SortableTree,
 } from "@nosferatu500/react-sortable-tree";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { generateGUID } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import BtnMain from "../../../Shared/buttons/BtMain";
@@ -20,7 +20,6 @@ export default function MenusBuilder() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [message, setMessage] = useState(null);
 
-  console.log(menuItems);
   {
     /*---------getting menu from API---------------*/
   }
@@ -68,12 +67,12 @@ export default function MenusBuilder() {
   {
     /*-------------*/
   }
-  const canDrop = ({ node, nextParent, prevPath, nextPath }) => {
-    if (nextParent?.hasOwnProperty("url")) {
-      return false;
-    }
-    return true;
-  };
+  // const canDrop = ({ node, nextParent, prevPath, nextPath }) => {
+  //   if (nextParent?.hasOwnProperty("url")) {
+  //     return false;
+  //   }
+  //   return true;
+  // };
   {
     /*-------------generates remove button on the node-----------------*/
   }
@@ -81,14 +80,13 @@ export default function MenusBuilder() {
     let testclass = "";
 
     if (node.hasOwnProperty("url")) {
-      console.log("it is an endpoint");
+      //console.log("it is an endpoint");
       testclass = "bg-blue-300 text-black py-2 px-3 -ml-4 rounded-r-md";
     } else {
-      console.log("it is a folder");
+      //console.log("it is a folder");
       testclass = "bg-gray-700 text-white py-2 px-3 -ml-4 rounded-r-md";
     }
 
-    console.log(node);
     return {
       title: (
         <input
@@ -170,7 +168,8 @@ export default function MenusBuilder() {
               innerStyle={{ color: "red" }}
               dndType="yourNodeType"
               isVirtualized={false}
-              canDrop={canDrop}
+              //canDrop={canDrop}
+              canNodeHaveChildren={(node) => !node.url}
               generateNodeProps={generateNodeProps}
               treeData={menuItems}
               onChange={(data) => {
@@ -186,7 +185,7 @@ export default function MenusBuilder() {
           </button> */}
           </div>
         </div>
-         <div className=" mt-20 flex justify-center">
+        <div className=" mt-20 flex justify-center">
           <BtnMain style="mx-12" onClick={handleMenusSubmit}>
             Save
           </BtnMain>
@@ -199,7 +198,6 @@ export default function MenusBuilder() {
             Close
           </BtnMain>
         </div>
-        
       </DndProvider>
     </>
   );

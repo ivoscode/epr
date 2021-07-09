@@ -34,7 +34,7 @@ export default function AppointmentDetailsContent() {
       setDetails({
         ...details,
         datetime: router.query.datetime,
-        duration: 30,
+        duration: router.query.duration,
         hcps: [
           {
             hcp: {

@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FormBuilder } from "react-formio";
 import getApiData from "../../../hooks/getApiData";
+import MyDialog from "../../../Shared/alerts/MyDialog";
 import BtnMain from "../../../Shared/buttons/BtMain";
-import MyDialog from "../../../Shared/MyDialog";
 
 export default function FormsBuilder() {
   const [schema, setSchema] = useState();

@@ -9,6 +9,7 @@ import MyAddressSearch from "../comp/formik/MyAddressSearch";
 import MyDatePicker from "../comp/formik/MyDatePicker";
 import MySelect from "../comp/formik/MySelect";
 import MyTextInput from "../comp/formik/MyTextInput";
+import GpGpPracticeSearch from "./gpSearch/GpGpPracticeSearch";
 export default function DemographicsContent() {
   const router = useRouter();
 
@@ -34,16 +35,20 @@ export default function DemographicsContent() {
       postcode: "",
     },
     dob: null,
+    gp: "",
+    gppractice: "",
     gender: {
       code: "",
       description: "", ////mandatory field 2 is for female
     },
     telecom: null,
   });
-
+  //console.log(client);
   const [formIsTouched, setFormIsTouched] = useState(false);
 
   const [isAddressSearchModalOpened, setIsAddressSearchModalOpened] =
+    useState(false);
+  const [isGpGpPracticeSearchModalOpened, setIsGpGpPracticeSearchModalOpened] =
     useState(false);
   const titleDropdownOptions = [
     { description: "Select ", code: "" },
@@ -85,6 +90,9 @@ export default function DemographicsContent() {
     getApiData(`POST`, `/api/client/save`, values);
     actions.setSubmitting(false);
     setFormIsTouched(false);
+    setTimeout(() => {
+      router.reload();
+    }, 1000);
   };
 
   const validationSchema = Yup.object().shape({
@@ -138,6 +146,7 @@ export default function DemographicsContent() {
                   registerChange={(e) => setFormIsTouched(true)}
                 />
               </Container>
+
               {/*------------Name container-------------------------------------------*/}
               <Container title="Name">
                 {/*----title picklist------*/}
@@ -195,16 +204,44 @@ export default function DemographicsContent() {
                   </ul>
                 </div>
 
-                <BtnMain
-                  style="mt-8"
-                  onClick={() => {
-                    setIsAddressSearchModalOpened(true);
-                  }}
-                >
-                  Search
-                </BtnMain>
+                <div className="flex justify-end">
+                  <BtnMain
+                    style="mt-8"
+                    onClick={() => {
+                      setIsAddressSearchModalOpened(true);
+                    }}
+                  >
+                    Search
+                  </BtnMain>
+                </div>
               </Container>
-
+              {/*-----------------GP Search----------*/}
+              <Container title="GP">
+                <MyTextInput
+                  disabled
+                  label="GP Practice"
+                  name="gppractice"
+                  type="text"
+                  registerChange={(e) => setFormIsTouched(true)}
+                />
+                <MyTextInput
+                  disabled
+                  label="GP"
+                  name="gp"
+                  type="text"
+                  registerChange={(e) => setFormIsTouched(true)}
+                />
+                <div className="flex justify-end">
+                  <BtnMain
+                    style="mt-8"
+                    onClick={() => {
+                      setIsGpGpPracticeSearchModalOpened(true);
+                    }}
+                  >
+                    Search
+                  </BtnMain>
+                </div>
+              </Container>
               {/*-------------Modal for address search-------------*/}
               <Modal
                 isOpened={isAddressSearchModalOpened}
@@ -216,6 +253,22 @@ export default function DemographicsContent() {
                     setIsAddressSearchModalOpened(false);
                   }}
                   initialAddress={values.address}
+                  setValues={setValues}
+                  values={values}
+                />
+              </Modal>
+              {/*-------------Modal for GP search-------------*/}
+              <Modal
+                isOpened={isGpGpPracticeSearchModalOpened}
+                onClose={() => setIsGpGpPracticeSearchModalOpened(false)}
+              >
+                <GpGpPracticeSearch
+                  onClose={() => {
+                    setFormIsTouched(true);
+                    setIsGpGpPracticeSearchModalOpened(false);
+                  }}
+                  initialGp={values.gp}
+                  initialGpPractice={values.gppractice}
                   setValues={setValues}
                   values={values}
                 />

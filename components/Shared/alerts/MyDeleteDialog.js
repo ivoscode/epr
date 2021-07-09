@@ -1,11 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-export default function MyModal({ isOpen, setIsOpen, title, message }) {
-  //let [isOpen, setIsOpen] = useState(true);
-
+export default function MyDeleteDialog({
+  isOpen,
+  setIsOpen,
+  title,
+  message,
+  handleDelete,
+}) {
+  //the event to delete gets passed trough isOpen state
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition appear show={isOpen ? true : false} as={Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
@@ -53,15 +58,24 @@ export default function MyModal({ isOpen, setIsOpen, title, message }) {
                 <p className="text-sm text-gray-500">{message}</p>
               </div>
 
-              <div className="mt-4">
+              <div className="mt-8 flex justify-center">
                 <button
                   type="button"
-                  className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-transparent rounded-md hover:bg-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                  className="inline-flex justify-center mx-14 px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-transparent rounded-md hover:bg-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                   onClick={() => {
                     setIsOpen(false);
                   }}
                 >
-                  Got it, thanks!
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="inline-flex justify-center mx-14 px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-transparent rounded-md hover:bg-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                  onClick={() => {
+                    handleDelete(isOpen);
+                  }}
+                >
+                  Delete
                 </button>
               </div>
             </div>

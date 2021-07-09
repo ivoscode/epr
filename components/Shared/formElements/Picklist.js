@@ -1,6 +1,6 @@
 export default function Picklist(props) {
   const { label, name, options, setSelected, value, hidden } = props;
-  // console.log(options);
+  console.log(options);
   return (
     <div
       className={`${

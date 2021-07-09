@@ -48,7 +48,7 @@ export default function DiaryContent() {
       getApiData(`POST`, `/api/appointment/save`, x.data).then((x) => {
         getApiData(
           "GET",
-          `/api/appointments/range?hcp=&start=2021-06-01&end=2021-06-30`
+          `/api/appointments/range?hcp=&start=2021-06-01&end=2021-07-30`
         ).then((x) => {
           setEvents(x.data);
         });
@@ -91,7 +91,8 @@ export default function DiaryContent() {
         startAccessor="start"
         endAccessor="end"
         style={{ height: screen }}
-        onSelectEvent={(event) => {
+        onDoubleClickEvent={(event) => {
+          
           router.push(
             ///ternary operator to account for cases when there is no client id
             `/hcp/appointments/appointment-details?id=${event.id}${
@@ -100,10 +101,12 @@ export default function DiaryContent() {
           );
         }}
         onSelectSlot={(e) => {
+          console.log(e)
+          const duration= (e.end - e.start) / 60 / 1000
           router.push(
             `/hcp/appointments/appointment-details?hcp=${
               user.hcpId
-            }&datetime=${format(e.start, "yyyy-MM-dd'T'HH:mm")}`
+            }&datetime=${format(e.start, "yyyy-MM-dd'T'HH:mm")}&duration=${duration}`
           );
         }}
       />

@@ -3,8 +3,11 @@ import { ChevronRightIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import getApiData from "../../../../components/hooks/getApiData";
+import MyDeleteDialog from "../../../Shared/alerts/MyDeleteDialog";
 export default function FormsList() {
   const [menus, setMenus] = useState(null);
+  let [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [message, setMessage] = useState("Are you sure you want to delete?");
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +29,13 @@ export default function FormsList() {
 
   return (
     <div>
+      {/*-------alert box---------*/}
+      <MyDeleteDialog
+        isOpen={isDialogOpen}
+        setIsOpen={setIsDialogOpen}
+        message={message}
+        handleDelete={handleDelete}
+      />
       <div className="pb-20 mt-44 sm:mt-24 lg:mt-16 ">
         <div className="m-3 mb-36 rounded-md shadow-md mx-auto max-w-3xl border-2 border-gray-700">
           <div className="flex justify-between text-white bg-gray-800 px-4 py-2">
@@ -61,7 +71,8 @@ export default function FormsList() {
                       <button
                         className=" flex items-center  bg-chevron-color  hover:bg-chevron-hover-color text-white rounded-md w-8 h-8 p-1.5"
                         onClick={() => {
-                          handleDelete(item.id);
+                          setIsDialogOpen(item.id);
+                          // handleDelete(item.id);
                         }}
                       >
                         <TrashIcon />
