@@ -1,19 +1,26 @@
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import * as Yup from "yup";
 import getApiData from "../../../../hooks/getApiData";
 import BtnMain from "../../../../Shared/buttons/BtMain";
-import MyTextInput from "../../comp/formik/MyTextInput";
+//import MyTextInput from "../../comp/formik/MyTextInput";
 import GpPracticeSearchResults from "./GpPracticeSearchResults";
+import GpSearchResults from "./GpSearchResults";
 
 export default function GpGpPracticeSearch(props) {
-  const [initialGp, setInitialGp] = useState({
-    gp: { id: 1, description: "desc" },
-    gppractice: { id: 2, description: "Alvaston" },
-  });
-  const [nothingFound, setNothingFound] = useState(true);
-  const [gpPracticeSearchResults, setGpPracticeSearchResults] = useState(null);
+  const gpPracticeInput = useRef(null);
+  const gpInput = useRef(null);
 
+  const [initialGp, setInitialGp] = useState({
+    gp: { id: "", description: "", address: { line1: "" } },
+    gppractice: { id: "", description: "", address: { line1: "" } },
+  });
+  const [nothingFound, setNothingFound] = useState(false);
+  const [gpPracticeSearchResults, setGpPracticeSearchResults] = useState(null);
+  const [showGpPracticeSearchResults, setShowGpPracticeSearchResults] =
+    useState(false);
+  const [gpSearchResults, setGpSearchResults] = useState(null);
+  const [showGpSearchResults, setShowGpSearchResults] = useState(false);
   const Container = (props) => {
     return (
       <div className="w-full border-2 border-gray-100 bg-green-500 rounded-xl p-8 mb-6 ">
@@ -22,22 +29,52 @@ export default function GpGpPracticeSearch(props) {
       </div>
     );
   };
-
+  {
+    /* ----------fetch gp practice*/
+  }
   const handleGpPracticeSearch = (e) => {
-    const searchParams = { name: e };
+    const searchParams = { name: gpPracticeInput.current.value };
     getApiData("GET", `/api/gppractice/search/`, searchParams).then((x) => {
       if (x.data[0] == null) {
         setNothingFound(true);
         return;
       }
       setNothingFound(false);
-
       setGpPracticeSearchResults(x.data);
+      setShowGpPracticeSearchResults(true);
     });
   };
-  const handleSubmit = (values, actions) => {
-    props.setValues({ ...props.values, address: { ...values } });
-    actions.setSubmitting(false);
+
+  {
+    /*------------fetch gp--------------*/
+  }
+  const handleGpSearch = (e) => {
+    const searchParams = { practice: e.id };
+    getApiData("GET", `/api/gp/search`, searchParams).then((x) => {
+      if (x.data[0] == null) {
+        setNothingFound(true);
+        return;
+      }
+      setNothingFound(false);
+      setGpSearchResults(x.data);
+      setShowGpSearchResults(true);
+    });
+  };
+  const handleSubmit = (values) => {
+    console.log(values);
+    console.log(props.setValues);
+    props.setValues({
+      ...props.values,
+      gppractice: {
+        id: values.gppractice.id,
+        description: values.gppractice.description,
+      },
+      gp: {
+        id: values.gp.id,
+        description: values.gp.description,
+      },
+    });
+
     props.onClose();
   };
 
@@ -45,7 +82,7 @@ export default function GpGpPracticeSearch(props) {
     /*------------Validation------------*/
   }
   const validationSchema = Yup.object().shape({
-    line1: Yup.string().required("Required"),
+    //line1: Yup.string().required("Required"),
   });
   return (
     <div>
@@ -56,43 +93,88 @@ export default function GpGpPracticeSearch(props) {
         validationSchema={validationSchema}
       >
         {(props) => {
-          const { isSubmitting, values } = props;
+          const { isSubmitting, values, setValues } = props;
           {
             console.log(values);
           }
           return (
             <Form>
               <div
-                className=" mb-10  mt-52 sm:mt-16  overflow-hidden flex 
+                className=" mb-10    overflow-hidden flex 
        flex-col justify-center items-center max-w-4xl mx-auto  rounded-md p-6  "
               >
                 <Container>
                   <div className=" justify-between items-center">
-                    <div>
-                      <MyTextInput
-                        label="GP Practice"
-                        name="gppractice.description"
-                        type="text"
-                        registerChange={props.registerChange}
-                      />
+                    <div className="flex items-center  w-full justify-between ">
+                      <div>
+                        <input
+                          type="text"
+                          ref={gpPracticeInput}
+                          className="input-box uppercase"
+                        />
+                      </div>
+                      <BtnMain onClick={handleGpPracticeSearch}>Search</BtnMain>
                     </div>
                     <div>
+                      <ul>
+                        <li>{values.gppractice.id}</li>
+                        <li>{values.gppractice.description}</li>
+                        <li>{values.gppractice.address.line1}</li>
+                        <li>{values.gppractice.address.line2}</li>
+                        <li>{values.gppractice.address.postcode}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </Container>
+                {showGpPracticeSearchResults && (
+                  <GpPracticeSearchResults
+                    nothingFound={nothingFound}
+                    gpPracticeSearchRes={gpPracticeSearchResults}
+                    handleGpPracticeSelection={(item) => {
+                      setValues({ ...values, gppractice: item });
+                      setShowGpPracticeSearchResults(false);
+                      handleGpSearch(item);
+                    }}
+                  />
+                )}
+                {/*----------GP search-----------*/}
+                <Container>
+                  <div className=" justify-between items-center">
+                    {/* <div className="flex items-center  w-full justify-between ">
+                      <div>
+                        <input
+                          type="text"
+                          ref={gpInput}
+                          className="input-box uppercase"
+                        />
+                      </div>
                       <BtnMain
                         onClick={() => {
-                          handleGpPracticeSearch(values.gppractice.description);
+                          handleGpSearch(values.gppractice.id);
                         }}
                       >
                         Search
                       </BtnMain>
+                    </div> */}
+                    <div>
+                      <ul>
+                        <li>{values.gp.id}</li>
+                        <li>{values.gp.description}</li>
+                      </ul>
                     </div>
                   </div>
                 </Container>
-                <GpPracticeSearchResults
-                  nothingFound={nothingFound}
-                  gpPracticeSearchRes={gpPracticeSearchResults}
-                />
+                {showGpSearchResults && (
+                  <GpSearchResults
+                    nothingFound={nothingFound}
+                    gpSearchRes={gpSearchResults}
+                    handleGpSelection={(item) => {
+                      setValues({ ...values, gp: item });
+                      setShowGpSearchResults(false);
+                    }}
+                  />
+                )}
                 {/*----------button-------------*/}
-
                 <BtnMain style="mt-8" type="submit">
                   {/* disabled={isSubmitting} */}
                   Save

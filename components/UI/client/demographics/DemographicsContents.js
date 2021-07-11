@@ -106,6 +106,8 @@ export default function DemographicsContent() {
       first: Yup.string().required("Required"),
       last: Yup.string().required("Required"),
     }),
+    gp: Yup.string().nullable().required("Required"),
+    gppractice: Yup.string().nullable().required("Required"),
     address: Yup.object().shape({
       line1: Yup.string().required("Required"),
 
@@ -125,9 +127,7 @@ export default function DemographicsContent() {
         const { isSubmitting, values, setValues } = props;
 
         {
-          /* {
-          console.log(props);
-        } */
+          console.log(values);
         }
 
         return (
@@ -220,14 +220,14 @@ export default function DemographicsContent() {
                 <MyTextInput
                   disabled
                   label="GP Practice"
-                  name="gppractice"
+                  name="gppractice.description"
                   type="text"
                   registerChange={(e) => setFormIsTouched(true)}
                 />
                 <MyTextInput
                   disabled
                   label="GP"
-                  name="gp"
+                  name="gp.description"
                   type="text"
                   registerChange={(e) => setFormIsTouched(true)}
                 />
@@ -267,8 +267,6 @@ export default function DemographicsContent() {
                     setFormIsTouched(true);
                     setIsGpGpPracticeSearchModalOpened(false);
                   }}
-                  initialGp={values.gp}
-                  initialGpPractice={values.gppractice}
                   setValues={setValues}
                   values={values}
                 />

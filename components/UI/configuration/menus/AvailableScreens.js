@@ -38,7 +38,7 @@ export default function AvailableScreens() {
   }
   return (
     <div className="">
-      <div className=" flex bg-gray-700 text-white p-2 rounded-md my-2">
+      <div className=" flex bg-gray-700 cursor-move text-white p-2 rounded-md my-2">
         <ExternalNodeComponent node={{ id: generateGUID(), title: "FOLDER" }} />
       </div>
       <div className="flex flex-col">
@@ -46,7 +46,7 @@ export default function AvailableScreens() {
           return (
             <div
               key={item.id}
-              className="bg-blue-300 text-black p-2 rounded-md my-2"
+              className="bg-blue-300 cursor-move text-black p-2 rounded-md my-2"
             >
               <ExternalNodeComponent node={item} />
             </div>

@@ -2,17 +2,17 @@ import { ChevronRightIcon } from "@heroicons/react/solid";
 
 export default function GpPracticeSearchResults({
   nothingFound,
-  gpPracticeSearchRes,
-  handleGpPracticeSelection,
+  gpSearchRes,
+  handleGpSelection,
 }) {
   if (nothingFound) {
     return <div>nothing found</div>;
   }
-  if (!gpPracticeSearchRes) {
+  if (!gpSearchRes) {
     return null;
   }
 
-  console.log(gpPracticeSearchRes);
+  console.log(gpSearchRes);
   return (
     <div className="pb-20 ">
       {/*----------comp---------------*/}
@@ -29,7 +29,7 @@ export default function GpPracticeSearchResults({
         {/*-------data-------------*/}
         <div>
           <ul>
-            {gpPracticeSearchRes?.map((item, x) => {
+            {gpSearchRes?.map((item, x) => {
               return (
                 <li
                   key={x}
@@ -51,7 +51,7 @@ export default function GpPracticeSearchResults({
                     <button
                       className=" flex items-center  bg-chevron-color  hover:bg-chevron-hover-color text-white rounded-md w-8 h-8"
                       onClick={() => {
-                        handleGpPracticeSelection(item);
+                        handleGpSelection(item);
                       }}
                     >
                       <ChevronRightIcon />
