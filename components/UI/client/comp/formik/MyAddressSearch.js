@@ -1,10 +1,13 @@
 import { Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
+import { getDefaultOption } from "../../../../helpers/helperFunctions";
+import getAddressApi from "../../../../hooks/getAddressApi";
 import BtnMain from "../../../../Shared/buttons/BtMain";
-import MyAddressSearchInput from "./MyAddressSearchInput";
+import Picklist from "../../../../Shared/formElements/Picklist";
 import MyTextInput from "./MyTextInput";
 export default function MyAddressSearch(props) {
+  const postcodeToSearch = useRef(null);
   const [initialAddress, setInitialAddress] = useState({
     line1: "",
     line2: "",
@@ -13,6 +16,10 @@ export default function MyAddressSearch(props) {
     line5: "",
     postcode: "",
   });
+
+  const [picklistOptions, setPicklistOptions] = useState();
+  const [showSearchResultsList, setShowSearchResultsList] = useState(false);
+  const [addresses, setAddresses] = useState([]);
   useEffect(() => {
     setInitialAddress(props.initialAddress);
   }, [props.initialAddress]);
@@ -26,12 +33,7 @@ export default function MyAddressSearch(props) {
     );
   };
   //--------------------Post code validate and format----------------------
-  const isValidPostcode = (p) => {
-    var postcodeRegEx = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i;
-    const result = postcodeRegEx.test(p);
 
-    return result;
-  };
   const formatPostcode = (p) => {
     if (isValidPostcode(p)) {
       var postcodeRegEx = /(^[A-Z]{1,2}[0-9]{1,2})([0-9][A-Z]{2}$)/i;
@@ -45,6 +47,60 @@ export default function MyAddressSearch(props) {
     props.setValues({ ...props.values, address: { ...values } });
     actions.setSubmitting(false);
     props.onClose();
+  };
+  {
+    /*--------------------items for search box-------------------------------*/
+  }
+  //--------------------Post code validate and format----------------------
+  const isValidPostcode = (p) => {
+    var postcodeRegEx = /[A-Z]{1,2}[0-9]{1,2} ?[0-9][A-Z]{2}/i;
+    const result = postcodeRegEx.test(p);
+
+    return result;
+  };
+
+  //--------------------Call to  post code API----------------------
+  const handleGetAddress = () => {
+    isValidPostcode(postcodeToSearch.current.value) &&
+      getAddressApi(postcodeToSearch.current.value).then((x) => {
+        console.log("response from getAddressApi", x);
+
+        setAddresses(x.data);
+        const picklistOpt = x.data.addresses?.map((address) => {
+          return {
+            id: address.line_1,
+            description: address.formatted_address.toString(),
+          };
+        });
+        const picklistOptions = [getDefaultOption()].concat(picklistOpt);
+
+        setPicklistOptions(picklistOptions);
+
+        if (x.data.addresses.length == 0) {
+          setPicklistOptions([
+            {
+              id: 1,
+              description: "nothing found",
+            },
+          ]);
+        }
+        setShowSearchResultsList(true);
+      });
+  };
+  ///--------Sets the right address based on the picklist-----------------
+  const pickAddress = (e) => {
+    console.log("picked address", e);
+    const pickedAddress = addresses.addresses.find((item) => {
+      return item.line_1 == e;
+    });
+    setInitialAddress({
+      line1: pickedAddress.line_1,
+      line2: pickedAddress.line_2,
+      line3: pickedAddress.locality,
+      line4: pickedAddress.town_or_city,
+      line5: pickedAddress.county,
+      postcode: addresses.postcode,
+    });
   };
 
   {
@@ -83,7 +139,30 @@ export default function MyAddressSearch(props) {
               >
                 {/*----------search box--------------*/}
                 <Container>
-                  <MyAddressSearchInput setInitialAddress={setInitialAddress} />
+                  <div className="flex items-center  w-full justify-between ">
+                    <div>
+                      <input
+                        type="text"
+                        ref={postcodeToSearch}
+                        className="input-box uppercase"
+                      />
+                    </div>
+                    <BtnMain onClick={handleGetAddress}>Search</BtnMain>
+                  </div>
+                  {/*-------------------Address Pick List------------------------------*/}
+                  <div
+                    className={`${showSearchResultsList ? "block" : "hidden"}`}
+                  >
+                    <Picklist
+                      options={picklistOptions}
+                      setSelected={(e) => pickAddress(e)}
+                    />
+                  </div>
+
+                  {/* <MyAddressSearchInput
+                    setInitialAddress={setInitialAddress}
+                  
+                  /> */}
                 </Container>
                 {/*----------Address fields-----------*/}
 

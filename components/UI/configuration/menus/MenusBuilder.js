@@ -19,6 +19,7 @@ export default function MenusBuilder() {
   const [menuItems, setMenuItems] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [message, setMessage] = useState(null);
+  console.log(menuItems);
 
   {
     /*---------getting menu from API---------------*/
@@ -46,6 +47,7 @@ export default function MenusBuilder() {
   const handleMenusSubmit = () => {
     let body = rootItem;
     body.children = menuItems;
+    console.log(body);
 
     if (body.title.length < 1) {
       setIsDialogOpen(true);
@@ -65,32 +67,18 @@ export default function MenusBuilder() {
   };
 
   {
-    /*-------------*/
-  }
-  // const canDrop = ({ node, nextParent, prevPath, nextPath }) => {
-  //   if (nextParent?.hasOwnProperty("url")) {
-  //     return false;
-  //   }
-  //   return true;
-  // };
-  {
-    /*-------------generates remove button on the node-----------------*/
+    /*-------------generates remove button ,title and params on the node-----------------*/
   }
   const generateNodeProps = ({ node, path }) => {
-    let testclass = "";
-
-    if (node.hasOwnProperty("url")) {
-      //console.log("it is an endpoint");
-      testclass = "bg-blue-300 text-black py-2 px-3 -ml-4 rounded-r-md";
-    } else {
-      //console.log("it is a folder");
-      testclass = "bg-gray-700 text-white py-2 px-3 -ml-4 rounded-r-md";
-    }
+    // console.log(node);
+    let nodeColor = node.hasOwnProperty("url")
+      ? "bg-blue-300 text-black "
+      : "bg-gray-700 text-white ";
 
     return {
       title: (
         <input
-          className={testclass}
+          className={` py-2 px-3 -ml-4 rounded-r-md ${nodeColor}`}
           value={node.title}
           onChange={(event) => {
             const title = event.target.value;
@@ -106,21 +94,55 @@ export default function MenusBuilder() {
         />
       ),
       buttons: [
-        <button
-          onClick={() => {
-            setMenuItems(
-              removeNodeAtPath({
-                treeData: menuItems,
-                path: path,
-                getNodeKey: ({ treeIndex }) => treeIndex,
-              })
-            );
-          }}
-        >
-          <span>
-            <TrashIcon className="w-5 h-5 mt-1 mr-1 " />
-          </span>
-        </button>,
+        <div className="flex">
+          <div
+            className={`${
+              node.parameters && node.parameters?.length > 0
+                ? "flex items-center"
+                : "hidden"
+            }`}
+          >
+            <label htmlFor="params" className="mr-5">
+              {node.parameters && node?.parameters[0]?.label}
+            </label>
+            <input
+              name="params"
+              className={` py-2 px-3 -ml-4 rounded-md bg-blue-200`}
+              value={node.parameters && node.parameters[0]?.parameter}
+              onChange={(event) => {
+                const parameter = event.target.value;
+                setMenuItems(
+                  changeNodeAtPath({
+                    treeData: menuItems,
+                    path: path,
+                    getNodeKey: ({ treeIndex }) => treeIndex,
+                    newNode: {
+                      ...node,
+                      parameters: [{ ...node.parameters[0], parameter }],
+                      url: `${node.url.split("=").shift()}=${parameter}`,
+                    },
+                  })
+                );
+              }}
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              setMenuItems(
+                removeNodeAtPath({
+                  treeData: menuItems,
+                  path: path,
+                  getNodeKey: ({ treeIndex }) => treeIndex,
+                })
+              );
+            }}
+          >
+            <span>
+              <TrashIcon className="w-5 h-5 mt-1 mr-1 ml-1 " />
+            </span>
+          </button>
+        </div>,
       ],
     };
   };
@@ -202,3 +224,11 @@ export default function MenusBuilder() {
     </>
   );
 }
+// const canDrop = ({ node, nextParent, prevPath, nextPath }) => {
+//   if (nextParent?.hasOwnProperty("url")) {
+//     return false;
+//   }
+//   return true;
+// };
+
+//parameters: [{ ...node.parameters[0], parameter }],

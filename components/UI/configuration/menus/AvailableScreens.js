@@ -1,36 +1,14 @@
 import { useEffect, useState } from "react";
 import { generateGUID } from "../../../helpers/helperFunctions";
+import getApiData from "../../../hooks/getApiData";
 import { ExternalNodeComponent } from "./ExternalNodeComponent";
 export default function AvailableScreens() {
   const [screens, setScreens] = useState(null);
-  const screensData = [
-    {
-      id: generateGUID(),
-      title: "Referrals",
-      url: "/client/forms/list?formid=referral",
-      requiresClient: true,
-    },
-    {
-      id: generateGUID(),
-      title: "Demographics",
-      url: "/client/demographics",
-      requiresClient: true,
-    },
-    {
-      id: generateGUID(),
-      title: "Menus list",
-      url: "/configuration/menus/list",
-      requiresClient: false,
-    },
-    {
-      id: generateGUID(),
-      title: "Menus builder",
-      url: "/configuration/menus/builder",
-      requiresClient: false,
-    },
-  ];
+
   useEffect(() => {
-    setScreens(screensData);
+    getApiData("GET", `/api/menus/screens`).then((x) => {
+      setScreens(x.data);
+    });
   }, []);
 
   if (screens === null) {
