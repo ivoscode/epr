@@ -4,7 +4,7 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      maxWidth: { "8xl": "90rem" },
+      maxWidth: { "8xl": "90rem", "9xl": "100rem" },
       colors: {
         "main-bg-color": "var(--main-bg-color)",
         "main-text-color": "var(--main-text-color)",

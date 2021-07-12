@@ -12,7 +12,7 @@ function Modal({ isOpened, children, onClose }) {
         onClick={onClose}
       ></div>
 
-      <div className="custom-modal  overflow-y-auto  bg-main-bg-color  ">
+      <div className="custom-modal max-w-9xl overflow-y-auto  bg-main-bg-color  ">
         {/*----------------Close button------------------*/}
 
         <div className="sticky top-5 mr-5 inline-block  left-full  z-70 ">

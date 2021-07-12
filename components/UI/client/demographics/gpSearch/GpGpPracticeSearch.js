@@ -3,15 +3,13 @@ import React, { useRef, useState } from "react";
 import * as Yup from "yup";
 import getApiData from "../../../../hooks/getApiData";
 import BtnMain from "../../../../Shared/buttons/BtMain";
-//import MyTextInput from "../../comp/formik/MyTextInput";
 import GpPracticeSearchResults from "./GpPracticeSearchResults";
 import GpSearchResults from "./GpSearchResults";
 
 export default function GpGpPracticeSearch(props) {
   const gpPracticeInput = useRef(null);
-  const gpInput = useRef(null);
 
-  const [initialGp, setInitialGp] = useState({
+  const [initialGp] = useState({
     gp: { id: "", description: "", address: { line1: "" } },
     gppractice: { id: "", description: "", address: { line1: "" } },
   });
@@ -23,7 +21,7 @@ export default function GpGpPracticeSearch(props) {
   const [showGpSearchResults, setShowGpSearchResults] = useState(false);
   const Container = (props) => {
     return (
-      <div className="w-full border-2 border-gray-100 bg-green-500 rounded-xl p-8 mb-6 ">
+      <div className="w-full border-2 border-gray-100 max-w-xl  rounded-xl p-5 mb-2 ">
         <div>{props.title}</div>
         {props.children}
       </div>
@@ -32,11 +30,15 @@ export default function GpGpPracticeSearch(props) {
   {
     /* ----------fetch gp practice*/
   }
-  const handleGpPracticeSearch = (e) => {
+  const handleGpPracticeSearch = () => {
+    if (gpPracticeInput.current.value.length < 2) {
+      return;
+    }
     const searchParams = { name: gpPracticeInput.current.value };
     getApiData("GET", `/api/gppractice/search/`, searchParams).then((x) => {
       if (x.data[0] == null) {
         setNothingFound(true);
+        setShowGpPracticeSearchResults(true);
         return;
       }
       setNothingFound(false);
@@ -60,9 +62,10 @@ export default function GpGpPracticeSearch(props) {
       setShowGpSearchResults(true);
     });
   };
+  {
+    /*--------handle submit----------*/
+  }
   const handleSubmit = (values) => {
-    console.log(values);
-    console.log(props.setValues);
     props.setValues({
       ...props.values,
       gppractice: {
@@ -81,9 +84,7 @@ export default function GpGpPracticeSearch(props) {
   {
     /*------------Validation------------*/
   }
-  const validationSchema = Yup.object().shape({
-    //line1: Yup.string().required("Required"),
-  });
+  const validationSchema = Yup.object().shape({});
   return (
     <div>
       <Formik
@@ -93,16 +94,15 @@ export default function GpGpPracticeSearch(props) {
         validationSchema={validationSchema}
       >
         {(props) => {
-          const { isSubmitting, values, setValues } = props;
-          {
-            console.log(values);
-          }
+          const { values, setValues } = props;
+
           return (
             <Form>
               <div
                 className=" mb-10    overflow-hidden flex 
-       flex-col justify-center items-center max-w-4xl mx-auto  rounded-md p-6  "
+       flex-col justify-center items-center  w-full mx-auto  rounded-md   "
               >
+                {/*-------search box------------*/}
                 <Container>
                   <div className=" justify-between items-center">
                     <div className="flex items-center  w-full justify-between ">
@@ -110,20 +110,23 @@ export default function GpGpPracticeSearch(props) {
                         <input
                           type="text"
                           ref={gpPracticeInput}
-                          className="input-box uppercase"
+                          className="input-box "
                         />
                       </div>
                       <BtnMain onClick={handleGpPracticeSearch}>Search</BtnMain>
                     </div>
-                    <div>
-                      <ul>
-                        <li>{values.gppractice.id}</li>
-                        <li>{values.gppractice.description}</li>
-                        <li>{values.gppractice.address.line1}</li>
-                        <li>{values.gppractice.address.line2}</li>
-                        <li>{values.gppractice.address.postcode}</li>
-                      </ul>
-                    </div>
+                    {/*-----gp practice info------*/}
+                    {values.gppractice.id && (
+                      <div className="mt-8">
+                        <ul>
+                          <li>{values.gppractice.id}</li>
+                          <li>{values.gppractice.description}</li>
+                          <li>{values.gppractice.address.line1}</li>
+                          <li>{values.gppractice.address.line2}</li>
+                          <li>{values.gppractice.address.postcode}</li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </Container>
                 {showGpPracticeSearchResults && (
@@ -138,32 +141,18 @@ export default function GpGpPracticeSearch(props) {
                   />
                 )}
                 {/*----------GP search-----------*/}
-                <Container>
-                  <div className=" justify-between items-center">
-                    {/* <div className="flex items-center  w-full justify-between ">
+                {values.gp.id && (
+                  <Container>
+                    <div className=" justify-between items-center">
                       <div>
-                        <input
-                          type="text"
-                          ref={gpInput}
-                          className="input-box uppercase"
-                        />
+                        <ul>
+                          <li>{values.gp.id}</li>
+                          <li>{values.gp.description}</li>
+                        </ul>
                       </div>
-                      <BtnMain
-                        onClick={() => {
-                          handleGpSearch(values.gppractice.id);
-                        }}
-                      >
-                        Search
-                      </BtnMain>
-                    </div> */}
-                    <div>
-                      <ul>
-                        <li>{values.gp.id}</li>
-                        <li>{values.gp.description}</li>
-                      </ul>
                     </div>
-                  </div>
-                </Container>
+                  </Container>
+                )}
                 {showGpSearchResults && (
                   <GpSearchResults
                     nothingFound={nothingFound}
@@ -175,10 +164,12 @@ export default function GpGpPracticeSearch(props) {
                   />
                 )}
                 {/*----------button-------------*/}
-                <BtnMain style="mt-8" type="submit">
-                  {/* disabled={isSubmitting} */}
-                  Save
-                </BtnMain>
+                {values.gp.id && values.gppractice.id && (
+                  <BtnMain style="mt-8" type="submit">
+                    {/* disabled={isSubmitting} */}
+                    Save
+                  </BtnMain>
+                )}
               </div>
             </Form>
           );
