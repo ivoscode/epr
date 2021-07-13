@@ -2,11 +2,13 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
+import { isValidNhsNumber } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import Modal from "../../../Modal";
 import BtnMain from "../../../Shared/buttons/BtMain";
 import MyAddressSearch from "../comp/formik/MyAddressSearch";
 import MyDatePicker from "../comp/formik/MyDatePicker";
+import MyNhsNumberInput from "../comp/formik/MyNhsNumberInput";
 import MySelect from "../comp/formik/MySelect";
 import MyTextInput from "../comp/formik/MyTextInput";
 import GpGpPracticeSearch from "./gpSearch/GpGpPracticeSearch";
@@ -35,11 +37,11 @@ export default function DemographicsContent() {
       postcode: "",
     },
     dob: null,
-    gp: "",
-    gppractice: "",
+    gp: { id: "", description: "" },
+    gppractice: { id: "", description: "" },
     gender: {
       code: "",
-      description: "", ////mandatory field 2 is for female
+      description: "",
     },
     telecom: null,
   });
@@ -94,11 +96,12 @@ export default function DemographicsContent() {
       router.reload();
     }, 1000);
   };
-
+  //------------------Validation------------
   const validationSchema = Yup.object().shape({
     nhs: Yup.string()
       .min(10, "Too Short!")
       .max(10, "Too Long!")
+      .test("NHS", "Invalid NHS number", (value) => isValidNhsNumber(value))
       .required("Required"),
 
     name: Yup.object().shape({
@@ -106,8 +109,13 @@ export default function DemographicsContent() {
       first: Yup.string().required("Required"),
       last: Yup.string().required("Required"),
     }),
-    gp: Yup.string().nullable().required("Required"),
-    gppractice: Yup.string().nullable().required("Required"),
+    gppractice: Yup.object().shape({
+      description: Yup.string().nullable().required("Required"),
+    }),
+    gp: Yup.object().shape({
+      description: Yup.string().nullable().required("Required"),
+    }),
+
     address: Yup.object().shape({
       line1: Yup.string().required("Required"),
 
@@ -126,9 +134,7 @@ export default function DemographicsContent() {
       {(props) => {
         const { isSubmitting, values, setValues } = props;
 
-        {
-          console.log(values);
-        }
+        console.log(props.errors);
 
         return (
           <Form autoComplete="off">
@@ -139,7 +145,7 @@ export default function DemographicsContent() {
               {/*-----------------ID Container----------*/}
 
               <Container title="ID">
-                <MyTextInput
+                <MyNhsNumberInput
                   label="NHS Number"
                   name="nhs"
                   type="text"
@@ -222,14 +228,12 @@ export default function DemographicsContent() {
                   label="GP Practice"
                   name="gppractice.description"
                   type="text"
-                  registerChange={(e) => setFormIsTouched(true)}
                 />
                 <MyTextInput
                   disabled
                   label="GP"
                   name="gp.description"
                   type="text"
-                  registerChange={(e) => setFormIsTouched(true)}
                 />
                 <div className="flex justify-end">
                   <BtnMain

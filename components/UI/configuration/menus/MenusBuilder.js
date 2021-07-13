@@ -77,21 +77,38 @@ export default function MenusBuilder() {
 
     return {
       title: (
-        <input
-          className={` py-2 px-3 -ml-4 rounded-r-md ${nodeColor}`}
-          value={node.title}
-          onChange={(event) => {
-            const title = event.target.value;
-            setMenuItems(
-              changeNodeAtPath({
-                treeData: menuItems,
-                path: path,
-                getNodeKey: ({ treeIndex }) => treeIndex,
-                newNode: { ...node, title },
-              })
-            );
-          }}
-        />
+        <>
+          <input
+            className={` py-2 px-3 -ml-4 rounded-r-md ${nodeColor}`}
+            value={node.title}
+            onChange={(event) => {
+              const title = event.target.value;
+              setMenuItems(
+                changeNodeAtPath({
+                  treeData: menuItems,
+                  path: path,
+                  getNodeKey: ({ treeIndex }) => treeIndex,
+                  newNode: { ...node, title },
+                })
+              );
+            }}
+          />
+          <input
+            className={` py-2 px-3 -ml-4 rounded-r-md ${nodeColor}`}
+            value={node.url}
+            onChange={(event) => {
+              const url = event.target.value;
+              setMenuItems(
+                changeNodeAtPath({
+                  treeData: menuItems,
+                  path: path,
+                  getNodeKey: ({ treeIndex }) => treeIndex,
+                  newNode: { ...node, url },
+                })
+              );
+            }}
+          />
+        </>
       ),
       buttons: [
         <div className="flex">

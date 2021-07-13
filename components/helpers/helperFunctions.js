@@ -39,7 +39,10 @@ export const calcAge = (date) => {
 };
 
 //////////
-export const formatNhs = (n) => {
+export const formatNhs = (num) => {
+  //removes white space
+  const n = num.replace(/\s/g, "");
+  //formats
   const result = n.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
   return result;
 };
@@ -101,3 +104,33 @@ export const sessionStorageSpace = function () {
       : "5 MB"
   );
 };
+
+///////validate NHS number/////////
+
+export function isValidNhsNumber(num) {
+  const txtNhsNumber = num?.replace(/\s/g, "");
+  var isValid = false;
+
+  if (txtNhsNumber?.length == 10) {
+    var total = 0;
+
+    var i = 0;
+    for (i = 0; i <= 8; i++) {
+      var digit = txtNhsNumber.substr(i, 1);
+      var factor = 10 - i;
+      total += digit * factor;
+    }
+
+    var checkDigit = 11 - (total % 11);
+
+    if (checkDigit == 11) {
+      checkDigit = 0;
+    }
+
+    if (checkDigit == txtNhsNumber.substr(9, 1)) {
+      isValid = true;
+    }
+  }
+  console.log("nhs number valid is", isValid);
+  return isValid;
+}

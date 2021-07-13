@@ -95,7 +95,7 @@ export default function GpGpPracticeSearch(props) {
       >
         {(props) => {
           const { values, setValues } = props;
-
+          console.log("errors from search", props.errors);
           return (
             <Form>
               <div
@@ -105,13 +105,20 @@ export default function GpGpPracticeSearch(props) {
                 {/*-------search box------------*/}
                 <Container>
                   <div className=" justify-between items-center">
-                    <div className="flex items-center  w-full justify-between ">
-                      <div>
-                        <input
-                          type="text"
-                          ref={gpPracticeInput}
-                          className="input-box "
-                        />
+                    <div className="flex items-center  w-full justify-between  ">
+                      {/*-------label and input---------*/}
+                      <div className="flex w-full justify-start items-center mr-10">
+                        <div className=" text-gray-500 font-bold  w-4/12">
+                          <label htmlFor="name">Practice Name</label>
+                        </div>
+                        <div className="w-8/12">
+                          <input
+                            name="name"
+                            type="text"
+                            ref={gpPracticeInput}
+                            className="input-box "
+                          />
+                        </div>
                       </div>
                       <BtnMain onClick={handleGpPracticeSearch}>Search</BtnMain>
                     </div>
