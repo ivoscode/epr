@@ -1,14 +1,24 @@
 import { XCircleIcon } from "@heroicons/react/outline";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 function Modal({ isOpened, children, onClose }) {
+  useEffect(() => {
+    if (!isOpened) {
+      document.documentElement.style.overflow = "scroll";
+      document.body.scroll = "yes";
+    }
+  }, [isOpened]);
+
   if (!isOpened) {
     return null;
   }
+  document.documentElement.style.overflow = "hidden";
+  document.body.scroll = "no";
   return createPortal(
     <div>
       <div
-        className="fixed top-0 left-0 w-full h-screen z-60 bg-black bg-opacity-75"
+        className="fixed  w-full h-full z-40 bg-black bg-opacity-75"
         onClick={onClose}
       ></div>
 

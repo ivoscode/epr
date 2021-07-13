@@ -7,7 +7,7 @@ import MyDeleteDialog from "../../../Shared/alerts/MyDeleteDialog";
 export default function FormsList() {
   const [menus, setMenus] = useState(null);
   let [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [message, setMessage] = useState("Are you sure you want to delete?");
+  const [message] = useState("Are you sure you want to delete?");
   const router = useRouter();
   //d
   useEffect(() => {
