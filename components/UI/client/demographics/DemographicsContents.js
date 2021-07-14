@@ -46,7 +46,7 @@ export default function DemographicsContent() {
     telecom: null,
   });
   //console.log(client);
-  const [formIsTouched, setFormIsTouched] = useState(false);
+
   const [isAddressSearchModalOpened, setIsAddressSearchModalOpened] =
     useState(false);
   const [isGpGpPracticeSearchModalOpened, setIsGpGpPracticeSearchModalOpened] =
@@ -90,7 +90,7 @@ export default function DemographicsContent() {
   const handleSubmit = (values, actions) => {
     getApiData(`POST`, `/api/client/save`, values);
     actions.setSubmitting(false);
-    setFormIsTouched(false);
+
     setTimeout(() => {
       router.reload();
     }, 1000);
@@ -141,7 +141,7 @@ export default function DemographicsContent() {
           setStatus,
         } = props;
 
-        console.log(props.touched);
+        // console.log(props.touched);
 
         return (
           <Form autoComplete="off">
@@ -209,7 +209,6 @@ export default function DemographicsContent() {
                       {errors?.address?.line1}
                     </div>
                   ) : null}
-
                   <ul>
                     <li>{values.address.line1}</li>
                     <li>{values.address.line2}</li>
@@ -290,6 +289,9 @@ export default function DemographicsContent() {
 
               <div>
                 <BtnMain
+                  onClick={() => {
+                    setStatus(false);
+                  }}
                   style="mt-4"
                   type="submit"
                   hidden={!status}
