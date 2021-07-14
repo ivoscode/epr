@@ -47,7 +47,6 @@ export default function DemographicsContent() {
   });
   //console.log(client);
   const [formIsTouched, setFormIsTouched] = useState(false);
-
   const [isAddressSearchModalOpened, setIsAddressSearchModalOpened] =
     useState(false);
   const [isGpGpPracticeSearchModalOpened, setIsGpGpPracticeSearchModalOpened] =
@@ -132,9 +131,17 @@ export default function DemographicsContent() {
       validationSchema={validationSchema}
     >
       {(props) => {
-        const { isSubmitting, values, setValues } = props;
+        const {
+          isSubmitting,
+          values,
+          errors,
+          touched,
+          setValues,
+          status,
+          setStatus,
+        } = props;
 
-        console.log(props.errors);
+        console.log(props.touched);
 
         return (
           <Form autoComplete="off">
@@ -149,7 +156,7 @@ export default function DemographicsContent() {
                   label="NHS Number"
                   name="nhs"
                   type="text"
-                  registerChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setStatus(true)}
                 />
               </Container>
 
@@ -160,14 +167,14 @@ export default function DemographicsContent() {
                   label="Title"
                   name="name.title"
                   options={titleDropdownOptions}
-                  registerChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setStatus(true)}
                 />
                 {/*--------------first name---------*/}
                 <MyTextInput
                   label="First Name"
                   name="name.first"
                   type="text"
-                  registerChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setStatus(true)}
                 />
 
                 {/*----------last name-----------*/}
@@ -176,30 +183,33 @@ export default function DemographicsContent() {
                   name="name.last"
                   type="text"
                   placeholder="Please enter last name"
-                  registerChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setStatus(true)}
                 />
                 {/*----gender picklist------*/}
                 <MySelect
                   label="Gender"
                   name="gender.code"
                   options={genderDropdownOptions}
-                  registerChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setStatus(true)}
                 />
 
                 {/*----Date of birth------*/}
                 <MyDatePicker
                   label="DOB"
                   name="dob"
-                  registerChange={(e) => setFormIsTouched(true)}
+                  registerChange={(e) => setStatus(true)}
                 />
               </Container>
 
               {/*-----------Address-----------------------------------------*/}
               <Container title="Address">
                 <div className="w-full border-2 h-40 border-blue-300 text-gray-500 rounded  py-2 px-4">
-                  {!values.address.line1 ? (
-                    <div className="text-pink-300">Please enter an address</div>
+                  {touched?.address?.line1 && errors?.address?.line1 ? (
+                    <div className="text-pink-300">
+                      {errors?.address?.line1}
+                    </div>
                   ) : null}
+
                   <ul>
                     <li>{values.address.line1}</li>
                     <li>{values.address.line2}</li>
@@ -253,7 +263,7 @@ export default function DemographicsContent() {
               >
                 <MyAddressSearch
                   onClose={() => {
-                    setFormIsTouched(true);
+                    setStatus(true);
                     setIsAddressSearchModalOpened(false);
                   }}
                   initialAddress={values.address}
@@ -268,7 +278,7 @@ export default function DemographicsContent() {
               >
                 <GpGpPracticeSearch
                   onClose={() => {
-                    setFormIsTouched(true);
+                    setStatus(true);
                     setIsGpGpPracticeSearchModalOpened(false);
                   }}
                   setValues={setValues}
@@ -282,7 +292,7 @@ export default function DemographicsContent() {
                 <BtnMain
                   style="mt-4"
                   type="submit"
-                  hidden={!formIsTouched}
+                  hidden={!status}
                   disabled={isSubmitting}
                 >
                   Save

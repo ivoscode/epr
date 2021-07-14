@@ -8,7 +8,7 @@ export default function MyTextInput({
   ...props
 }) {
   const [field, meta] = useField(props);
-  //console.log(meta);
+
   return (
     <div className="flex flex-col items-center mt-4 ">
       <div className="flex w-full justify-evenly items-center mt-4 ">
@@ -17,10 +17,9 @@ export default function MyTextInput({
         </div>
         <div
           className="w-1/2"
-          onClick={(e) => {
+          onChange={(e) => {
             if (typeof registerChange == "function") {
               registerChange();
-              console.log("onchange fired");
             }
           }}
         >

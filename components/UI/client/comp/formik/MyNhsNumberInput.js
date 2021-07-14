@@ -9,10 +9,7 @@ export default function MyNhsNumberInput({
 }) {
   const [field, meta, helpers] = useField(props);
   const { value, ...rest } = field;
-  //console.log(field);
-  //console.log(value);
-  //console.log(rest);
-  //console.log(helpers);
+
   return (
     <div className="flex flex-col items-center mt-4 ">
       <div className="flex w-full justify-evenly items-center mt-4 ">
@@ -21,10 +18,9 @@ export default function MyNhsNumberInput({
         </div>
         <div
           className="w-1/2"
-          onClick={(e) => {
+          onChange={(e) => {
             if (typeof registerChange == "function") {
               registerChange();
-              console.log("onchange fired");
             }
           }}
         >
@@ -33,10 +29,6 @@ export default function MyNhsNumberInput({
             {...rest}
             {...props}
             value={formatNhs(value)}
-            // onChange={(e) => {
-            //   console.log(e.target.value);
-            //   helpers.setValue(formatNhs(e.target.value));
-            // }}
           />
         </div>
       </div>
