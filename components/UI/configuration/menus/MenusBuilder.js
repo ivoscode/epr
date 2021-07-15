@@ -93,7 +93,7 @@ export default function MenusBuilder() {
               );
             }}
           />
-          <input
+          {/* <input
             className={` py-2 px-3 -ml-4 rounded-r-md ${nodeColor}`}
             value={node.url}
             onChange={(event) => {
@@ -107,7 +107,7 @@ export default function MenusBuilder() {
                 })
               );
             }}
-          />
+          /> */}
         </>
       ),
       buttons: [

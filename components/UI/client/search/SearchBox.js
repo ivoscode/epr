@@ -70,6 +70,7 @@ export default function SearchBox({
                         </div>
                         <div>
                           <input
+                            autoComplete="off"
                             type="text"
                             value={searchParams[item.name] || ""}
                             name={item.name}

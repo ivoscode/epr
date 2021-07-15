@@ -72,7 +72,7 @@ export default function FormsList() {
                           className=" flex items-center  bg-chevron-color  hover:bg-chevron-hover-color text-white rounded-md w-8 h-8"
                           onClick={() => {
                             router.push(
-                              `/configuration/forms/builder/?id=${item}`
+                              `/configuration/forms/builder/?id=${item.id}`
                             );
                           }}
                         >

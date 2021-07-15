@@ -28,7 +28,11 @@ const getApiData = (method, url, params) => {
 
   const user = sessionStorage.getItem("EprUser");
   const userToken = JSON.parse(user);
-
+  if (!userToken?.token) {
+    window.sessionStorage.clear();
+    window.location.replace("/");
+    return;
+  }
   const headers = {
     "Content-Type": "application/json",
     Authorization: userToken.token,

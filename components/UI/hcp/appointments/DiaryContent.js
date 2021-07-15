@@ -77,7 +77,7 @@ export default function DiaryContent() {
     return null;
   }
   return (
-    <div className="mt-5 px-4 lg:px-2  ">
+    <div className="py-5 px-4 lg:px-2 h-(screen-20)  ">
       <DragAndDropCalendar
         selectable
         resizable
@@ -92,7 +92,6 @@ export default function DiaryContent() {
         endAccessor="end"
         style={{ height: screen }}
         onDoubleClickEvent={(event) => {
-          
           router.push(
             ///ternary operator to account for cases when there is no client id
             `/hcp/appointments/appointment-details?id=${event.id}${
@@ -101,12 +100,17 @@ export default function DiaryContent() {
           );
         }}
         onSelectSlot={(e) => {
-          console.log(e)
-          const duration= (e.end - e.start) / 60 / 1000
+          if (e.action == "click") {
+            return;
+          }
+          const duration = (e.end - e.start) / 60 / 1000;
           router.push(
             `/hcp/appointments/appointment-details?hcp=${
               user.hcpId
-            }&datetime=${format(e.start, "yyyy-MM-dd'T'HH:mm")}&duration=${duration}`
+            }&datetime=${format(
+              e.start,
+              "yyyy-MM-dd'T'HH:mm"
+            )}&duration=${duration}`
           );
         }}
       />
