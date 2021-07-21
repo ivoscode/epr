@@ -158,3 +158,16 @@
   color: grey;
   background-color: grey;
 }
+ {
+  /*---------image map-------------*/
+}
+
+.image-map__content {
+  @apply relative w-full !important;
+}
+.image-map__content__img {
+  @apply w-full !important;
+}
+.image-map__content .image-map__map {
+  @apply absolute !important;
+}
