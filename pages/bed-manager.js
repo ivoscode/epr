@@ -1,6 +1,6 @@
+import { HTML5Backend } from "backend14";
 import { DndProvider } from "dnd14";
 import dynamic from "next/dynamic";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 //import BedManager from "../components/UI/client/bedManagment/BedManager";
 const BedManager = dynamic(

@@ -1,4 +1,4 @@
-import { ImageMap } from "@qiuz/react-image-map/index";
+const ImageMap = require("@qiuz/react-image-map/react-image-map");
 import { useDrop } from "dnd14";
 import { useEffect, useState } from "react";
 import { useTabs } from "react-headless-tabs";
