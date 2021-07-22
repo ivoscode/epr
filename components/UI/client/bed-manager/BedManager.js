@@ -293,10 +293,12 @@ export default function BedManager() {
 
   return (
     <div className="flex">
-      <div ref={drop} className="w-2/12 h-full  pl-5 pt-20">
-        {patients.map((patient) => {
-          return <Patient key={patient.id} patient={patient} />;
-        })}
+      <div ref={drop} className="w-2/12 min-h-full  pl-5 pt-20">
+        <div>
+          {patients.map((patient) => {
+            return <Patient key={patient.id} patient={patient} />;
+          })}
+        </div>
       </div>
       <div className=" w-10/12  h-full ">
         <nav className="flex border-b border-gray-300">
