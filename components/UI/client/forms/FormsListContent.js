@@ -1,12 +1,15 @@
 import { ChevronRightIcon } from "@heroicons/react/solid";
+import format from "date-fns/format";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { formatTime } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
+
 //displays available list of forms for a client
 
 export default function FormsListContent() {
   const [forms, setForms] = useState();
+  const [extraFields, setExtraFields] = useState([]);
   const router = useRouter();
   if (!router.query.formid || !router.query.clientid) {
     return null;
@@ -17,6 +20,19 @@ export default function FormsListContent() {
       `/api/forms/entries/?formid=${router.query.formid}&clientid=${router.query.clientid}`
     ).then((x) => {
       setForms(x);
+    });
+
+    getApiData(
+      "GET",
+      `/api/forms/structure/?id=${router.query.formid}&datetime=${format(
+        new Date(),
+        "yyyy-MM-dd'T'HH:mm"
+      )}`
+    ).then((x) => {
+      let components = JSON.parse(x.data.structure).components;
+      let filtered = components.filter((x) => x.attributes.listview === "true");
+
+      setExtraFields(filtered);
     });
   }, []);
 
@@ -35,6 +51,9 @@ export default function FormsListContent() {
           <div className="flex justify-between text-white bg-gray-800 px-4 py-2">
             <div className="w-3/12">Date/Time</div>
             <div>Entered By</div>
+            {extraFields.map((x) => (
+              <div>{x.label}</div>
+            ))}
             <div className="w-3/12"></div>
           </div>
           <div>
@@ -49,6 +68,12 @@ export default function FormsListContent() {
                       {formatTime(data.entryDateTime)}
                     </div>
                     <div className="">{data.enteredBy.name}</div>
+
+                    {console.log(data)}
+                    {extraFields.map((x, index) => (
+                      <div className="">{data[x.key] || "undefined"}</div>
+                    ))}
+
                     <div className="w-3/12 flex justify-center">
                       <button
                         className=" flex items-center  bg-chevron-color  hover:bg-chevron-hover-color text-white rounded-md w-8 h-8"
