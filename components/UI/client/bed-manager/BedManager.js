@@ -1,5 +1,6 @@
 const ImageMap = require("@qiuz/react-image-map/react-image-map");
 import { useDrop } from "dnd14";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTabs } from "react-headless-tabs";
 import Bed from "./Bed";
@@ -7,6 +8,7 @@ import Patient from "./Patient";
 import { TabSelector } from "./TabSelector";
 
 export default function BedManager() {
+  const router = useRouter();
   const [patients, setPatients] = useState([]);
   const [beds, setBeds] = useState([]);
   const [floorPlan, setFloorPlan] = useState();
@@ -18,7 +20,7 @@ export default function BedManager() {
     "Floor 3",
   ]);
 
-  const bedsData = [
+  const bedsData1 = [
     {
       bedId: 11,
       status: "occupied",
@@ -137,14 +139,39 @@ export default function BedManager() {
     /*------------fetching beds and patients from API-------------*/
   }
   useEffect(() => {
-    //setBeds(bedsData);
-    setPatients(patientsData);
-    //setFloorPlan(floor1);
-  }, []);
+    const storagePatients = JSON.parse(
+      window.sessionStorage.getItem("patients")
+    );
+    const ward1 = JSON.parse(window.sessionStorage.getItem("ward1"));
+    const ward2 = JSON.parse(window.sessionStorage.getItem("ward2"));
+
+    if (router.query.wardid == 1) {
+      console.log("one");
+
+      ward1 ? setBeds(ward1) : setBeds(bedsData1);
+
+      setFloorPlan(floor1);
+      setSelectedTab("Main ward");
+    }
+    if (router.query.wardid == 2) {
+      console.log("two");
+      ward2 ? setBeds(ward2) : setBeds(bedsData2);
+
+      setFloorPlan(floor2);
+      setSelectedTab("Floor 1");
+    }
+    storagePatients ? setPatients(storagePatients) : setPatients(patientsData);
+  }, [router.query.wardid]);
 
   useEffect(() => {
     beds && setMyMapArea(myMapAreaObject);
   }, [beds]);
+  {
+    /*------submitting data on state change*/
+  }
+  useEffect(() => {
+    submitData(patients, beds);
+  }, [beds, patients]);
 
   {
     /*-------creating beds map object-----------------*/
@@ -171,6 +198,15 @@ export default function BedManager() {
       onMouseOver: () => console.log("map onMouseOver"),
     };
   });
+
+  {
+    /*----submit data-----------*/
+  }
+  const submitData = (patients, beds) => {
+    console.log(patients, beds);
+    sessionStorage.setItem(`patients`, JSON.stringify(patients));
+    sessionStorage.setItem(`ward${router.query.wardid}`, JSON.stringify(beds));
+  };
 
   {
     /*--------------moving patient to hold------------------*/
@@ -205,6 +241,7 @@ export default function BedManager() {
       patient.status = "awaiting placement";
       return [...patients, patient];
     });
+    window.location.href = `/bed-manager?wardid=${router.query.wardid}`;
   };
   {
     /*------------moving patient to bed-------------*/
@@ -251,51 +288,60 @@ export default function BedManager() {
       const remainingPatients = patients.filter((x) => x.id !== patient.id);
       return [...remainingPatients];
     });
+    window.location.href = `/bed-manager?wardid=${router.query.wardid}`;
   };
 
   return (
     <div className="flex">
-      <div ref={drop} className="w-2/12 h-(screen-20) bg-gray-100 pl-5 pt-20">
-        {patients
-          .filter((patient) => patient.status === "awaiting placement")
-          .map((patient) => {
-            return <Patient key={patient.id} patient={patient} />;
-          })}
+      <div ref={drop} className="w-2/12 h-full  pl-5 pt-20">
+        {patients.map((patient) => {
+          return <Patient key={patient.id} patient={patient} />;
+        })}
       </div>
-      <div className=" w-10/12 bg-gray-100 h-(screen-20) ">
+      <div className=" w-10/12  h-full ">
         <nav className="flex border-b border-gray-300">
           <TabSelector
             isActive={selectedTab === "Main ward"}
-            onClick={() => {
-              setSelectedTab("Main ward");
-              setBeds(bedsData);
-              setFloorPlan(floor1);
+            // onClick={() => {
+            //   router.push("/bed-manager?wardid=1");
+            // }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/bed-manager?wardid=1";
             }}
           >
             Main ward
           </TabSelector>
           <TabSelector
             isActive={selectedTab === "Floor 1"}
-            onClick={() => {
-              setSelectedTab("Floor 1");
-              setBeds(bedsData2);
-              setFloorPlan(floor2);
+            // onClick={() => {
+            //   router.push("/bed-manager?wardid=2");
+            // }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/bed-manager?wardid=2";
             }}
           >
             Floor 1
           </TabSelector>
-          <TabSelector
+          {/* <TabSelector
             isActive={selectedTab === "Floor 2"}
-            onClick={() => setSelectedTab("Floor 2")}
+            onClick={() => {
+              router.push("/bed-manager?wardid=3");
+              setSelectedTab("Floor 2");
+            }}
           >
             Floor 2
           </TabSelector>
           <TabSelector
             isActive={selectedTab === "Floor 3"}
-            onClick={() => setSelectedTab("Floor 3")}
+            onClick={() => {
+              setSelectedTab("Floor 3");
+              router.push("/bed-manager?wardid=4");
+            }}
           >
             Floor 3
-          </TabSelector>
+          </TabSelector> */}
         </nav>
         <div className="p-4">
           {<ImageMap className="usage-map" src={floorPlan} map={myMapArea} />}

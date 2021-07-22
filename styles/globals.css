@@ -163,10 +163,10 @@
 }
 
 .image-map__content {
-  @apply relative w-full !important;
+  @apply relative w-full max-h-screen !important;
 }
 .image-map__content__img {
-  @apply w-full !important;
+  @apply w-full max-h-screen !important;
 }
 .image-map__content .image-map__map {
   @apply absolute !important;
