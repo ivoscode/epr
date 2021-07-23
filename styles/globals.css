@@ -92,12 +92,12 @@
 .btn-success,
 /* .btn-secondary, */
 .btn-danger {
-  @apply bg-gray-700 border-gray-700 !important;
+  @apply bg-gray-700 border-gray-700  !important;
 }
  {
   /*-----------overriding forms io style sheet----------*/
 }
-#eu9y5wn {
+.formio-component-submit {
   @apply mt-10 !important;
 }
 

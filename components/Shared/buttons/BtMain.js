@@ -7,9 +7,9 @@ export default function BtnMain(props) {
     <button
       {...rest}
       type={type || "button"}
-      className={` bg-gray-700 hover:bg-gray-900 px-3 py-2 rounded-md text-white font-semibold tracking-widest hover:shadow-2xl ${style}   ${
-        hidden ? "hidden" : "inline-block"
-      }`}
+      className={` bg-gray-700 hover:bg-gray-900 px-3 py-2 rounded-md text-white font-semibold tracking-widest hover:shadow-2xl ${
+        style || ""
+      }   ${hidden ? "hidden" : "inline-block"}`}
     >
       {children}
     </button>

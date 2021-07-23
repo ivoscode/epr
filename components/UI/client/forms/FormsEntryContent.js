@@ -67,23 +67,37 @@ export default function FormsEntryContent() {
   return (
     <div className=" mx-auto max-w-2xl mb-20 mt-44 sm:mt-24 lg:mt-16">
       <h1 className="text-center text-lg mb-5">{form.title}</h1>
-      <Form
-        form={JSON.parse(form.structure)}
-        onSubmit={(data) => {
-          handleFormSubmit(data);
-        }}
-        submission={formData?.values}
-        //options={options}
-      />
-      <div className="flex justify-center mt-8">
-        <BtnMain
-          onClick={() => {
-            router.back();
+      <div className="relative">
+        <Form
+          form={JSON.parse(form.structure)}
+          onSubmit={(data) => {
+            handleFormSubmit(data);
           }}
-        >
-          Back
-        </BtnMain>
+          submission={formData?.values}
+          //options={options}
+        />
+        <div className=" absolute bottom-0 flex  justify-center  bg-gray-200 left-36 rounded-lg mt-8">
+          <BtnMain
+            onClick={() => {
+              router.back();
+            }}
+          >
+            Cancel
+          </BtnMain>
+        </div>
       </div>
+
+      {/* <div className="flex w-full justify-end">
+        <div className="flex w-full justify-center max-w-sm bg-gray-200 py-6 rounded-lg mt-8">
+          <BtnMain
+            onClick={() => {
+              router.back();
+            }}
+          >
+            Cancel
+          </BtnMain>
+        </div>
+      </div> */}
     </div>
   );
 }

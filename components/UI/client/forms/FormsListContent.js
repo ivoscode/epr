@@ -5,10 +5,9 @@ import { useEffect, useState } from "react";
 import { formatTime } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 
-//displays available list of forms for a client
-
 export default function FormsListContent() {
   const [forms, setForms] = useState();
+  console.log(forms);
   const [extraFields, setExtraFields] = useState([]);
   const router = useRouter();
   if (!router.query.formid || !router.query.clientid) {
@@ -26,10 +25,11 @@ export default function FormsListContent() {
       "GET",
       `/api/forms/structure/?id=${router.query.formid}&datetime=${format(
         new Date(),
-        "yyyy-MM-dd'T'HH:mm"
+        "yyyy-MM-dd'T'HH:mm:ss"
       )}`
     ).then((x) => {
       let components = JSON.parse(x.data.structure).components;
+      console.log(components);
       let filtered = components.filter((x) => x.attributes.listview === "true");
 
       setExtraFields(filtered);
@@ -40,10 +40,6 @@ export default function FormsListContent() {
     return null;
   }
 
-  console.log("available client forms list", forms);
-
-  console.log(router.query);
-
   return (
     <div>
       <div className="pb-20 mt-44 sm:mt-24 lg:mt-16 ">
@@ -52,9 +48,9 @@ export default function FormsListContent() {
             <div className="w-3/12">Date/Time</div>
             <div>Entered By</div>
             {extraFields.map((x) => (
-              <div>{x.label}</div>
+              <div className="w-1/12">{x.label}</div>
             ))}
-            <div className="w-3/12"></div>
+            <div className="w-2/12"></div>
           </div>
           <div>
             <ul>
@@ -71,10 +67,10 @@ export default function FormsListContent() {
 
                     {console.log(data)}
                     {extraFields.map((x, index) => (
-                      <div className="">{data[x.key] || "undefined"}</div>
+                      <div className="w-1/12">{data[x.key] || "undefined"}</div>
                     ))}
 
-                    <div className="w-3/12 flex justify-center">
+                    <div className="w-2/12 flex justify-center">
                       <button
                         className=" flex items-center  bg-chevron-color  hover:bg-chevron-hover-color text-white rounded-md w-8 h-8"
                         onClick={() => {

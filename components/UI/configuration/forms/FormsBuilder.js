@@ -33,6 +33,8 @@ export default function FormsBuilder() {
         setForm({
           id: x.data.id,
           title: x.data.title,
+          enteredBy: false,
+          entryDateTime: false,
           structure: JSON.parse(x.data.structure),
         });
       });
@@ -40,10 +42,13 @@ export default function FormsBuilder() {
       setForm({
         id: "",
         title: "",
+        enteredBy: false,
+        entryDateTime: false,
         structure: { display: "form" },
       });
     }
   }, []);
+  console.log(form);
   {
     /*---------------submit form---------------------*/
   }
@@ -51,6 +56,8 @@ export default function FormsBuilder() {
     const data = {
       id: form.id,
       title: form.title,
+      enteredBy: form.enteredBy,
+      entryDateTime: form.entryDateTime,
       structure: JSON.stringify(schema),
     };
     if (data.id.length <= 1) {
@@ -122,26 +129,62 @@ export default function FormsBuilder() {
             ></input>
           </div>
         </div>
+        {/*-------------checkboxes---------------*/}
+        <div className="flex w-full justify-end">
+          <div className="flex  max-w-2xl flex-col md:flex-row justify-end mb-5 ">
+            <div className="flex items-center  mb-2 mr-8 md:mr-10">
+              <input
+                type="checkbox"
+                id="enteredBy"
+                name="entered"
+                checked={form.enteredBy}
+                onChange={(e) => {
+                  setForm({ ...form, enteredBy: !form.enteredBy });
+                }}
+              />
+              <label htmlFor="enteredBy" className="ml-2">
+                Include Entered By
+              </label>
+            </div>
+            <div className="flex items-center mr-8 mb-2">
+              <input
+                type="checkbox"
+                id="entryDateTime"
+                name="entryDateTime"
+                checked={form.entryDateTime}
+                onChange={(e) => {
+                  setForm({ ...form, entryDateTime: !form.entryDateTime });
+                }}
+              />
+              <label htmlFor="entryDateTime" className="ml-2">
+                Include Date/Time
+              </label>
+            </div>
+          </div>
+        </div>
         {/*----------------------------------*/}
         <FormBuilder
           form={form.structure}
           onChange={(schema) => {
             setSchema(schema);
-            console.log(schema);
+            //console.log(schema);
           }}
         />
-        <div className="flex justify-center">
-          <BtnMain style="mx-12" onClick={handleFormSubmit}>
-            Save
-          </BtnMain>
-          <BtnMain
-            style="mx-12"
-            onClick={() => {
-              router.push("/configuration/forms/list");
-            }}
-          >
-            Close
-          </BtnMain>
+        {/*-----navigation buttons--------*/}
+        <div className="flex w-full justify-end ">
+          <div className="flex justify-center max-w-sm bg-gray-200 mt-8 rounded-lg py-6">
+            <BtnMain style="mx-12" onClick={handleFormSubmit}>
+              Save
+            </BtnMain>
+            <BtnMain
+              style="mx-12"
+              onClick={() => {
+                router.push("/configuration/forms/list");
+              }}
+            >
+              Close
+            </BtnMain>
+          </div>
         </div>
       </div>
     </>
