@@ -65,8 +65,8 @@ export default function FormsEntryContent() {
   }
 
   return (
-    <div className=" mx-auto max-w-2xl mb-20 mt-44 sm:mt-24 lg:mt-16">
-      <h1 className="text-center text-lg mb-5">{form.title}</h1>
+    <div className=" mx-auto max-w-5xl mb-20 mt-44 sm:mt-24 lg:mt-16">
+      <h1 className="text-center text-lg mb-10">{form.title}</h1>
       <div className="relative">
         <Form
           form={JSON.parse(form.structure)}

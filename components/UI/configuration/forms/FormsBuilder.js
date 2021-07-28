@@ -44,7 +44,9 @@ export default function FormsBuilder() {
         title: "",
         enteredBy: false,
         entryDateTime: false,
-        structure: { display: "form" },
+        structure: {
+          display: "form",
+        },
       });
     }
   }, []);

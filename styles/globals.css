@@ -100,7 +100,12 @@
 .formio-component-submit {
   @apply mt-10 !important;
 }
-
+.field-wrapper {
+  @apply items-center !important;
+}
+.row {
+  @apply min-w-full justify-end !important;
+}
  {
   /*-------overriding menu component style---------------*/
 }

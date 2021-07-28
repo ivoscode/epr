@@ -5,7 +5,6 @@ import getApiData from "../../../../hooks/getApiData";
 import BtnMain from "../../../../Shared/buttons/BtMain";
 import GpPracticeSearchResults from "./GpPracticeSearchResults";
 import GpSearchResults from "./GpSearchResults";
-
 export default function GpGpPracticeSearch(props) {
   const gpPracticeInput = useRef(null);
 
@@ -19,6 +18,8 @@ export default function GpGpPracticeSearch(props) {
     useState(false);
   const [gpSearchResults, setGpSearchResults] = useState(null);
   const [showGpSearchResults, setShowGpSearchResults] = useState(false);
+  const [gpPracticeSearchBox, setGpPracticeSearchBox] = useState();
+  console.log(gpPracticeSearchBox);
   const Container = (props) => {
     return (
       <div className="w-full border-2 border-gray-100 max-w-xl  rounded-xl p-5 mb-2 ">
@@ -30,6 +31,7 @@ export default function GpGpPracticeSearch(props) {
   {
     /* ----------fetch gp practice*/
   }
+
   const handleGpPracticeSearch = () => {
     if (gpPracticeInput.current.value.length < 2) {
       return;
@@ -87,6 +89,18 @@ export default function GpGpPracticeSearch(props) {
   const validationSchema = Yup.object().shape({});
   return (
     <div>
+      {/* <div className="w-8/12">
+        <input
+          name="name"
+          type="text"
+          value={gpPracticeSearchBox}
+          onChange={(e) => {
+            console.log(e);
+            setGpPracticeSearchBox(e.target.value);
+          }}
+          className="input-box "
+        />
+      </div> */}
       <Formik
         enableReinitialize={true}
         initialValues={initialGp}
