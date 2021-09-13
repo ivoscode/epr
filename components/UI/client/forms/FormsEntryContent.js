@@ -1,18 +1,23 @@
+import { Components, Form } from "@formio/react";
 import format from "date-fns/format";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Form } from "react-formio";
 import { generateGUID } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import BtnMain from "../../../Shared/buttons/BtMain";
+import components from "../../../UI/configuration/forms/builderCustomComp";
+Components.setComponents(components);
 
 export default function FormsEntryContent() {
   const user = JSON.parse(sessionStorage.getItem("EprUser"));
   const router = useRouter();
   const [form, setForm] = useState(null);
   const [formData, setFormData] = useState();
-  console.log("form data recieved", formData);
-
+  // console.log(
+  //   "form structure recieved",
+  //   form?.structure && JSON.parse(form.structure)
+  // );
+  // console.log(console.log("form data", formData));
   //-----------------Getting form data if id present
   //Getting form data first, then structure based on date
   useEffect(() => {
@@ -51,13 +56,14 @@ export default function FormsEntryContent() {
       },
       group: formData?.group ?? generateGUID(),
     };
-
     getApiData(`POST`, `/api/forms/save`, {
       ...formHeader,
       values: { data: form.data },
     }).then((x) => {
       x.status == 200 && router.back();
     });
+
+    console.log("outgoing form data", form.data);
   };
 
   if (form == null) {
@@ -74,6 +80,7 @@ export default function FormsEntryContent() {
             handleFormSubmit(data);
           }}
           submission={formData?.values}
+
           //options={options}
         />
         <div className=" absolute bottom-0 flex  justify-center  bg-gray-200 left-36 rounded-lg mt-8">

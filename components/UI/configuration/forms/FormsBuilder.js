@@ -1,12 +1,14 @@
+import { Components, FormBuilder } from "@formio/react";
 import format from "date-fns/format";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FormBuilder } from "react-formio";
 import getApiData from "../../../hooks/getApiData";
 import MyDialog from "../../../Shared/alerts/MyDialog";
 import BtnMain from "../../../Shared/buttons/BtMain";
-
+import components from "./builderCustomComp";
+Components.setComponents(components);
 export default function FormsBuilder() {
+  console.log(components);
   const [schema, setSchema] = useState();
   const [form, setForm] = useState(null);
   const [idDisabled, setIdDisabled] = useState(false);
@@ -50,7 +52,7 @@ export default function FormsBuilder() {
       });
     }
   }, []);
-  console.log(form);
+  console.log("form from builder", form?.structure?.components[3]);
   {
     /*---------------submit form---------------------*/
   }
@@ -170,6 +172,16 @@ export default function FormsBuilder() {
           onChange={(schema) => {
             setSchema(schema);
             //console.log(schema);
+          }}
+          options={{
+            builder: {
+              basic: {
+                components: {
+                  sliderCustomComp: true,
+                },
+              },
+              advanced: false,
+            },
           }}
         />
         {/*-----navigation buttons--------*/}

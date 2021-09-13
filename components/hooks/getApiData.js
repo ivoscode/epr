@@ -39,10 +39,10 @@ const getApiData = (method, url, params) => {
   };
   //----------------GET-------------------
   if (method === `GET`) {
-    console.log(
-      `%c fetching data for ${url} `,
-      "background: #0000ff; color: #f0ffff"
-    );
+    // console.log(
+    //   `%c fetching data for ${url} `,
+    //   "background: #0000ff; color: #f0ffff"
+    // );
     let promise = axios
       .get(`https://web2.ajbsoftware.co.uk:5000${url}`, {
         params: params,
