@@ -33,7 +33,7 @@ export default function DiaryContent() {
   useEffect(() => {
     getApiData(
       "GET",
-      `/api/appointments/range?hcp=&start=2021-06-01&end=2021-07-30`
+      `/api/appointments/range?hcp=&start=2021-06-01&end=2021-12-30`
     ).then((x) => {
       setEvents(x.data);
     });
@@ -48,7 +48,7 @@ export default function DiaryContent() {
       getApiData(`POST`, `/api/appointment/save`, x.data).then((x) => {
         getApiData(
           "GET",
-          `/api/appointments/range?hcp=&start=2021-06-01&end=2021-07-30`
+          `/api/appointments/range?hcp=&start=2021-06-01&end=2021-12-30`
         ).then((x) => {
           setEvents(x.data);
         });

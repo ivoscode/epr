@@ -3,7 +3,7 @@ import { DndProvider } from "dnd14";
 import dynamic from "next/dynamic";
 
 const BedManager = dynamic(
-  () => import("../components/UI/client/bed-manager/BedManager"),
+  () => import("../../../components/UI/hcp/bed-manager/BedManager"),
   {
     ssr: false,
   }

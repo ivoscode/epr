@@ -10,10 +10,10 @@ const useCheckAccess = () => {
 
   const route = encodeURIComponent(router.asPath);
   useEffect(() => {
-    // console.log(
-    //   `%c checkAccesss checking route ${router.asPath}`,
-    //   "background: #222; color: #bada55"
-    // );
+    console.log(
+      `%c checkAccesss checking route ${router.asPath}`,
+      "background: #222; color: #bada55"
+    );
 
     getApiData("GET", `/api/session/check?url=${route}`).then((x) => {
       // console.log(x);

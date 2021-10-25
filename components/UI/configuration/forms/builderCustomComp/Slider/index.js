@@ -71,10 +71,8 @@ export default class Slider extends ReactComponent {
         onChange={this.updateValue} // The onChange event to call when the value changes.}
       />,
       element,
-      () => console.log("Component mounted", (this.reactInstance = instance))
+      () => (this.reactInstance = instance)
     );
-
-    //return instance2;
   }
 
   /**

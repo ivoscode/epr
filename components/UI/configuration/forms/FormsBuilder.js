@@ -8,7 +8,7 @@ import BtnMain from "../../../Shared/buttons/BtMain";
 import components from "./builderCustomComp";
 Components.setComponents(components);
 export default function FormsBuilder() {
-  console.log(components);
+  // console.log(components);
   const [schema, setSchema] = useState();
   const [form, setForm] = useState(null);
   const [idDisabled, setIdDisabled] = useState(false);

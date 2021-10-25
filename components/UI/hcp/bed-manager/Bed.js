@@ -1,6 +1,10 @@
 import { useDrag, useDrop } from "dnd14";
+import { useRouter } from "next/router";
+
 export default function Bed(props) {
-  const { bedId, url, patientName, status, patientPic, patientId } = props.bed;
+  const { bedId, url, patientName, status, patientPic, patientId, location } =
+    props.bed;
+  const router = useRouter();
   if (!bedId) {
     return null;
   }
@@ -43,7 +47,21 @@ export default function Bed(props) {
 
   const admit = () => {
     return (
-      <button className="bg-gray-700 text-white px-3 rounded-lg">Admit</button>
+      <button
+        onClick={() => {
+          console.log("admit clicked", bedId, location);
+          router.push(
+            `/hcp/bedManagement/admissions?formid=admission&bedId=${bedId}&location=${location}`
+          );
+          sessionStorage.setItem(
+            `bed-to-admit`,
+            JSON.stringify({ bedId, location })
+          );
+        }}
+        className="bg-gray-700 text-white px-3 rounded-lg"
+      >
+        Admit
+      </button>
     );
   };
   const discharge = () => {

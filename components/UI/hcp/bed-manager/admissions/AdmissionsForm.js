@@ -2,43 +2,46 @@ import { Components, Form } from "@formio/react";
 import format from "date-fns/format";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { generateGUID } from "../../../helpers/helperFunctions";
-import getApiData from "../../../hooks/getApiData";
-import BtnMain from "../../../Shared/buttons/BtMain";
-import components from "../../../UI/configuration/forms/builderCustomComp";
+import { generateGUID } from "../../../../helpers/helperFunctions";
+import getApiData from "../../../../hooks/getApiData";
+import BtnMain from "../../../../Shared/buttons/BtMain";
+import components from "../../../../UI/configuration/forms/builderCustomComp";
 Components.setComponents(components);
 
-export default function FormsEntryContent() {
+export default function AdmissionsForm() {
+  // const ward = useRef(null);
+
   const user = JSON.parse(sessionStorage.getItem("EprUser"));
   const router = useRouter();
   const [form, setForm] = useState(null);
   const [formData, setFormData] = useState();
 
-  //-----------------Getting form data if id present
-  //Getting form data first, then structure based on date
+  //Redirect to search for a patient first
+  if (!router.query.clientid) {
+    sessionStorage.setItem(`search-back`, router.asPath);
+    router.push("/client/search/");
+  }
+  //Getting form  structure based on date
   useEffect(() => {
-    if (router.query.id) {
-      getApiData("GET", `/api/forms/entry/?id=${router.query.id}`).then((x) => {
-        getApiData(
-          "GET",
-          `/api/forms/structure/?id=${router.query.formid}&datetime=${x.data.entryDateTime}`
-        ).then((s) => {
-          setForm(s.data);
-        });
-        setFormData(x.data);
-      });
-    } else {
-      getApiData(
-        "GET",
-        `/api/forms/structure/?id=${router.query.formid}&datetime=${format(
-          new Date(),
-          "yyyy-MM-dd'T'HH:mm"
-        )}`
-      ).then((x) => {
-        setForm(x.data);
-      });
-    }
+    getApiData(
+      "GET",
+      `/api/forms/structure/?id=${router.query.formid}&datetime=${format(
+        new Date(),
+        "yyyy-MM-dd'T'HH:mm"
+      )}`
+    ).then((x) => {
+      setForm(x?.data);
+    });
   }, []);
+  // useEffect(() => {
+  //   ward.current = document.querySelector("[ref=ward] div");
+  //   const el1 = document.querySelector("[ref=ward] div");
+
+  //   console.log(ward.current?.value);
+  //   console.log("after selecting", el1?.innerText);
+  //   el1 ? (el1.innerText = 5) : null;
+  //   console.log(el1?.innerText);
+  // });
 
   const handleFormSubmit = (form) => {
     const formHeader = {
@@ -56,13 +59,13 @@ export default function FormsEntryContent() {
       ...formHeader,
       values: { data: form.data },
     }).then((x) => {
-      x.status == 200 && router.back();
+      x.status == 200 && router.push("/hcp/bedManagement");
     });
 
     console.log("outgoing form data", form.data);
   };
 
-  if (form == null) {
+  if (form == null || !router.query.clientid) {
     return null;
   }
 
@@ -76,8 +79,6 @@ export default function FormsEntryContent() {
             handleFormSubmit(data);
           }}
           submission={formData?.values}
-
-          //options={options}
         />
         <div className=" absolute bottom-0 flex  justify-center  bg-gray-200 left-36 rounded-lg mt-8">
           <BtnMain
@@ -89,18 +90,6 @@ export default function FormsEntryContent() {
           </BtnMain>
         </div>
       </div>
-
-      {/* <div className="flex w-full justify-end">
-        <div className="flex w-full justify-center max-w-sm bg-gray-200 py-6 rounded-lg mt-8">
-          <BtnMain
-            onClick={() => {
-              router.back();
-            }}
-          >
-            Cancel
-          </BtnMain>
-        </div>
-      </div> */}
     </div>
   );
 }
