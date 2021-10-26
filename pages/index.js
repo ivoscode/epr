@@ -33,7 +33,7 @@ export default function Home() {
       <main className="lg:flex h-screen ">
         <div className=" relative  lg:w-1/2 hidden lg:block">
           <Image
-            src="/SideImage_itrcv4.jpg"
+            src="/EPR/SideImage_cmo5if.jpg"
             alt="Side Image"
             layout="fill"
             objectFit="cover"
