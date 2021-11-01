@@ -8,7 +8,6 @@ import BtnMain from "../../../Shared/buttons/BtMain";
 import components from "./builderCustomComp";
 Components.setComponents(components);
 export default function FormsBuilder() {
-  // console.log(components);
   const [schema, setSchema] = useState();
   const [form, setForm] = useState(null);
   const [idDisabled, setIdDisabled] = useState(false);
@@ -52,7 +51,7 @@ export default function FormsBuilder() {
       });
     }
   }, []);
-  console.log("form from builder", form?.structure?.components[3]);
+
   {
     /*---------------submit form---------------------*/
   }
@@ -100,8 +99,44 @@ export default function FormsBuilder() {
       />
       {/*----------------------------------------*/}
       <div className=" mx-auto   w-full p-12 mt-4 border-2 border-gray-300">
+        {/* radio buttons */}
+        <div className="mb-5">
+          <input
+            onChange={(e) => {
+              setForm({
+                ...form,
+                structure: {
+                  display: e.target.value,
+                },
+              });
+            }}
+            type="radio"
+            value="form"
+            checked={form.structure.display == "form"}
+            name="form"
+          />
+          <span className="ml-2"> Form</span>
+          <input
+            onChange={(e) => {
+              setForm({
+                ...form,
+                structure: {
+                  display: e.target.value,
+                },
+              });
+            }}
+            className="ml-10"
+            type="radio"
+            value="pdf"
+            checked={form.structure.display == "pdf"}
+            name="pdf"
+          />
+          <span className="ml-2"> Pdf</span>
+        </div>
+
         <div className="flex  flex-col md:flex-row justify-evenly mb-5 ">
           {/*--------input for Id-------------*/}
+
           <div className="w-full md:mr-8">
             <label className="text-lg" htmlFor="ID">
               ID
@@ -171,9 +206,10 @@ export default function FormsBuilder() {
           form={form.structure}
           onChange={(schema) => {
             setSchema(schema);
-            //console.log(schema);
+            console.log(schema);
           }}
           options={{
+            projectUrl: "https://web2.ajbsoftware.co.uk:8443",
             builder: {
               basic: {
                 components: {
