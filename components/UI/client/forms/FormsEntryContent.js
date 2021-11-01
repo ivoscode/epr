@@ -89,18 +89,6 @@ export default function FormsEntryContent() {
           </BtnMain>
         </div>
       </div>
-
-      {/* <div className="flex w-full justify-end">
-        <div className="flex w-full justify-center max-w-sm bg-gray-200 py-6 rounded-lg mt-8">
-          <BtnMain
-            onClick={() => {
-              router.back();
-            }}
-          >
-            Cancel
-          </BtnMain>
-        </div>
-      </div> */}
     </div>
   );
 }

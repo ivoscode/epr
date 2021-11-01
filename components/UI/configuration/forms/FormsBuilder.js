@@ -216,6 +216,11 @@ export default function FormsBuilder() {
                   sliderCustomComp: true,
                 },
               },
+              pdf: {
+                components: {
+                  sliderCustomComp: true,
+                },
+              },
               advanced: false,
             },
           }}
