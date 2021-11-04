@@ -1,9 +1,8 @@
-import checkMatrix from "./CheckMatrix";
+import autofillCustomComp from "./Autofill";
 import exampleCustomComp from "./ReactExample";
 import sliderCustomComp from "./Slider";
-
 export default {
   sliderCustomComp,
   exampleCustomComp,
-  checkMatrix,
+  autofillCustomComp,
 };

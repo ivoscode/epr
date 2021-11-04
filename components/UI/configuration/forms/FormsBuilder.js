@@ -14,7 +14,7 @@ export default function FormsBuilder() {
   let [isDialogOpen, setIsDialogOpen] = useState(false);
   const [message, setMessage] = useState(null);
   const router = useRouter();
-
+  console.log(components);
   {
     /*----------------Getting existing form-------------*/
   }
@@ -214,11 +214,14 @@ export default function FormsBuilder() {
               basic: {
                 components: {
                   sliderCustomComp: true,
+                  autofillCustomComp: true,
                 },
               },
               pdf: {
                 components: {
                   sliderCustomComp: true,
+                  autofillCustomComp: true,
+                  //exampleCustomComp: true,
                 },
               },
               advanced: false,

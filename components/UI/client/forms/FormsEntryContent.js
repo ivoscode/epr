@@ -6,14 +6,17 @@ import { generateGUID } from "../../../helpers/helperFunctions";
 import getApiData from "../../../hooks/getApiData";
 import BtnMain from "../../../Shared/buttons/BtMain";
 import components from "../../../UI/configuration/forms/builderCustomComp";
+
 Components.setComponents(components);
 
 export default function FormsEntryContent() {
+  console.dir("components", Form);
   const user = JSON.parse(sessionStorage.getItem("EprUser"));
   const router = useRouter();
   const [form, setForm] = useState(null);
   const [formData, setFormData] = useState();
-
+  // console.log("form", form);
+  //console.log("formData", formData);
   //-----------------Getting form data if id present
   //Getting form data first, then structure based on date
   useEffect(() => {
@@ -26,6 +29,7 @@ export default function FormsEntryContent() {
           setForm(s.data);
         });
         setFormData(x.data);
+        sessionStorage.setItem("formData", JSON.stringify(x.data));
       });
     } else {
       getApiData(

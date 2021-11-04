@@ -19,6 +19,7 @@ export default function ClientInfo({ id }) {
 
     getApiData("GET", `/api/client/get/?clientId=${id}`).then((x) => {
       setClient(x);
+      sessionStorage.setItem("ClientInfo", JSON.stringify(x));
     });
   }, []);
 
