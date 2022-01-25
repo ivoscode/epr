@@ -213,6 +213,7 @@ export default function FormsBuilder() {
             builder: {
               basic: {
                 components: {
+                  day2: true,
                   sliderCustomComp: true,
                   autofillCustomComp: true,
                 },
@@ -221,7 +222,7 @@ export default function FormsBuilder() {
                 components: {
                   sliderCustomComp: true,
                   autofillCustomComp: true,
-                  //exampleCustomComp: true,
+                  day2: true,
                 },
               },
               advanced: false,

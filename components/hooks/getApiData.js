@@ -50,8 +50,8 @@ const getApiData = (method, url, params) => {
       })
 
       .catch((e) => {
-        console.log(e);
-        switch (e.response.status) {
+        // console.log(e);
+        switch (e.response?.status) {
           case 401:
             console.log(
               `%c Error 401 ${url} `,

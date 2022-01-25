@@ -23,7 +23,6 @@ class AutofillCustomComp extends React.Component {
   };
 
   componentDidMount() {
-    console.log(window.location.href);
     if (window.location.href.includes("/forms/builder")) {
       console.log("returning from switch");
       return;
@@ -32,7 +31,7 @@ class AutofillCustomComp extends React.Component {
       switch (this.props.component.fieldType) {
         case "clientId":
           const ClientInfo = JSON.parse(sessionStorage.getItem("ClientInfo"));
-          //ClientInfo && console.log(ClientInfo.data.id);
+
           ClientInfo && this.setValue(ClientInfo.data.id);
           break;
         case "hcp":
@@ -76,9 +75,9 @@ export default class Autofill extends ReactComponent {
 
   static get builderInfo() {
     return {
-      title: "Autofill",
+      title: "Auto Fill",
       group: "layout",
-      icon: "code",
+      icon: "pencil",
       weight: 2,
 
       documentation: "",
@@ -96,6 +95,7 @@ export default class Autofill extends ReactComponent {
   static editForm = settingsForm;
 
   attachReact(element) {
+    console.log("attaching react");
     let instance;
     console.log(this.component);
     ReactDOM.render(
@@ -110,7 +110,7 @@ export default class Autofill extends ReactComponent {
       element,
       () => (this.reactInstance = instance)
     );
-    console.log("instance", instance);
+    //console.log("instance", instance);
   }
 
   /**

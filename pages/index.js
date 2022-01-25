@@ -35,6 +35,7 @@ export default function Home() {
           <Image
             src="/EPR/SideImage_cmo5if.jpg"
             alt="Side Image"
+            priority="true"
             layout="fill"
             objectFit="cover"
             objectPosition="center center"

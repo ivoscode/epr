@@ -33,7 +33,7 @@ export default function DiaryContent() {
   useEffect(() => {
     getApiData(
       "GET",
-      `/api/appointments/range?hcp=&start=2021-06-01&end=2021-12-30`
+      `/api/appointments/range?hcp=&start=2021-12-01&end=2022-12-30`
     ).then((x) => {
       setEvents(x.data);
     });
@@ -42,26 +42,26 @@ export default function DiaryContent() {
   const moveEvent = (e) => {
     getApiData(`GET`, `/api/appointment/details?id=${e.event.id}`).then((x) => {
       const start = format(e.start, "yyyy-MM-dd'T'HH:mm");
+      const end = format(e.end, "yyyy-MM-dd'T'HH:mm");
       x.data.datetime = start;
       x.data.duration = (e.end - e.start) / 60 / 1000;
+      //-------------------------------- prevents from events from temporary jumping
+
+      const eventToUpdate = events.find((item) => item.id == e.event.id);
+      const updatedEvents = events.filter((item) => item.id !== e.event.id);
+      const updatedEvent = { ...eventToUpdate, start, end };
+      setEvents([...updatedEvents, updatedEvent]);
+      //----------------------------
 
       getApiData(`POST`, `/api/appointment/save`, x.data).then((x) => {
         getApiData(
           "GET",
-          `/api/appointments/range?hcp=&start=2021-06-01&end=2021-12-30`
+          `/api/appointments/range?hcp=&start=2021-06-01&end=2022-12-30`
         ).then((x) => {
           setEvents(x.data);
         });
       });
     });
-
-    //-------------------------------- prevents from events from temporary jumping
-
-    // const eventToUpdate = events.find((item) => item.id == e.event.id);
-    // const updatedEvents = events.filter((item) => item.id !== e.event.id);
-    // const updatedEvent = { ...eventToUpdate, start, end };
-    // setEvents([...updatedEvents, updatedEvent]);
-    //----------------------------
   };
 
   const myEventsList = events?.map((x) => {

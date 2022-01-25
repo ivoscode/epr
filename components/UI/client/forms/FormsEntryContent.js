@@ -69,6 +69,7 @@ export default function FormsEntryContent() {
   if (form == null) {
     return null;
   }
+  console.log(JSON.parse(form.structure));
 
   return (
     <div className=" mx-auto max-w-5xl mb-20 mt-44 sm:mt-24 lg:mt-16">

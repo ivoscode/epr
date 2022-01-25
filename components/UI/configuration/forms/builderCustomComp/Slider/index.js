@@ -75,11 +75,27 @@ export default class Slider extends ReactComponent {
     );
   }
 
+  // added by Ivo to check builder mode
+  get isBuilderMode() {
+    console.log("builder check mode is running");
+    const { element: pEl, id, root } = this.parent;
+    if (this.builderMode) {
+      return true;
+    }
+
+    if (id !== root.id) {
+      return false;
+    }
+
+    return !pEl || pEl.getAttribute("ref") === "preview";
+  }
+
   /**
    * Automatically detach any react components.
    *
    * @param element
    */
+
   detachReact(element) {
     if (element) {
       ReactDOM.unmountComponentAtNode(element);
